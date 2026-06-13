@@ -78,19 +78,25 @@ export function Grader() {
                 <div className="text-display text-7xl text-ink">{result.overall}<span className="text-ink-soft text-3xl">/100</span></div>
               </div>
               <div className="mt-8 grid gap-6 md:grid-cols-4">
-                {result.categories.map((c) => (
-                  <div key={c.name}>
+                {(Object.entries(result.scores) as [string, number][]).map(([name, score]) => (
+                  <div key={name}>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium text-ink">{c.name}</span>
-                      <span className="font-mono text-ink-soft">{c.score}</span>
+                      <span className="font-medium text-ink capitalize">{name}</span>
+                      <span className="font-mono text-ink-soft">{score}</span>
                     </div>
                     <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-foreground/8">
-                      <div className="h-full rounded-full bg-brand" style={{ width: `${c.score}%` }} />
+                      <div className="h-full rounded-full bg-brand" style={{ width: `${score}%` }} />
                     </div>
-                    <p className="mt-2 text-xs text-ink-soft">{c.note}</p>
                   </div>
                 ))}
               </div>
+              {result.notes.length > 0 && (
+                <ul className="mt-8 space-y-2 border-t border-foreground/8 pt-6 text-sm text-ink-soft">
+                  {result.notes.slice(0, 5).map((n, i) => (
+                    <li key={i} className="flex gap-2"><span className="text-brand">→</span>{n}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           </Reveal>
         )}
