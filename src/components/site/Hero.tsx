@@ -88,8 +88,8 @@ export function Hero() {
             </div>
             <div className="relative h-[420px] overflow-hidden rounded-xl bg-surface">
               <div className="absolute inset-0 bg-dotgrid-light" />
-              <div className="absolute inset-0 grid grid-cols-12 gap-6 p-10">
-                <div className="col-span-7 space-y-4">
+              <div className="absolute inset-0 grid grid-cols-1 gap-6 p-6 md:grid-cols-12 md:p-10">
+                <div className="hidden md:block md:col-span-7 space-y-4">
                   <div className="h-3 w-24 rounded bg-foreground/10" />
                   <div className="h-12 w-5/6 rounded bg-foreground/15" />
                   <div className="h-12 w-2/3 rounded bg-foreground/10" />
@@ -100,11 +100,13 @@ export function Hero() {
                     <div className="h-10 w-28 rounded-full border border-foreground/10" />
                   </div>
                 </div>
-                <div className="col-span-5">
+                <div className="md:col-span-5">
                   <div className="relative h-full rounded-xl bg-white shadow-card">
-                    <div className="absolute right-4 top-4 rounded-md bg-brand-soft px-2 py-1 text-[10px] font-semibold text-ink">+42% MoM</div>
                     <div className="p-5">
-                      <div className="h-2.5 w-20 rounded bg-foreground/10" />
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="h-2.5 w-20 rounded bg-foreground/10" />
+                        <div className="shrink-0 rounded-md bg-brand-soft px-2 py-1 text-[10px] font-semibold text-ink">+42% MoM</div>
+                      </div>
                       <div className="mt-3 text-3xl font-semibold text-ink">$1.2M</div>
                       <svg viewBox="0 0 200 80" className="mt-4 w-full">
                         <motion.path
@@ -117,7 +119,7 @@ export function Hero() {
                           transition={{ duration: 1.6, ease: "easeInOut", delay: 0.6 }}
                         />
                       </svg>
-                      <div className="mt-3 grid grid-cols-3 gap-2 text-[10px] font-mono text-ink-soft">
+                      <div className="mt-3 flex justify-between text-[10px] font-mono text-ink-soft">
                         <span>JAN</span><span>FEB</span><span>MAR</span>
                       </div>
                     </div>
