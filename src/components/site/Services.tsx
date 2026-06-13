@@ -1,78 +1,68 @@
-import { Brush, Code2, LineChart, Sparkles, ArrowUpRight } from "lucide-react";
-import { Reveal, SpotlightCard } from "./primitives";
+import { Eyebrow, Reveal } from "./primitives";
 
 const services = [
   {
-    icon: Brush,
-    title: "Web Design",
-    body: "Editorial, brand-first design systems built around your story — not a template.",
-    tags: ["Art direction", "Design systems", "Prototyping"],
+    title: "Conversion-led web design",
+    body:
+      "Brand systems, IA, and page architecture built around the moments that turn visitors into pipeline.",
+    bullets: ["Brand & visual system", "Landing pages", "Marketing site"],
   },
   {
-    icon: Code2,
-    title: "Web Development",
-    body: "Hand-crafted, blazing-fast builds in Next.js, Shopify, and Framer. 95+ Lighthouse, always.",
-    tags: ["Next.js", "Shopify", "Headless"],
+    title: "Engineering & performance",
+    body:
+      "Next.js, Webflow, and Shopify builds — measured in Lighthouse scores, not just pixel perfection.",
+    bullets: ["Next.js / Webflow / Shopify", "CMS architecture", "Core Web Vitals"],
   },
   {
-    icon: LineChart,
-    title: "Conversion Optimization",
-    body: "Research-led CRO — heatmaps, session replays, A/B tests — to compound revenue post-launch.",
-    tags: ["A/B testing", "Funnels", "Analytics"],
+    title: "Growth & CRO",
+    body:
+      "Ongoing experimentation programs: research, hypotheses, A/B tests, and revenue attribution.",
+    bullets: ["Research & analytics", "A/B testing", "Funnel optimization"],
   },
   {
-    icon: Sparkles,
-    title: "Brand Positioning",
-    body: "Sharper messaging, stronger narrative, premium visual identity that earns the price tag.",
-    tags: ["Messaging", "Identity", "Strategy"],
+    title: "Retainer partnership",
+    body:
+      "Fractional design + engineering for teams that need senior craft without hiring in-house.",
+    bullets: ["Weekly sprints", "Strategy reviews", "Async Slack channel"],
   },
 ];
 
 export function Services() {
   return (
-    <section id="services" className="relative py-28 sm:py-40">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="services" className="py-28">
+      <div className="mx-auto max-w-7xl px-6">
         <Reveal>
-          <div className="max-w-3xl">
-            <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
-              What we do
-            </div>
-            <h2 className="text-display text-4xl sm:text-6xl brand-gradient-text">
-              Everything your site needs to <span className="text-serif-italic" style={{ color: "var(--brand)" }}>convert</span>.
-            </h2>
-            <p className="mt-6 text-muted-foreground text-lg max-w-xl">
-              Four disciplines, one team, one outcome — a website that earns trust on first glance
-              and pays for itself within a quarter.
-            </p>
-          </div>
+          <Eyebrow>What we do</Eyebrow>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h2 className="text-display mx-auto mt-5 max-w-3xl text-center text-[clamp(2rem,4.5vw,3.75rem)] headline-fade">
+            A senior team across <span className="text-serif-italic font-normal text-ink">brand, build,</span> and growth.
+          </h2>
+        </Reveal>
+        <Reveal delay={0.16}>
+          <p className="mx-auto mt-5 max-w-xl text-center text-ink-soft">
+            One accountable team handles strategy, design, and engineering — so
+            every decision compounds toward revenue, not handoffs.
+          </p>
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="mt-16 grid gap-5 md:grid-cols-2">
           {services.map((s, i) => (
-            <Reveal key={s.title} delay={i * 0.08}>
-              <SpotlightCard className="h-full p-8 sm:p-10">
+            <Reveal key={s.title} delay={i * 0.05}>
+              <div className="group relative h-full rounded-2xl border border-foreground/8 bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-soft">
                 <div className="flex items-start justify-between">
-                  <div
-                    className="flex h-12 w-12 items-center justify-center rounded-xl hairline"
-                    style={{ background: "color-mix(in oklab, var(--brand) 12%, transparent)" }}
-                  >
-                    <s.icon className="h-5 w-5" style={{ color: "var(--brand)" }} />
-                  </div>
-                  <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-all group-hover:text-foreground group-hover:-translate-y-1 group-hover:translate-x-1" />
+                  <h3 className="text-2xl font-semibold tracking-tight text-ink">{s.title}</h3>
+                  <span className="font-mono text-xs text-ink-soft">0{i + 1}</span>
                 </div>
-                <h3 className="mt-8 text-2xl sm:text-3xl text-display">{s.title}</h3>
-                <p className="mt-3 text-muted-foreground leading-relaxed max-w-md">{s.body}</p>
-                <div className="mt-8 flex flex-wrap gap-2">
-                  {s.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full hairline px-3 py-1 text-xs text-muted-foreground"
-                    >
-                      {t}
-                    </span>
+                <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-soft">{s.body}</p>
+                <ul className="mt-6 flex flex-wrap gap-2">
+                  {s.bullets.map((b) => (
+                    <li key={b} className="rounded-full border border-foreground/10 bg-surface px-3 py-1 text-xs font-medium text-ink-soft">
+                      {b}
+                    </li>
                   ))}
-                </div>
-              </SpotlightCard>
+                </ul>
+              </div>
             </Reveal>
           ))}
         </div>
