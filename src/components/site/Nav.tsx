@@ -43,7 +43,18 @@ export function Nav() {
           ))}
         </nav>
 
-        <CtaPrimary>Get your free audit</CtaPrimary>
+        <span className="hidden sm:inline-flex">
+          <CtaPrimary>Get your free audit</CtaPrimary>
+        </span>
+        <a
+          href="#audit"
+          className="inline-flex sm:hidden items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-xs font-medium text-white shadow-soft"
+        >
+          Free audit
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
       </div>
     </header>
   );
