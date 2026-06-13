@@ -115,8 +115,9 @@
 @utility text-display {
   font-family: var(--font-display);
   letter-spacing: -0.035em;
-  line-height: 0.98;
+  line-height: 1.05;
   font-weight: 600;
+  padding-bottom: 0.08em;
 }
 
 @utility text-serif-italic {
@@ -124,25 +125,30 @@
   font-style: italic;
   letter-spacing: -0.02em;
   font-weight: 400;
+  /* italic glyphs overflow the em-box; give them room */
+  padding-right: 0.06em;
 }
 
 @utility hairline {
   border: 1px solid var(--border);
 }
 
-/* Gradient text: ink → soft grey, like Convertt headlines */
+/* Gradient text: ink → soft grey, like Convertt headlines.
+   Fade ends ~85% so italic descenders don't disappear into white. */
 @utility headline-fade {
-  background: linear-gradient(180deg, var(--ink) 0%, var(--ink) 55%, color-mix(in oklab, var(--ink) 35%, white) 100%);
+  background: linear-gradient(180deg, var(--ink) 0%, var(--ink) 60%, color-mix(in oklab, var(--ink) 55%, white) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  padding-bottom: 0.12em;
 }
 
 @utility headline-fade-light {
-  background: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(1 0 0) 55%, color-mix(in oklab, white 50%, transparent) 100%);
+  background: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(1 0 0) 60%, color-mix(in oklab, white 65%, transparent) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  padding-bottom: 0.12em;
 }
 
 /* Dotted background for dark CTA blocks */
