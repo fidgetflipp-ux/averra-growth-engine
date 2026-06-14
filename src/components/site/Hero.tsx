@@ -5,92 +5,39 @@ import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 export function Hero() {
   return (
     <section className="relative overflow-hidden pt-36 pb-20">
-      {/* Ambient background fragments — extremely low opacity, subconscious depth */}
+      {/* Layered background — mesh gradient + grid + grain for premium depth */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {/* soft radial wash */}
-        <div className="absolute left-1/2 top-[-10%] h-[700px] w-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.06),transparent_60%)] blur-2xl" />
+        {/* sage mesh gradient — multiple soft blooms */}
+        <div className="absolute left-1/2 top-[-15%] h-[820px] w-[1280px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.16),transparent_62%)] blur-3xl" />
+        <div className="absolute -left-40 top-40 h-[520px] w-[620px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.10),transparent_65%)] blur-3xl" />
+        <div className="absolute -right-40 top-10 h-[560px] w-[640px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.09),transparent_65%)] blur-3xl" />
+        <div className="absolute left-1/3 bottom-0 h-[420px] w-[720px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.07),transparent_70%)] blur-3xl" />
 
-        {/* top-left: cropped browser window */}
-        <div className="absolute -left-24 top-24 hidden w-[420px] rotate-[-6deg] opacity-[0.07] blur-[1px] md:block">
-          <div className="overflow-hidden rounded-2xl border border-foreground/20 bg-white shadow-2xl">
-            <div className="flex items-center gap-1.5 border-b border-foreground/10 px-3 py-2">
-              <span className="size-2 rounded-full bg-foreground/20" />
-              <span className="size-2 rounded-full bg-foreground/20" />
-              <span className="size-2 rounded-full bg-foreground/20" />
-            </div>
-            <div className="space-y-2.5 p-5">
-              <div className="h-2 w-2/3 rounded bg-foreground/30" />
-              <div className="h-2 w-1/2 rounded bg-foreground/15" />
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                <div className="h-14 rounded bg-foreground/10" />
-                <div className="h-14 rounded bg-foreground/10" />
-                <div className="h-14 rounded bg-foreground/10" />
-              </div>
-              <div className="h-2 w-3/4 rounded bg-foreground/15" />
-              <div className="h-2 w-2/5 rounded bg-foreground/15" />
-            </div>
-          </div>
-        </div>
+        {/* subtle grid — fades from center */}
+        <div
+          className="absolute inset-0 opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%)",
+          }}
+        />
 
-        {/* top-right: cropped website screenshot fragment */}
-        <div className="absolute -right-32 top-16 hidden w-[460px] rotate-[5deg] opacity-[0.06] blur-[1.5px] lg:block">
-          <div className="overflow-hidden rounded-2xl border border-foreground/20 bg-white shadow-2xl">
-            <div className="h-10 border-b border-foreground/10 bg-foreground/[0.03]" />
-            <div className="p-6">
-              <div className="h-3 w-1/3 rounded bg-foreground/25" />
-              <div className="mt-2 h-2 w-1/2 rounded bg-foreground/15" />
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="aspect-[4/3] rounded-lg bg-foreground/10" />
-                <div className="aspect-[4/3] rounded-lg bg-foreground/10" />
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* grain texture */}
+        <svg className="absolute inset-0 h-full w-full opacity-[0.18] mix-blend-multiply" xmlns="http://www.w3.org/2000/svg">
+          <filter id="hero-noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#hero-noise)" />
+        </svg>
 
-        {/* bottom-left: minimal wireframe component */}
-        <div className="absolute -left-16 bottom-20 hidden w-[300px] -rotate-3 opacity-[0.08] blur-[1px] md:block">
-          <div className="rounded-2xl border border-foreground/20 bg-white p-5 shadow-xl">
-            <div className="h-2 w-12 rounded bg-foreground/25" />
-            <div className="mt-3 h-6 w-2/3 rounded bg-foreground/15" />
-            <div className="mt-4 space-y-2">
-              <div className="h-2 w-full rounded bg-foreground/10" />
-              <div className="h-2 w-5/6 rounded bg-foreground/10" />
-              <div className="h-2 w-3/4 rounded bg-foreground/10" />
-            </div>
-            <div className="mt-4 h-8 w-24 rounded-full bg-foreground/20" />
-          </div>
-        </div>
-
-        {/* bottom-right: analytics card */}
-        <div className="absolute -right-20 bottom-10 hidden w-[340px] rotate-[4deg] opacity-[0.08] blur-[1px] md:block">
-          <div className="rounded-2xl border border-foreground/20 bg-white p-5 shadow-xl">
-            <div className="flex items-baseline justify-between">
-              <div>
-                <div className="h-2 w-16 rounded bg-foreground/20" />
-                <div className="mt-2 h-5 w-24 rounded bg-foreground/30" />
-              </div>
-              <div className="h-2 w-10 rounded bg-brand/40" />
-            </div>
-            <svg viewBox="0 0 200 70" className="mt-4 h-16 w-full">
-              <path
-                d="M0,55 C25,50 40,40 60,38 C85,35 100,48 125,30 C150,15 170,22 200,10"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="text-brand"
-              />
-              <path
-                d="M0,55 C25,50 40,40 60,38 C85,35 100,48 125,30 C150,15 170,22 200,10 L200,70 L0,70 Z"
-                className="fill-brand/15"
-              />
-            </svg>
-            <div className="mt-3 flex justify-between">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-1.5 w-4 rounded bg-foreground/10" />
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* bottom fade for clean transition into next section */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
@@ -106,16 +53,104 @@ export function Hero() {
           </div>
         </Reveal>
 
-        <h1 className="text-display mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
-          <Reveal>
-            <span className="block">Premium websites,</span>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <span className="block">
-              delivered in <span className="text-serif-italic">days</span>{" "}— not months.
-            </span>
-          </Reveal>
-        </h1>
+        <div className="relative">
+          {/* Floating proof cards flanking the headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-0 top-10 z-20 hidden w-[210px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
+          >
+            <div className="flex items-center gap-2 text-eyebrow">
+              <span className="size-1.5 rounded-full bg-brand" /> Live preview
+            </div>
+            <div className="mt-3 overflow-hidden rounded-lg border border-foreground/10">
+              <div className="flex items-center gap-1 border-b border-foreground/10 bg-foreground/[0.02] px-2 py-1.5">
+                <span className="size-1.5 rounded-full bg-foreground/20" />
+                <span className="size-1.5 rounded-full bg-foreground/20" />
+                <span className="size-1.5 rounded-full bg-foreground/20" />
+              </div>
+              <div className="space-y-1.5 p-2.5">
+                <div className="h-1.5 w-2/3 rounded bg-foreground/25" />
+                <div className="h-1.5 w-1/2 rounded bg-foreground/15" />
+                <div className="mt-2 grid grid-cols-3 gap-1">
+                  <div className="h-6 rounded bg-foreground/10" />
+                  <div className="h-6 rounded bg-foreground/10" />
+                  <div className="h-6 rounded bg-brand/30" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{ animationDelay: "1.5s" }}
+            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
+          >
+            <div className="flex items-center justify-between">
+              <div className="text-eyebrow">Conversion</div>
+              <span className="rounded-full bg-brand/12 px-1.5 py-0.5 text-[10px] font-medium text-brand-ink">+248%</span>
+            </div>
+            <div className="mt-2 text-[22px] font-semibold leading-none text-ink">3.4× lift</div>
+            <svg viewBox="0 0 200 50" className="mt-3 h-10 w-full">
+              <path d="M0,40 C30,38 55,32 85,28 C115,24 140,18 200,4" fill="none" stroke="currentColor" strokeWidth="1.75" className="text-brand" />
+              <path d="M0,40 C30,38 55,32 85,28 C115,24 140,18 200,4 L200,50 L0,50 Z" className="fill-brand/15" />
+            </svg>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{ animationDelay: "2.5s" }}
+            className="absolute right-6 top-[210px] z-20 hidden w-[240px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
+          >
+            <div className="flex items-center gap-1">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
+                  <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+              ))}
+            </div>
+            <p className="mt-2 text-[12.5px] leading-snug text-ink-soft">
+              "Shipped in 9 days. Booked 3 enterprise demos the week we launched."
+            </p>
+            <div className="mt-2 text-[11px] text-ink-muted">— Maya R., Founder</div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{ animationDelay: "3.5s" }}
+            className="absolute left-4 top-[230px] z-20 hidden w-[200px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
+          >
+            <div className="text-eyebrow">Avg. ship time</div>
+            <div className="mt-1.5 flex items-baseline gap-1.5">
+              <span className="text-[26px] font-semibold leading-none text-ink">11</span>
+              <span className="text-sm text-ink-muted">days</span>
+            </div>
+            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-foreground/8">
+              <div className="h-full w-[68%] rounded-full bg-brand" />
+            </div>
+            <div className="mt-1.5 flex justify-between text-[10px] text-ink-muted">
+              <span>0d</span><span>14d target</span>
+            </div>
+          </motion.div>
+
+          <h1 className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
+            <Reveal>
+              <span className="block">Premium websites,</span>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <span className="block">
+                delivered in <span className="text-serif-italic">days</span>{" "}— not months.
+              </span>
+            </Reveal>
+          </h1>
+        </div>
 
         <Reveal delay={0.18}>
           <p className="mx-auto mt-8 max-w-xl text-center text-[17px] leading-[1.6] text-ink-soft">
