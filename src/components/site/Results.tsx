@@ -1,4 +1,4 @@
-import { Eyebrow, Reveal } from "./primitives";
+import { CountUp, Eyebrow, Reveal } from "./primitives";
 
 const compare = [
   { label: "Speed", us: true, inhouse: false, agency: false, freelance: false },
@@ -70,17 +70,19 @@ export function Results() {
           </div>
         </Reveal>
 
-        {/* What's included */}
+        {/* Numbers strip */}
         <div className="mt-16 grid gap-5 md:grid-cols-3">
           {[
-            { t: "Fixed scope & timeline", l: "Clear deliverables agreed upfront — no scope creep, no surprise invoices." },
-            { t: "Direct access to the team", l: "You talk to the strategists, designers, and engineers actually building your site." },
-            { t: "Code you own, built to scale", l: "Production-grade engineering on modern foundations — not a locked-in template." },
+            { v: 84, p: "$", s: "M", l: "Client revenue influenced" },
+            { v: 3.4, s: "x", l: "Average conversion lift", dec: 1 },
+            { v: 120, s: "+", l: "Projects delivered worldwide" },
           ].map((s, i) => (
             <Reveal key={i} delay={i * 0.05}>
               <div className="rounded-2xl border border-foreground/8 bg-white p-8 shadow-card">
-                <h3 className="text-lg font-semibold tracking-tight text-ink">{s.t}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-soft">{s.l}</p>
+                <div className="text-display text-5xl text-ink">
+                  <CountUp to={s.v} prefix={s.p ?? ""} suffix={s.s} decimals={s.dec ?? 0} />
+                </div>
+                <p className="mt-3 text-sm text-ink-soft">{s.l}</p>
               </div>
             </Reveal>
           ))}

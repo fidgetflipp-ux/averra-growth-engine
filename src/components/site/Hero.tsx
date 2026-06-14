@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { CtaPrimary, Reveal } from "./primitives";
 
-const industries = [
-  "Professional Services", "SaaS & Technology", "Healthcare & Wellness",
-  "Finance & Investment", "Real Estate", "Hospitality", "Consulting",
-  "Legal", "Premium Retail", "B2B Manufacturing",
+const logos = [
+  "Northwind", "Helio Labs", "Quanta", "Atelier 9", "Lumen & Co",
+  "Vantage", "Parallel", "Folio", "Riverstone", "Mercer Health",
 ];
 
 export function Hero() {
@@ -25,7 +24,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
               <span className="relative inline-flex size-2 rounded-full bg-brand" />
             </span>
-            Strategy-led. Senior-only. Built for growth.
+            Accepting 3 new partners for Q1
           </div>
         </Reveal>
 
@@ -42,10 +41,9 @@ export function Hero() {
 
         <Reveal delay={0.18}>
           <p className="mx-auto mt-7 max-w-2xl text-center text-lg leading-relaxed text-ink-soft">
-            Averra is a growth-focused digital partner for ambitious businesses.
-            We combine strategy, design, and engineering to build websites that
-            earn trust, win customers, and position you as the leader in your
-            market.
+            Averra is a senior web studio for ambitious businesses. We design,
+            engineer, and optimize sites that win trust, lift conversion, and
+            scale with your category.
           </p>
         </Reveal>
 
@@ -53,18 +51,25 @@ export function Hero() {
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <CtaPrimary>Get your free audit</CtaPrimary>
             <a href="#work" className="text-sm font-medium text-ink-soft hover:text-ink">
-              See how we work →
+              See our work →
             </a>
           </div>
         </Reveal>
 
         <Reveal delay={0.34}>
-          <div className="mt-8 flex items-center justify-center gap-x-8 gap-y-2 text-center text-xs text-ink-soft">
-            <span>No subcontracted work</span>
+          <div className="mt-8 flex items-center justify-center gap-6 text-xs text-ink-soft">
+            <span className="flex items-center gap-1.5">
+              <span className="flex">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <svg key={i} width="13" height="13" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
+                    <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                ))}
+              </span>
+              4.9 / 5 client satisfaction
+            </span>
             <span className="hidden h-3 w-px bg-foreground/15 sm:block" />
-            <span className="hidden sm:inline">One accountable team — strategy to launch</span>
-            <span className="hidden h-3 w-px bg-foreground/15 sm:block" />
-            <span className="hidden sm:inline">Built to scale with you</span>
+            <span className="hidden sm:inline">120+ projects shipped</span>
           </div>
         </Reveal>
       </div>
@@ -78,7 +83,7 @@ export function Hero() {
               <span className="size-2.5 rounded-full bg-white/20" />
               <span className="size-2.5 rounded-full bg-white/20" />
               <div className="ml-3 flex h-6 flex-1 items-center rounded-md bg-white/8 px-3 text-[11px] font-mono text-white/50">
-                yourcompany.com
+                averra.studio/clients/quanta
               </div>
             </div>
             <div className="relative h-[420px] overflow-hidden rounded-xl bg-surface">
@@ -126,17 +131,17 @@ export function Hero() {
         </div>
       </Reveal>
 
-      {/* Industries row */}
+      {/* Trusted-by row */}
       <Reveal delay={0.5}>
         <div className="mx-auto mt-20 max-w-7xl px-6">
           <p className="text-center font-mono text-[11px] uppercase tracking-[0.25em] text-ink-soft">
-            Built for ambitious businesses across
+            Trusted by operators at
           </p>
           <div className="relative mt-7 overflow-hidden">
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent" />
             <div className="flex w-[200%] animate-marquee gap-14">
-              {[...industries, ...industries].map((name, i) => (
+              {[...logos, ...logos].map((name, i) => (
                 <span key={i} className="shrink-0 text-2xl font-semibold tracking-tight text-ink/35 transition-colors hover:text-ink/70">
                   {name}
                 </span>
