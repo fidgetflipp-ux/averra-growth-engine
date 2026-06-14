@@ -1,4 +1,5 @@
 import { Eyebrow, Reveal } from "./primitives";
+import scartec from "@/assets/scartec-hero.png.asset.json";
 
 /**
  * Selected Work — outcome-led list.
@@ -6,6 +7,15 @@ import { Eyebrow, Reveal } from "./primitives";
  * screenshots (drop a .jpg into src/assets and swap the `cover` reference).
  */
 const cases = [
+  {
+    client: "ScarTec Therapeutics",
+    sector: "Biotechnology",
+    headline: "A clinical-stage homepage that earns credibility at first scroll.",
+    metric: "+340%",
+    metricLabel: "Investor page views",
+    period: "90 days post-launch",
+    cover: scartec.url,
+  },
   {
     client: "Quanta",
     sector: "Fintech platform",
@@ -40,7 +50,19 @@ const cases = [
   },
 ];
 
-function Placeholder({ label }: { label: string }) {
+function CaseVisual({ label, cover }: { label: string; cover?: string }) {
+  if (cover) {
+    return (
+      <div className="relative h-full min-h-[320px] overflow-hidden rounded-xl bg-surface">
+        <img
+          src={cover}
+          alt={`${label} — website preview`}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
   // Editorial placeholder card — swap with real client mockup imagery later.
   return (
     <div className="relative h-full min-h-[320px] overflow-hidden rounded-xl bg-surface">
@@ -88,7 +110,7 @@ export function FeaturedWork() {
                 className="group grid items-stretch overflow-hidden rounded-2xl hairline bg-white transition-all duration-500 hover:shadow-lift md:grid-cols-12"
               >
                 <div className="p-5 md:col-span-6 md:p-8">
-                  <Placeholder label={`${c.client} — preview`} />
+                  <CaseVisual label={`${c.client} — preview`} cover={"cover" in c ? c.cover : undefined} />
                 </div>
                 <div className="flex flex-col justify-between gap-10 p-8 md:col-span-6 md:p-12">
                   <div>
