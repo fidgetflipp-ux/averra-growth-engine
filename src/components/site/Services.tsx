@@ -10,7 +10,7 @@ const services = [
     n: "01",
     title: "Website Design",
     body: "Editorial, high-trust interfaces built around your buyer journey — not a template.",
-    img: svcDesign,
+    img: svcDesign.url,
     tags: ["Art direction", "UI systems", "Prototyping"],
   },
   {
