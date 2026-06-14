@@ -6,7 +6,7 @@ export function Logo({ className = "" }: { className?: string }) {
       <img
         src={averraLogo.url}
         alt="Averra"
-        className="h-[28px] w-auto transition-transform duration-300 group-hover:scale-[1.04]"
+        className="h-[50px] w-auto transition-transform duration-300 group-hover:scale-[1.04]"
       />
       <span className="text-[17px] font-semibold tracking-[-0.02em] text-ink">
         Averra
