@@ -5,7 +5,95 @@ import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 export function Hero() {
   return (
     <section className="relative overflow-hidden pt-36 pb-20">
-      <div className="mx-auto max-w-7xl px-6">
+      {/* Ambient background fragments — extremely low opacity, subconscious depth */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        {/* soft radial wash */}
+        <div className="absolute left-1/2 top-[-10%] h-[700px] w-[1100px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.06),transparent_60%)] blur-2xl" />
+
+        {/* top-left: cropped browser window */}
+        <div className="absolute -left-24 top-24 hidden w-[420px] rotate-[-6deg] opacity-[0.07] blur-[1px] md:block">
+          <div className="overflow-hidden rounded-2xl border border-foreground/20 bg-white shadow-2xl">
+            <div className="flex items-center gap-1.5 border-b border-foreground/10 px-3 py-2">
+              <span className="size-2 rounded-full bg-foreground/20" />
+              <span className="size-2 rounded-full bg-foreground/20" />
+              <span className="size-2 rounded-full bg-foreground/20" />
+            </div>
+            <div className="space-y-2.5 p-5">
+              <div className="h-2 w-2/3 rounded bg-foreground/30" />
+              <div className="h-2 w-1/2 rounded bg-foreground/15" />
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                <div className="h-14 rounded bg-foreground/10" />
+                <div className="h-14 rounded bg-foreground/10" />
+                <div className="h-14 rounded bg-foreground/10" />
+              </div>
+              <div className="h-2 w-3/4 rounded bg-foreground/15" />
+              <div className="h-2 w-2/5 rounded bg-foreground/15" />
+            </div>
+          </div>
+        </div>
+
+        {/* top-right: cropped website screenshot fragment */}
+        <div className="absolute -right-32 top-16 hidden w-[460px] rotate-[5deg] opacity-[0.06] blur-[1.5px] lg:block">
+          <div className="overflow-hidden rounded-2xl border border-foreground/20 bg-white shadow-2xl">
+            <div className="h-10 border-b border-foreground/10 bg-foreground/[0.03]" />
+            <div className="p-6">
+              <div className="h-3 w-1/3 rounded bg-foreground/25" />
+              <div className="mt-2 h-2 w-1/2 rounded bg-foreground/15" />
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                <div className="aspect-[4/3] rounded-lg bg-foreground/10" />
+                <div className="aspect-[4/3] rounded-lg bg-foreground/10" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* bottom-left: minimal wireframe component */}
+        <div className="absolute -left-16 bottom-20 hidden w-[300px] -rotate-3 opacity-[0.08] blur-[1px] md:block">
+          <div className="rounded-2xl border border-foreground/20 bg-white p-5 shadow-xl">
+            <div className="h-2 w-12 rounded bg-foreground/25" />
+            <div className="mt-3 h-6 w-2/3 rounded bg-foreground/15" />
+            <div className="mt-4 space-y-2">
+              <div className="h-2 w-full rounded bg-foreground/10" />
+              <div className="h-2 w-5/6 rounded bg-foreground/10" />
+              <div className="h-2 w-3/4 rounded bg-foreground/10" />
+            </div>
+            <div className="mt-4 h-8 w-24 rounded-full bg-foreground/20" />
+          </div>
+        </div>
+
+        {/* bottom-right: analytics card */}
+        <div className="absolute -right-20 bottom-10 hidden w-[340px] rotate-[4deg] opacity-[0.08] blur-[1px] md:block">
+          <div className="rounded-2xl border border-foreground/20 bg-white p-5 shadow-xl">
+            <div className="flex items-baseline justify-between">
+              <div>
+                <div className="h-2 w-16 rounded bg-foreground/20" />
+                <div className="mt-2 h-5 w-24 rounded bg-foreground/30" />
+              </div>
+              <div className="h-2 w-10 rounded bg-brand/40" />
+            </div>
+            <svg viewBox="0 0 200 70" className="mt-4 h-16 w-full">
+              <path
+                d="M0,55 C25,50 40,40 60,38 C85,35 100,48 125,30 C150,15 170,22 200,10"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="text-brand"
+              />
+              <path
+                d="M0,55 C25,50 40,40 60,38 C85,35 100,48 125,30 C150,15 170,22 200,10 L200,70 L0,70 Z"
+                className="fill-brand/15"
+              />
+            </svg>
+            <div className="mt-3 flex justify-between">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="h-1.5 w-4 rounded bg-foreground/10" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
         <Reveal>
           <div className="mx-auto mb-9 flex w-fit items-center gap-2.5 rounded-full hairline bg-white/80 px-3.5 py-1.5 text-xs font-medium text-ink-soft backdrop-blur">
             <span className="relative flex size-1.5">
