@@ -128,9 +128,10 @@ function Workspace({
     "8%", "22%", "48%", "78%", "95%", "100%",
   ]);
 
-  // Subtle parallax tilt
-  const tiltX = useTransform(progress, [0, 1], [1.5, -1.5]);
-  const tiltY = useTransform(progress, [0, 1], [-2, 2]);
+  // 3D rotation tied to scroll — visible but premium-restrained
+  const rotY = useTransform(progress, [0, 0.5, 1], [-22, 0, 22]);
+  const rotX = useTransform(progress, [0, 0.5, 1], [6, -2, -6]);
+  const liftZ = useTransform(progress, [0, 0.5, 1], [-20, 40, -20]);
 
   // Subtle brighten in launch phase
   const glow = useTransform(progress, [0.78, 0.92], [0, 1]);
