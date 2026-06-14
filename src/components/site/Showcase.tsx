@@ -215,14 +215,12 @@ function OrbitCard({ progress, phase, angle, radius, height, z, children }: Orbi
 // ————————————————————————————————————————————————————————————————
 
 function Scene({ progress }: { progress: MotionValue<number> }) {
-  const stop = (e: ThreeEvent<PointerEvent>) => e.stopPropagation();
   return (
     <Canvas
       shadows
       dpr={[1, 2]}
       camera={{ position: [0, 0.1, 3.6], fov: 32 }}
       gl={{ antialias: true, alpha: true }}
-      onPointerDown={stop}
     >
       <ambientLight intensity={0.55} />
       <directionalLight position={[3, 5, 4]} intensity={1.05} castShadow shadow-mapSize={[2048, 2048]} />
