@@ -249,9 +249,9 @@ export function Showcase() {
           </Reveal>
         </div>
 
-        {/* 3D stage */}
+        {/* 3D stage (client only) */}
         <div className="absolute inset-0">
-          <Scene progress={scrollYProgress} />
+          <ClientScene progress={scrollYProgress} />
         </div>
 
         {/* Floating cards */}
