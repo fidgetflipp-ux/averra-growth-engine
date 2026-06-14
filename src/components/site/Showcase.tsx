@@ -198,11 +198,11 @@ export function Showcase() {
 
   // Smooth progress with a tiny lerp for premium feel handled inside R3F frame.
 
-  const stageLabel = useTransform(scrollYProgress, (p) => {
-    if (p < 0.25) return "01 — Design";
-    if (p < 0.5) return "02 — Development";
-    if (p < 0.75) return "03 — Analytics";
-    return "04 — Launch";
+  const [stage, setStage] = useState("01 — Design");
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    const next =
+      p < 0.25 ? "01 — Design" : p < 0.5 ? "02 — Development" : p < 0.75 ? "03 — Analytics" : "04 — Launch";
+    setStage((prev) => (prev === next ? prev : next));
   });
 
   return (
