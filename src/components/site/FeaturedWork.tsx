@@ -110,7 +110,7 @@ export function FeaturedWork() {
                 className="group grid items-stretch overflow-hidden rounded-2xl hairline bg-white transition-all duration-500 hover:shadow-lift md:grid-cols-12"
               >
                 <div className="p-5 md:col-span-6 md:p-8">
-                  <Placeholder label={`${c.client} — preview`} />
+                  <CaseVisual label={`${c.client} — preview`} cover={"cover" in c ? c.cover : undefined} />
                 </div>
                 <div className="flex flex-col justify-between gap-10 p-8 md:col-span-6 md:p-12">
                   <div>
