@@ -242,9 +242,9 @@ export function Showcase() {
               <h2 className="text-display text-center text-[clamp(2rem,4.5vw,3.5rem)] max-w-[20ch]">
                 From first pixel to <span className="text-serif-italic">production</span>.
               </h2>
-              <motion.div className="text-eyebrow mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-brand-ink">
-                {stageLabel}
-              </motion.div>
+              <motion.span className="text-eyebrow mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-brand-ink">
+                {stageLabel as unknown as string}
+              </motion.span>
             </div>
           </Reveal>
         </div>
