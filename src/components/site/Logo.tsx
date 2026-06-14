@@ -1,4 +1,4 @@
-import averraLogoAsset from "@/assets/averra-logo.png.asset.json";
+import averraLogoSrc from "@/assets/averra-logo.png";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
