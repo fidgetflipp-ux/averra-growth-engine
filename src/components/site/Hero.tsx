@@ -240,10 +240,10 @@ export function Hero() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.2, duration: 0.7 }}
             >
-              <div className="text-eyebrow">Delivery</div>
+              <div className="text-eyebrow">Production timeline</div>
               <div className="mt-1.5 flex items-baseline gap-2">
-                <span className="text-2xl font-semibold text-ink">11d</span>
-                <span className="text-xs text-ink-muted">average ship time</span>
+                <span className="text-2xl font-semibold text-ink">9 days</span>
+                <span className="text-xs text-ink-muted">from booking to deployment</span>
               </div>
             </motion.div>
             <motion.div
