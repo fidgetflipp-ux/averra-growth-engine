@@ -30,7 +30,7 @@ export function FinalCta() {
                 </a>
               </div>
               <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-white/50">
-                <span>★ 4.9 / 5 client satisfaction</span>
+                <span>Strategy-first, no pressure</span>
                 <span>• Avg response &lt; 4 hours</span>
                 <span>• NDA-friendly</span>
               </div>

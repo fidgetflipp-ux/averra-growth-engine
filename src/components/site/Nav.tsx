@@ -11,10 +11,10 @@ export function Nav() {
   }, []);
 
   const links = [
-    { label: "Results", href: "#results" },
-    { label: "Process", href: "#process" },
-    { label: "Work", href: "#work" },
+    { label: "Why Averra", href: "#difference" },
     { label: "Services", href: "#services" },
+    { label: "Work", href: "#work" },
+    { label: "Process", href: "#process" },
   ];
 
   return (
