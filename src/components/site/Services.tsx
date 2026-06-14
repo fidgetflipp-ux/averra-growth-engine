@@ -1,4 +1,4 @@
-import svcDesign from "@/assets/svc-design.jpg";
+import svcDesign from "@/assets/website-design-figma.png.asset.json";
 import svcDev from "@/assets/svc-dev.jpg";
 import svcCro from "@/assets/svc-cro.jpg";
 import svcBrand from "@/assets/svc-brand.jpg";
