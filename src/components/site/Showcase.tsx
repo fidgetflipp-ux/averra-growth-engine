@@ -129,9 +129,9 @@ function Workspace({
   ]);
 
   // 3D rotation tied to scroll — visible but premium-restrained
-  const rotY = useTransform(progress, [0, 0.5, 1], [-22, 0, 22]);
-  const rotX = useTransform(progress, [0, 0.5, 1], [6, -2, -6]);
-  const liftZ = useTransform(progress, [0, 0.5, 1], [-20, 40, -20]);
+  const rotY = useTransform(progress, [0, 0.5, 1], [-18, 0, 18]);
+  const rotX = useTransform(progress, [0, 0.5, 1], [2, 0, 2]);
+  const liftZ = useTransform(progress, [0, 0.5, 1], [-10, 20, -10]);
 
   // Subtle brighten in launch phase
   const glow = useTransform(progress, [0.78, 0.92], [0, 1]);
@@ -524,7 +524,7 @@ export function Showcase() {
         </div>
 
         {/* Workspace + floating notes */}
-        <div className="relative z-20 mt-24 w-full">
+        <div className="relative z-20 mt-44 w-full">
           <div className="relative mx-auto" style={{ perspective: 1400 }}>
             {/* Notes */}
             <FloatingNote
