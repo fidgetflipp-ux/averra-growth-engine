@@ -1,7 +1,7 @@
-import { Suspense, useMemo, useRef } from "react";
+import { Suspense, useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Environment, RoundedBox } from "@react-three/drei";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from "framer-motion";
 import * as THREE from "three";
 import { Eyebrow, Reveal } from "./primitives";
 
