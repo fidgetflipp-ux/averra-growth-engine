@@ -1,4 +1,4 @@
-import svcDesign from "@/assets/svc-design.jpg";
+import svcDesign from "@/assets/website-design-figma.png.asset.json";
 import svcDev from "@/assets/svc-dev.jpg";
 import svcCro from "@/assets/svc-cro.jpg";
 import svcBrand from "@/assets/svc-brand.jpg";
@@ -10,7 +10,7 @@ const services = [
     n: "01",
     title: "Website Design",
     body: "Editorial, high-trust interfaces built around your buyer journey — not a template.",
-    img: svcDesign,
+    img: svcDesign.url,
     tags: ["Art direction", "UI systems", "Prototyping"],
   },
   {
