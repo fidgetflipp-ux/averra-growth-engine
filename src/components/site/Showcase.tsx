@@ -152,6 +152,7 @@ function Workspace({
         rotateX: rotX,
         rotateY: rotY,
         z: liftZ,
+        scale: 0.86,
         boxShadow: glowShadow,
         transformPerspective: 1600,
         transformStyle: "preserve-3d",
@@ -524,7 +525,7 @@ export function Showcase() {
         </div>
 
         {/* Workspace + floating notes */}
-        <div className="relative z-20 mt-44 w-full">
+        <div className="relative z-20 mt-56 w-full">
           <div className="relative mx-auto" style={{ perspective: 1400 }}>
             {/* Notes */}
             <FloatingNote
