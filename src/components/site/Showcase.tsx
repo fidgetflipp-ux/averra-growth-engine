@@ -180,34 +180,26 @@ function DesignLayer({ interactive = false }: { interactive?: boolean }) {
       />
       {interactive && (
         <>
-          {/* hover hotspots */}
+          {/* hover ring on the CTA button (which exists in the image) */}
           <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.9, 0.9, 0] }}
-            transition={{ duration: 3.2, repeat: Infinity, repeatDelay: 1.4, times: [0, 0.15, 0.85, 1] }}
-            className="absolute left-[4.5%] top-[7.5%] rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-medium tracking-wide ring-1 ring-white/30 backdrop-blur-sm"
-          >
-            shop
-          </motion.span>
-          <motion.div
-            initial={{ scale: 0.96, opacity: 0 }}
-            animate={{ scale: [0.96, 1, 1, 0.96], opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 3.6, repeat: Infinity, repeatDelay: 0.8, delay: 1.2, times: [0, 0.2, 0.8, 1] }}
-            className="absolute bottom-[10.5%] left-[5%] rounded-full bg-white px-7 py-3 text-[13px] font-medium text-black shadow-[0_10px_40px_-10px_rgba(255,255,255,0.6)]"
-          >
-            Experience the Glow
-          </motion.div>
+            aria-hidden
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: [0, 1, 1, 0], scale: [0.96, 1.03, 1.03, 0.96] }}
+            transition={{ duration: 3.4, repeat: Infinity, repeatDelay: 0.6, times: [0, 0.25, 0.75, 1] }}
+            className="absolute bottom-[11%] left-[5%] h-[7%] w-[22%] rounded-full ring-2 ring-white/70 shadow-[0_0_40px_rgba(255,255,255,0.35)]"
+          />
           {/* cursor */}
           <motion.svg
-            initial={{ x: "60%", y: "70%", opacity: 0 }}
+            aria-hidden
+            initial={{ left: "55%", top: "62%", opacity: 0 }}
             animate={{
-              x: ["60%", "8%", "8%", "30%"],
-              y: ["70%", "85%", "85%", "10%"],
+              left: ["55%", "12%", "12%", "55%"],
+              top: ["62%", "82%", "82%", "62%"],
               opacity: [0, 1, 1, 0],
             }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
             viewBox="0 0 24 24"
-            className="absolute z-20 size-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]"
+            className="absolute z-20 size-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
             fill="white"
           >
             <path d="M3 2l7 18 2-8 8-2L3 2z" />
