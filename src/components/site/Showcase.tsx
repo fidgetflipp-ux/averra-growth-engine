@@ -189,6 +189,18 @@ function FloatingCard({ progress, range, position, drift, children }: CardProps)
 // Section
 // ————————————————————————————————————————————————————————————————
 
+function ClientScene({ progress }: { progress: MotionValue<number> }) {
+  const [mounted, setMounted] = useState(false);
+  useMotionValueEvent(progress, "change", () => {});
+  if (typeof window === "undefined") return null;
+  // Defer first paint to client to keep Three out of SSR
+  if (!mounted) {
+    queueMicrotask(() => setMounted(true));
+    return null;
+  }
+  return <Scene progress={progress} />;
+}
+
 export function Showcase() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
