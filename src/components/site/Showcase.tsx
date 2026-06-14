@@ -524,7 +524,7 @@ export function Showcase() {
         </div>
 
         {/* Workspace + floating notes */}
-        <div className="relative z-20 mt-24 w-full">
+        <div className="relative z-20 mt-44 w-full">
           <div className="relative mx-auto" style={{ perspective: 1400 }}>
             {/* Notes */}
             <FloatingNote
