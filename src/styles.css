@@ -164,6 +164,14 @@
   animation: float-slow 8s ease-in-out infinite;
 }
 
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+@utility animate-float-subtle {
+  animation: float-subtle 6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
