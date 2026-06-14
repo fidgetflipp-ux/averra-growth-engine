@@ -435,20 +435,20 @@ export function Showcase() {
         </div>
 
         {/* Header */}
-        <div className="relative z-30 mx-auto w-full max-w-7xl px-6 pt-20">
+        <div className="relative z-30 mx-auto w-full max-w-7xl px-6 pt-24">
           <Reveal>
             <div className="flex flex-col items-center gap-3 text-center">
               <Eyebrow>Inside the Averra workspace</Eyebrow>
-              <h2 className="text-display text-[clamp(1.75rem,3.4vw,2.75rem)] max-w-[24ch]">
+              <h2 className="text-display text-[clamp(1.5rem,2.8vw,2.25rem)] max-w-[24ch]">
                 From concept to launch in <span className="text-serif-italic">14 days</span>.
               </h2>
             </div>
           </Reveal>
         </div>
 
-        {/* Frame + contextual notifications — 70% width */}
-        <div className="relative z-20 mt-6 flex w-full flex-1 items-center justify-center px-6">
-          <div className="relative mx-auto w-full max-w-[1180px]" style={{ width: "min(70vw, 1180px)", perspective: 1800 }}>
+        {/* Frame + contextual notifications */}
+        <div className="relative z-20 mt-4 flex w-full flex-1 items-center justify-center px-6">
+          <div className="relative mx-auto" style={{ width: "min(64vw, 1080px)", maxHeight: "62vh", perspective: 1800 }}>
             <NotificationStack stage={stage} />
             <WorkspaceFrame progress={scrollYProgress} stage={stage} />
           </div>
