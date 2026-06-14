@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-import heroLaptop from "@/assets/hero-laptop.jpg";
 import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 
 export function Hero() {
