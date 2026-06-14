@@ -1,4 +1,4 @@
-import { Suspense, useMemo, useRef, useState, useEffect } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Environment, RoundedBox } from "@react-three/drei";
 import { motion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from "framer-motion";
