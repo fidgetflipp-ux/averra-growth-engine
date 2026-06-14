@@ -52,90 +52,113 @@ export function Hero() {
         </Reveal>
 
         <div className="relative">
-          {/* Floating proof cards flanking the headline */}
+          {/* Card 1 — Website Progress (top left) */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-0 top-10 z-20 hidden w-[210px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
+            style={{ animationDelay: "0.5s" }}
+            className="absolute left-0 top-10 z-20 hidden w-[220px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
           >
-            <div className="flex items-center gap-2 text-eyebrow">
-              <span className="size-1.5 rounded-full bg-brand" /> Live preview
-            </div>
-            <div className="mt-3 overflow-hidden rounded-lg border border-foreground/10">
-              <div className="flex items-center gap-1 border-b border-foreground/10 bg-foreground/[0.02] px-2 py-1.5">
-                <span className="size-1.5 rounded-full bg-foreground/20" />
-                <span className="size-1.5 rounded-full bg-foreground/20" />
-                <span className="size-1.5 rounded-full bg-foreground/20" />
-              </div>
-              <div className="space-y-1.5 p-2.5">
-                <div className="h-1.5 w-2/3 rounded bg-foreground/25" />
-                <div className="h-1.5 w-1/2 rounded bg-foreground/15" />
-                <div className="mt-2 grid grid-cols-3 gap-1">
-                  <div className="h-6 rounded bg-foreground/10" />
-                  <div className="h-6 rounded bg-foreground/10" />
-                  <div className="h-6 rounded bg-brand/30" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{ animationDelay: "1.5s" }}
-            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
-          >
-            <div className="flex items-center justify-between">
-              <div className="text-eyebrow">Conversion</div>
-              <span className="rounded-full bg-brand/12 px-1.5 py-0.5 text-[10px] font-medium text-brand-ink">+248%</span>
-            </div>
-            <div className="mt-2 text-[22px] font-semibold leading-none text-ink">3.4× lift</div>
-            <svg viewBox="0 0 200 50" className="mt-3 h-10 w-full">
-              <path d="M0,40 C30,38 55,32 85,28 C115,24 140,18 200,4" fill="none" stroke="currentColor" strokeWidth="1.75" className="text-brand" />
-              <path d="M0,40 C30,38 55,32 85,28 C115,24 140,18 200,4 L200,50 L0,50 Z" className="fill-brand/15" />
-            </svg>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{ animationDelay: "2.5s" }}
-            className="absolute right-6 top-[210px] z-20 hidden w-[240px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
-          >
-            <div className="flex items-center gap-1">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
-                  <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            <div className="text-eyebrow mb-3">Website Progress</div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-[12px] text-ink-soft">
+                <svg className="size-3.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              ))}
+                Strategy complete
+              </div>
+              <div className="flex items-center gap-2 text-[12px] text-ink-soft">
+                <svg className="size-3.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Design approved
+              </div>
             </div>
-            <p className="mt-2 text-[12.5px] leading-snug text-ink-soft">
-              "Shipped in 9 days. Booked 3 enterprise demos the week we launched."
-            </p>
-            <div className="mt-2 text-[11px] text-ink-muted">— Maya R., Founder</div>
+            <div className="mt-3">
+              <div className="mb-1 flex items-center justify-between text-[10px] text-ink-muted">
+                <span>Development</span>
+                <span className="font-medium text-brand-ink">72%</span>
+              </div>
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-foreground/8">
+                <div className="h-full w-[72%] rounded-full bg-brand" />
+              </div>
+            </div>
+            <div className="mt-2.5 text-[10px] text-ink-muted">Launch target: June 26</div>
           </motion.div>
 
+          {/* Card 2 — Included (bottom left) */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{ animationDelay: "3.5s" }}
-            className="absolute left-4 top-[230px] z-20 hidden w-[200px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-slow"
+            style={{ animationDelay: "2s" }}
+            className="absolute left-4 top-[230px] z-20 hidden w-[200px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
           >
-            <div className="text-eyebrow">Avg. ship time</div>
-            <div className="mt-1.5 flex items-baseline gap-1.5">
-              <span className="text-[26px] font-semibold leading-none text-ink">11</span>
-              <span className="text-sm text-ink-muted">days</span>
+            <div className="text-eyebrow mb-3">Included</div>
+            <div className="space-y-1.5">
+              {[
+                "Website design",
+                "Development",
+                "SEO setup",
+                "CMS integration",
+                "Analytics",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-2 text-[12px] text-ink-soft">
+                  <svg className="size-3 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {item}
+                </div>
+              ))}
             </div>
-            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-foreground/8">
-              <div className="h-full w-[68%] rounded-full bg-brand" />
+          </motion.div>
+
+          {/* Card 3 — Conversion Impact (top right) */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{ animationDelay: "1.2s" }}
+            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
+          >
+            <div className="text-eyebrow mb-2">Conversion Impact</div>
+            <div className="mt-1 text-[28px] font-semibold leading-none text-ink">+248%</div>
+            <div className="mt-1 text-[11px] text-ink-muted">Lead increase</div>
+            <svg viewBox="0 0 180 40" className="mt-3 h-8 w-full">
+              <path
+                d="M0,35 C25,33 50,28 75,24 C100,20 125,14 180,4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="text-brand"
+              />
+              <path
+                d="M0,35 C25,33 50,28 75,24 C100,20 125,14 180,4 L180,40 L0,40 Z"
+                className="fill-brand/12"
+              />
+            </svg>
+          </motion.div>
+
+          {/* Card 4 — Client Testimonial (bottom right) */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{ animationDelay: "2.8s" }}
+            className="absolute right-6 top-[210px] z-20 hidden w-[260px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
+          >
+            <div className="mb-2 flex items-center gap-0.5">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <svg key={i} width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
+                  <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+              ))}
             </div>
-            <div className="mt-1.5 flex justify-between text-[10px] text-ink-muted">
-              <span>0d</span><span>14d target</span>
-            </div>
+            <p className="text-[12px] leading-snug text-ink-soft">
+              "The entire website was delivered in 9 days and looked better than agencies we spoke to that quoted 3 months."
+            </p>
+            <div className="mt-2 text-[11px] text-ink-muted">— Founder</div>
           </motion.div>
 
           <h1 className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
