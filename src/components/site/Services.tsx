@@ -1,57 +1,45 @@
+import svcDesign from "@/assets/svc-design.jpg";
+import svcDev from "@/assets/svc-dev.jpg";
+import svcCro from "@/assets/svc-cro.jpg";
+import svcBrand from "@/assets/svc-brand.jpg";
+import svcManage from "@/assets/svc-manage.jpg";
 import { Eyebrow, Reveal } from "./primitives";
 
 const services = [
   {
+    n: "01",
     title: "Website Design",
-    body: "High-trust, conversion-focused design that guides users and builds credibility.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="4" width="18" height="14" rx="2" />
-        <path d="M3 9h18" />
-        <path d="M8 21h8" />
-        <path d="M12 18v3" />
-      </svg>
-    ),
+    body: "Editorial, high-trust interfaces built around your buyer journey — not a template.",
+    img: svcDesign,
+    tags: ["Art direction", "UI systems", "Prototyping"],
   },
   {
-    title: "Development",
-    body: "Clean, scalable code and modern technology for speed, security, and reliability.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m8 8-4 4 4 4" />
-        <path d="m16 8 4 4-4 4" />
-        <path d="m14 5-4 14" />
-      </svg>
-    ),
+    n: "02",
+    title: "Website Development",
+    body: "Hand-built, lightning-fast sites on a modern stack. SEO-ready, accessible, easy to manage.",
+    img: svcDev,
+    tags: ["Next.js", "Headless CMS", "Performance"],
   },
   {
+    n: "03",
     title: "Conversion Optimization",
-    body: "Data-driven CRO that turns more visitors into leads and paying customers.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 17 9 11l4 4 8-8" />
-        <path d="M14 7h7v7" />
-      </svg>
-    ),
+    body: "Funnel teardown, message-market fit, and structural CRO that compounds month over month.",
+    img: svcCro,
+    tags: ["CRO audit", "A/B testing", "Analytics"],
   },
   {
-    title: "SEO Foundation",
-    body: "Technical SEO, on-page optimization, and analytics setup to grow organic traffic.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-3.5-3.5" />
-      </svg>
-    ),
+    n: "04",
+    title: "Brand Positioning",
+    body: "Sharpen who you serve, what you stand for, and the words that make buyers act.",
+    img: svcBrand,
+    tags: ["Messaging", "Identity", "Voice"],
   },
   {
-    title: "Ongoing Support",
-    body: "Post-launch care, updates, and optimization to keep producing results over time.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 21s-7-4.35-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.65-7 10-7 10z" />
-      </svg>
-    ),
+    n: "05",
+    title: "Ongoing Management",
+    body: "A senior team on retainer to ship continuous improvements after launch.",
+    img: svcManage,
+    tags: ["Retainer", "Iteration", "Support"],
   },
 ];
 
@@ -65,16 +53,41 @@ export function Services() {
             Everything your website needs to <span className="text-serif-italic">convert.</span>
           </h2>
         </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mx-auto mt-6 max-w-xl text-center text-[17px] leading-relaxed text-ink-soft">
+            Five disciplines, one senior team. Bundled into a single fixed
+            engagement so you ship — fast.
+          </p>
+        </Reveal>
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-20 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((s, i) => (
-            <Reveal key={s.title} delay={i * 0.05}>
-              <article className="group flex h-full flex-col rounded-2xl hairline bg-white p-6 transition-all duration-500 hover:shadow-card">
-                <div className="flex size-10 items-center justify-center rounded-xl hairline text-ink">
-                  <span className="block size-5">{s.icon}</span>
+            <Reveal key={s.n} delay={i * 0.05}>
+              <article className="group flex h-full flex-col overflow-hidden rounded-2xl hairline bg-white transition-all duration-500 hover:shadow-lift">
+                <div className="relative aspect-[5/4] overflow-hidden bg-surface">
+                  <img
+                    src={s.img}
+                    alt={s.title}
+                    loading="lazy"
+                    width={1200}
+                    height={1400}
+                    className="absolute inset-0 size-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+                  />
+                  <span className="absolute left-4 top-4 rounded-full bg-white/90 px-2.5 py-1 font-mono text-[10px] tracking-[0.18em] text-ink backdrop-blur">
+                    {s.n}
+                  </span>
                 </div>
-                <h3 className="mt-6 text-[15px] font-semibold tracking-tight text-ink">{s.title}</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">{s.body}</p>
+                <div className="flex flex-1 flex-col p-7">
+                  <h3 className="text-display text-2xl text-ink">{s.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-ink-soft">{s.body}</p>
+                  <div className="mt-6 flex flex-wrap gap-1.5">
+                    {s.tags.map((t) => (
+                      <span key={t} className="rounded-full hairline px-2.5 py-1 text-[11px] text-ink-soft">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </article>
             </Reveal>
           ))}
