@@ -5,24 +5,24 @@ import { SocialProof } from "@/components/site/SocialProof";
 import { Services } from "@/components/site/Services";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { Process } from "@/components/site/Process";
-import { Results } from "@/components/site/Results";
-import { Grader } from "@/components/site/Grader";
+import { Packages } from "@/components/site/Packages";
+import { Booking } from "@/components/site/Booking";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Averra — Web experiences engineered for growth" },
+      { title: "Averra — Premium websites, delivered in days." },
       {
         name: "description",
         content:
-          "Averra is a premium web studio. We design and develop high-performing websites that help ambitious brands attract clients, build trust, and scale.",
+          "Averra is a senior design and engineering studio. Choose a package, reserve a slot, and we ship a premium website in 7–14 days. No sales calls required.",
       },
-      { property: "og:title", content: "Averra — Web experiences engineered for growth" },
+      { property: "og:title", content: "Averra — Premium websites, delivered in days." },
       {
         property: "og:description",
-        content: "Premium web design, development, and conversion optimization for ambitious brands.",
+        content: "Choose a package, reserve a slot, and ship a premium website in 7–14 days.",
       },
     ],
   }),
@@ -39,8 +39,8 @@ function Index() {
         <Services />
         <FeaturedWork />
         <Process />
-        <Results />
-        <Grader />
+        <Packages />
+        <Booking />
         <FinalCta />
       </main>
       <Footer />

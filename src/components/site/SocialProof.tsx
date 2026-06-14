@@ -1,36 +1,27 @@
-import { CountUp, Eyebrow, Reveal } from "./primitives";
+import { Reveal } from "./primitives";
 
-const stats = [
-  { value: 3.4, suffix: "x", label: "Average conversion lift" },
-  { value: 41, suffix: "%", label: "Median revenue growth" },
-  { value: 120, suffix: "+", label: "Sites shipped worldwide" },
-  { value: 28, suffix: " days", label: "Average build-to-launch" },
+const logos = [
+  "Northwind", "Helio", "Quanta", "Atelier 9", "Lumen & Co",
+  "Vantage", "Parallel", "Folio", "Riverstone", "Mercer",
 ];
 
 export function SocialProof() {
   return (
-    <section className="border-y border-foreground/5 bg-surface py-20">
+    <section className="hairline-t hairline-b bg-white py-14">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal>
-          <Eyebrow>Outcomes, not deliverables</Eyebrow>
+          <p className="text-center text-eyebrow">Selected operators trust Averra</p>
         </Reveal>
-        <Reveal delay={0.08}>
-          <h2 className="text-display mx-auto mt-5 max-w-3xl text-center text-[clamp(2rem,4.5vw,3.5rem)] headline-fade">
-            Performance our clients can put on a board report.
-          </h2>
-        </Reveal>
-
-        <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-foreground/8 bg-foreground/8 md:grid-cols-4">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.06}>
-              <div className="bg-white p-8">
-                <div className="text-display text-5xl text-ink">
-                  <CountUp to={s.value} suffix={s.suffix} decimals={s.value % 1 ? 1 : 0} />
-                </div>
-                <p className="mt-3 text-sm text-ink-soft">{s.label}</p>
-              </div>
-            </Reveal>
-          ))}
+        <div className="relative mt-9 overflow-hidden">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-white to-transparent" />
+          <div className="flex w-[200%] animate-marquee gap-16">
+            {[...logos, ...logos].map((name, i) => (
+              <span key={i} className="shrink-0 text-[22px] font-medium tracking-[-0.01em] text-ink/30">
+                {name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
