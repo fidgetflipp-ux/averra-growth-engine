@@ -1,16 +1,28 @@
+/**
+ * Averra mark — abstract ascending architecture.
+ * Three rising verticals + a precise diagonal apex, evoking growth and momentum.
+ * Reads as a stylized "A" at favicon size, geometric at scale.
+ */
 export function LogoMark({ className = "" }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 44 44"
-      className={`block ${className}`}
+      viewBox="0 0 32 32"
+      fill="none"
+      className={className}
       aria-hidden="true"
-      focusable="false"
     >
+      <rect width="32" height="32" rx="7" fill="currentColor" />
+      {/* ascending bars */}
+      <rect x="7" y="18" width="3" height="7" rx="1" fill="white" fillOpacity="0.55" />
+      <rect x="12.5" y="13" width="3" height="12" rx="1" fill="white" fillOpacity="0.85" />
+      <rect x="18" y="7" width="3" height="18" rx="1" fill="white" />
+      {/* brand accent diagonal */}
       <path
-        d="M7.4 34.5 19.2 10.9c1.1-2.2 4.4-2.2 5.5 0l11.9 23.6c.8 1.6-.4 3.5-2.3 3.5h-5.1c-1 0-1.9-.6-2.3-1.5l-4.9-10.2-4.9 10.2c-.4.9-1.3 1.5-2.3 1.5H9.7c-1.9 0-3.1-1.9-2.3-3.5Z"
-        fill="var(--ink)"
+        d="M7 9 L21 9"
+        stroke="var(--brand)"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
-      <path d="M22 24.5 28.2 38H15.8L22 24.5Z" fill="var(--brand)" />
     </svg>
   );
 }
@@ -18,9 +30,9 @@ export function LogoMark({ className = "" }: { className?: string }) {
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <a href="/" className={`group inline-flex items-center gap-2.5 ${className}`}>
-      <LogoMark className="size-9 transition-transform duration-300 group-hover:scale-[1.04]" />
-      <span className="text-[17px] font-semibold tracking-normal text-ink">
-        averra
+      <LogoMark className="size-7 text-ink transition-transform duration-300 group-hover:scale-[1.04]" />
+      <span className="text-[17px] font-semibold tracking-[-0.02em] text-ink">
+        Averra
       </span>
     </a>
   );
