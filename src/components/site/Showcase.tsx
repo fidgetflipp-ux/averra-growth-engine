@@ -149,12 +149,14 @@ function Workspace({
   return (
     <motion.div
       style={{
-        rotateX: tiltX,
-        rotateY: tiltY,
+        rotateX: rotX,
+        rotateY: rotY,
+        z: liftZ,
         boxShadow: glowShadow,
-        transformPerspective: 1400,
+        transformPerspective: 1600,
+        transformStyle: "preserve-3d",
       }}
-      className="relative mx-auto w-[min(640px,92vw)] overflow-hidden rounded-2xl border border-foreground/10 bg-white"
+      className="relative mx-auto w-[min(640px,92vw)] overflow-hidden rounded-2xl border border-foreground/10 bg-white will-change-transform"
     >
       {/* Window chrome */}
       <div className="flex items-center justify-between border-b border-foreground/8 bg-[oklch(0.985_0.003_150)] px-4 py-2.5">
