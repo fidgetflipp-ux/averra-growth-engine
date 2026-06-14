@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 
 export function Hero() {
