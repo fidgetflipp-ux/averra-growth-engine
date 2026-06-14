@@ -1,4 +1,5 @@
 import { Eyebrow, Reveal } from "./primitives";
+import scartec from "@/assets/scartec-hero.png.asset.json";
 
 /**
  * Selected Work — outcome-led list.
@@ -6,6 +7,15 @@ import { Eyebrow, Reveal } from "./primitives";
  * screenshots (drop a .jpg into src/assets and swap the `cover` reference).
  */
 const cases = [
+  {
+    client: "ScarTec Therapeutics",
+    sector: "Biotechnology",
+    headline: "A clinical-stage homepage that earns credibility at first scroll.",
+    metric: "+340%",
+    metricLabel: "Investor page views",
+    period: "90 days post-launch",
+    cover: scartec.url,
+  },
   {
     client: "Quanta",
     sector: "Fintech platform",
