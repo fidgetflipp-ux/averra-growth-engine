@@ -7,15 +7,14 @@ export function Hero() {
     <section className="relative overflow-hidden pt-36 pb-20">
       {/* Layered background — mesh gradient + grid + grain for premium depth */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {/* sage mesh gradient — multiple soft blooms */}
-        <div className="absolute left-1/2 top-[-15%] h-[820px] w-[1280px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.16),transparent_62%)] blur-3xl" />
-        <div className="absolute -left-40 top-40 h-[520px] w-[620px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.10),transparent_65%)] blur-3xl" />
-        <div className="absolute -right-40 top-10 h-[560px] w-[640px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.09),transparent_65%)] blur-3xl" />
-        <div className="absolute left-1/3 bottom-0 h-[420px] w-[720px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.07),transparent_70%)] blur-3xl" />
+        {/* sage mesh gradient — soft, contained blooms */}
+        <div className="absolute left-1/2 top-[-20%] h-[760px] w-[1180px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.09),transparent_60%)] blur-3xl" />
+        <div className="absolute -left-48 top-48 h-[480px] w-[560px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.05),transparent_65%)] blur-3xl" />
+        <div className="absolute -right-48 top-16 h-[520px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.05),transparent_65%)] blur-3xl" />
 
         {/* subtle grid — fades from center */}
         <div
-          className="absolute inset-0 opacity-[0.35]"
+          className="absolute inset-0 opacity-[0.22]"
           style={{
             backgroundImage:
               "linear-gradient(to right, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px)",
@@ -27,11 +26,10 @@ export function Hero() {
           }}
         />
 
-        {/* grain texture */}
-        <svg className="absolute inset-0 h-full w-full opacity-[0.18] mix-blend-multiply" xmlns="http://www.w3.org/2000/svg">
+        {/* very faint grain — overlay blend keeps it light, not muddy */}
+        <svg className="absolute inset-0 h-full w-full opacity-[0.04] mix-blend-overlay" xmlns="http://www.w3.org/2000/svg">
           <filter id="hero-noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
-            <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
           </filter>
           <rect width="100%" height="100%" filter="url(#hero-noise)" />
         </svg>
