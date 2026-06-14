@@ -1,10 +1,10 @@
-import averraLogoAsset from "@/assets/averra-logo.png.asset.json";
+import averraLogoSrc from "@/assets/averra-logo.png";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <a href="/" className={`group inline-flex items-center gap-2.5 ${className}`}>
       <img
-        src={averraLogoAsset.url}
+        src={averraLogoSrc}
         alt="Averra"
         className="h-7 w-auto transition-transform duration-300 group-hover:scale-[1.04]"
       />
