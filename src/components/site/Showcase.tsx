@@ -585,7 +585,6 @@ export function Showcase() {
                 <motion.span
                   animate={{
                     backgroundColor: stage >= s.id ? "rgb(127,185,138)" : "rgba(15,15,15,0.18)",
-                    scale: stage === s.id ? 1.4 : 1,
                   }}
                   transition={{ duration: 0.4 }}
                   className="size-1.5 rounded-full"
