@@ -1,205 +1,346 @@
 import { Suspense, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { Environment, RoundedBox } from "@react-three/drei";
-import { motion, useScroll, useTransform, useMotionValueEvent, type MotionValue } from "framer-motion";
+import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
+import { Html, RoundedBox, Environment, ContactShadows } from "@react-three/drei";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+  type MotionValue,
+} from "framer-motion";
 import * as THREE from "three";
 import { Eyebrow, Reveal } from "./primitives";
 
-import svcDesign from "@/assets/svc-design.jpg";
-import svcDev from "@/assets/svc-dev.jpg";
-import svcCro from "@/assets/svc-cro.jpg";
-import heroLaptop from "@/assets/hero-laptop.jpg";
-
 // ————————————————————————————————————————————————————————————————
-// MacBook built from primitives (no external GLTF needed).
-// Rotation & screen-content driven by a shared MotionValue.
+// Centerpiece — a floating glass "workspace" panel
+// Compact (~400px on screen), Apple/Linear/Raycast register.
 // ————————————————————————————————————————————————————————————————
 
-function MacBook({ progress }: { progress: MotionValue<number> }) {
+function GlassPanel({ progress }: { progress: MotionValue<number> }) {
   const group = useRef<THREE.Group>(null);
-  const lid = useRef<THREE.Group>(null);
-  const screenMat = useRef<THREE.MeshBasicMaterial>(null);
+  const t = useRef(0);
 
-  const textures = useLoader(THREE.TextureLoader, [
-    svcDesign,
-    svcDev,
-    svcCro,
-    heroLaptop,
-  ]);
-  textures.forEach((t) => {
-    t.colorSpace = THREE.SRGBColorSpace;
-    t.anisotropy = 8;
-  });
-
-  useFrame(() => {
+  useFrame((_, delta) => {
+    t.current += delta;
+    if (!group.current) return;
     const p = progress.get();
-    if (group.current) {
-      // Smooth premium rotation tied to scroll
-      const targetRotY = THREE.MathUtils.lerp(-0.55, 0.55, p);
-      const targetRotX = THREE.MathUtils.lerp(0.05, -0.08, p);
-      const targetY = THREE.MathUtils.lerp(-0.25, 0.15, p);
-      group.current.rotation.y += (targetRotY - group.current.rotation.y) * 0.08;
-      group.current.rotation.x += (targetRotX - group.current.rotation.x) * 0.08;
-      group.current.position.y += (targetY - group.current.position.y) * 0.08;
-    }
-    if (lid.current) {
-      // Lid opens from ~closed to fully open as the user scrolls in
-      const openP = THREE.MathUtils.smoothstep(p, 0, 0.35);
-      const target = THREE.MathUtils.lerp(-Math.PI * 0.5, -Math.PI * 0.08, openP);
-      lid.current.rotation.x += (target - lid.current.rotation.x) * 0.09;
-    }
-    if (screenMat.current) {
-      // Crossfade textures by swapping map between 4 stages
-      const idx = Math.min(3, Math.floor(p * 4));
-      if (screenMat.current.map !== textures[idx]) {
-        screenMat.current.map = textures[idx];
-        screenMat.current.needsUpdate = true;
-      }
-    }
+    // Restrained dual-axis rotation tied to scroll + tiny ambient float
+    const targetY = THREE.MathUtils.lerp(-0.45, 0.45, p);
+    const targetX = THREE.MathUtils.lerp(-0.12, 0.18, p) + Math.sin(t.current * 0.6) * 0.015;
+    const targetFloat = Math.sin(t.current * 0.9) * 0.04;
+    group.current.rotation.y += (targetY - group.current.rotation.y) * 0.06;
+    group.current.rotation.x += (targetX - group.current.rotation.x) * 0.06;
+    group.current.position.y += (targetFloat - group.current.position.y) * 0.08;
   });
 
-  // Aluminium look
-  const aluminium = useMemo(
+  const glass = useMemo(
+    () =>
+      new THREE.MeshPhysicalMaterial({
+        color: "#ffffff",
+        transmission: 0.92,
+        thickness: 0.4,
+        roughness: 0.12,
+        metalness: 0,
+        ior: 1.35,
+        clearcoat: 1,
+        clearcoatRoughness: 0.08,
+        attenuationColor: new THREE.Color("#e8f3ec"),
+        attenuationDistance: 1.6,
+        envMapIntensity: 0.8,
+      }),
+    [],
+  );
+
+  const innerMatte = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: "#cfd2d6",
-        metalness: 0.85,
-        roughness: 0.35,
+        color: "#f6f8f6",
+        roughness: 0.6,
+        metalness: 0,
       }),
     [],
   );
 
   return (
-    <group ref={group} position={[0, -0.25, 0]}>
-      {/* Base */}
-      <RoundedBox args={[3.2, 0.12, 2.2]} radius={0.06} smoothness={6} castShadow receiveShadow material={aluminium} />
-      {/* Trackpad */}
-      <mesh position={[0, 0.061, 0.55]} receiveShadow>
-        <boxGeometry args={[1.1, 0.005, 0.75]} />
-        <meshStandardMaterial color="#a8acb1" metalness={0.6} roughness={0.4} />
+    <group ref={group}>
+      {/* Outer glass slab */}
+      <RoundedBox args={[2.2, 1.45, 0.12]} radius={0.09} smoothness={8} material={glass} castShadow />
+
+      {/* Inner panel (slightly recessed) */}
+      <RoundedBox
+        args={[2.05, 1.3, 0.02]}
+        radius={0.07}
+        smoothness={6}
+        position={[0, 0, 0.062]}
+        material={innerMatte}
+      />
+
+      {/* Header bar */}
+      <mesh position={[-0.7, 0.5, 0.075]}>
+        <planeGeometry args={[0.55, 0.06]} />
+        <meshBasicMaterial color="#0f0f0f" />
       </mesh>
-      {/* Keyboard inset */}
-      <mesh position={[0, 0.061, -0.25]} receiveShadow>
-        <boxGeometry args={[2.7, 0.005, 0.9]} />
-        <meshStandardMaterial color="#2a2d31" metalness={0.3} roughness={0.7} />
+      {/* traffic-light dots */}
+      {[-0.92, -0.84, -0.76].map((x, i) => (
+        <mesh key={i} position={[x, 0.58, 0.075]}>
+          <circleGeometry args={[0.022, 24]} />
+          <meshBasicMaterial color={["#e2e2e2", "#e2e2e2", "#e2e2e2"][i]} />
+        </mesh>
+      ))}
+
+      {/* Sidebar */}
+      <mesh position={[-0.78, -0.05, 0.075]}>
+        <planeGeometry args={[0.34, 0.95]} />
+        <meshBasicMaterial color="#eef2ee" />
+      </mesh>
+      {[0.28, 0.18, 0.08, -0.02, -0.12, -0.22].map((y, i) => (
+        <mesh key={i} position={[-0.78, y, 0.077]}>
+          <planeGeometry args={[0.26, 0.04]} />
+          <meshBasicMaterial color={i === 1 ? "#cfe6d5" : "#dde3dd"} />
+        </mesh>
+      ))}
+
+      {/* Main content — chart bars */}
+      {[
+        [-0.35, 0.35],
+        [-0.18, 0.46],
+        [-0.01, 0.3],
+        [0.16, 0.5],
+        [0.33, 0.42],
+        [0.5, 0.58],
+        [0.67, 0.48],
+      ].map(([x, h], i) => (
+        <mesh key={i} position={[x, -0.18 + h / 2, 0.077]}>
+          <planeGeometry args={[0.09, h]} />
+          <meshBasicMaterial color={i === 5 ? "#7fb98a" : "#dfe6df"} />
+        </mesh>
+      ))}
+
+      {/* KPI row */}
+      <mesh position={[-0.05, -0.45, 0.077]}>
+        <planeGeometry args={[1, 0.14]} />
+        <meshBasicMaterial color="#f0f4f0" />
+      </mesh>
+      <mesh position={[-0.32, -0.45, 0.078]}>
+        <planeGeometry args={[0.22, 0.06]} />
+        <meshBasicMaterial color="#7fb98a" />
+      </mesh>
+      <mesh position={[-0.05, -0.45, 0.078]}>
+        <planeGeometry args={[0.22, 0.06]} />
+        <meshBasicMaterial color="#1f1f1f" />
+      </mesh>
+      <mesh position={[0.22, -0.45, 0.078]}>
+        <planeGeometry args={[0.22, 0.06]} />
+        <meshBasicMaterial color="#cfd4cf" />
       </mesh>
 
-      {/* Lid (rotates around back edge) */}
-      <group ref={lid} position={[0, 0.06, -1.1]}>
-        <group position={[0, 0, 1.1]}>
-          {/* Lid back */}
-          <RoundedBox
-            args={[3.2, 2.0, 0.08]}
-            radius={0.05}
-            smoothness={6}
-            position={[0, 1.0, -0.04]}
-            castShadow
-            material={aluminium}
-          />
-          {/* Screen (front of lid) */}
-          <mesh position={[0, 1.0, 0.001]}>
-            <planeGeometry args={[3.0, 1.85]} />
-            <meshBasicMaterial ref={screenMat} map={textures[0]} toneMapped={false} />
-          </mesh>
-          {/* Screen bezel glow */}
-          <mesh position={[0, 1.0, -0.001]}>
-            <planeGeometry args={[3.08, 1.93]} />
-            <meshBasicMaterial color="#0a0c0a" />
-          </mesh>
-        </group>
-      </group>
-
-      {/* Contact shadow */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.07, 0.1]} receiveShadow>
-        <planeGeometry args={[6, 4]} />
-        <meshBasicMaterial color="#000" transparent opacity={0.0} />
+      {/* Subtle green accent ring at corner */}
+      <mesh position={[0.92, 0.55, 0.078]}>
+        <circleGeometry args={[0.04, 32]} />
+        <meshBasicMaterial color="#7fb98a" />
       </mesh>
     </group>
   );
 }
 
+// ————————————————————————————————————————————————————————————————
+// Orbit card — lives in real 3D space (drei <Html transform />)
+// Phase window controls fade + scale; orbit math controls position.
+// ————————————————————————————————————————————————————————————————
+
+type OrbitCardProps = {
+  progress: MotionValue<number>;
+  phase: [number, number, number, number]; // in, full-in, full-out, out
+  angle: number; // base orbit angle (radians)
+  radius: number;
+  height: number;
+  z: number;
+  children: React.ReactNode;
+};
+
+function OrbitCard({ progress, phase, angle, radius, height, z, children }: OrbitCardProps) {
+  const ref = useRef<THREE.Group>(null);
+  const t = useRef(Math.random() * 10);
+
+  useFrame((_, delta) => {
+    t.current += delta;
+    if (!ref.current) return;
+    const p = progress.get();
+
+    // Visibility window (smooth in / out)
+    const fadeIn = THREE.MathUtils.smoothstep(p, phase[0], phase[1]);
+    const fadeOut = 1 - THREE.MathUtils.smoothstep(p, phase[2], phase[3]);
+    const vis = Math.max(0, Math.min(fadeIn, fadeOut));
+
+    // Phase-5 convergence — pull cards closer to the centerpiece around p=0.78–0.86
+    const converge = THREE.MathUtils.smoothstep(p, 0.74, 0.82) * (1 - THREE.MathUtils.smoothstep(p, 0.86, 0.92));
+    const r = THREE.MathUtils.lerp(radius, radius * 0.62, converge);
+
+    // Orbit: base angle + gentle scroll-driven sweep + ambient bob
+    const sweep = (p - 0.5) * 0.6;
+    const a = angle + sweep + Math.sin(t.current * 0.4 + angle) * 0.03;
+    const x = Math.cos(a) * r;
+    const baseY = height + Math.sin(t.current * 0.6 + angle * 1.7) * 0.04;
+    const baseZ = z + Math.sin(t.current * 0.5 + angle) * 0.08;
+
+    ref.current.position.set(x, baseY, baseZ);
+    // Slight tilt towards camera, plus tiny rotation
+    ref.current.rotation.y = -a * 0.35 + Math.sin(t.current * 0.3 + angle) * 0.04;
+    ref.current.rotation.x = Math.sin(t.current * 0.4 + angle) * 0.03;
+
+    const s = 0.0001 + vis; // avoid zero-scale frustum issues
+    ref.current.scale.setScalar(s);
+  });
+
+  return (
+    <group ref={ref}>
+      <Html
+        transform
+        distanceFactor={3.2}
+        center
+        zIndexRange={[20, 0]}
+        occlude={false}
+        style={{ pointerEvents: "none" }}
+      >
+        <div className="w-[220px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur-md">
+          {children}
+        </div>
+      </Html>
+    </group>
+  );
+}
+
+// ————————————————————————————————————————————————————————————————
+// Scene
+// ————————————————————————————————————————————————————————————————
+
 function Scene({ progress }: { progress: MotionValue<number> }) {
+  const stop = (e: ThreeEvent<PointerEvent>) => e.stopPropagation();
   return (
     <Canvas
       shadows
       dpr={[1, 2]}
-      camera={{ position: [0, 0.4, 4.6], fov: 32 }}
+      camera={{ position: [0, 0.1, 3.6], fov: 32 }}
       gl={{ antialias: true, alpha: true }}
+      onPointerDown={stop}
     >
       <ambientLight intensity={0.55} />
-      <directionalLight
-        position={[4, 6, 5]}
-        intensity={1.1}
-        castShadow
-        shadow-mapSize={[2048, 2048]}
-      />
-      <directionalLight position={[-5, 3, -3]} intensity={0.35} color="#b8e5c4" />
+      <directionalLight position={[3, 5, 4]} intensity={1.05} castShadow shadow-mapSize={[2048, 2048]} />
+      <directionalLight position={[-4, 2, -2]} intensity={0.3} color="#cfe6d5" />
       <Suspense fallback={null}>
-        <MacBook progress={progress} />
+        <GlassPanel progress={progress} />
         <Environment preset="city" />
+
+        {/* Phase 2 — first two cards */}
+        <OrbitCard progress={progress} phase={[0.04, 0.12, 0.34, 0.42]} angle={-Math.PI * 0.85} radius={1.7} height={0.35} z={0.3}>
+          <div className="text-eyebrow mb-2">Website progress</div>
+          <div className="space-y-1.5 text-[12px]">
+            <Check>Strategy complete</Check>
+            <Check>Design approved</Check>
+            <div className="flex items-center gap-2 text-ink-soft">
+              <span className="size-1.5 rounded-full bg-brand" /> Development in progress
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="mb-1 flex justify-between text-[10px] text-ink-muted">
+              <span>Build</span><span className="text-brand-ink font-medium">72%</span>
+            </div>
+            <div className="h-1.5 rounded-full bg-foreground/8 overflow-hidden">
+              <div className="h-full w-[72%] rounded-full bg-brand" />
+            </div>
+          </div>
+        </OrbitCard>
+
+        <OrbitCard progress={progress} phase={[0.07, 0.15, 0.36, 0.44]} angle={Math.PI * 0.15} radius={1.7} height={0.4} z={0.4}>
+          <div className="text-eyebrow mb-2">Conversion impact</div>
+          <div className="mt-1 flex items-baseline gap-2">
+            <span className="text-2xl font-semibold text-ink">+248%</span>
+            <span className="text-[11px] text-brand-ink">lead increase</span>
+          </div>
+          <svg viewBox="0 0 180 36" className="mt-3 h-7 w-full">
+            <path d="M0,32 C30,29 60,22 90,17 C120,13 150,7 180,2" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-brand" />
+            <path d="M0,32 C30,29 60,22 90,17 C120,13 150,7 180,2 L180,36 L0,36 Z" className="fill-brand/12" />
+          </svg>
+        </OrbitCard>
+
+        {/* Phase 3 — replacements */}
+        <OrbitCard progress={progress} phase={[0.32, 0.4, 0.58, 0.66]} angle={-Math.PI * 0.25} radius={1.85} height={-0.35} z={0.5}>
+          <div className="text-eyebrow mb-2">Client portal</div>
+          <div className="text-[12px] font-medium text-ink">2 new updates</div>
+          <div className="mt-2 space-y-1 text-[11px] text-ink-soft">
+            <div className="flex items-center gap-2"><span className="size-1 rounded-full bg-brand" /> Design review ready</div>
+            <div className="flex items-center gap-2"><span className="size-1 rounded-full bg-foreground/30" /> Feedback received</div>
+          </div>
+          <div className="mt-2 text-[10px] text-ink-muted">Updated 4 min ago</div>
+        </OrbitCard>
+
+        <OrbitCard progress={progress} phase={[0.36, 0.44, 0.6, 0.68]} angle={Math.PI * 0.7} radius={1.8} height={0.05} z={-0.2}>
+          <div className="text-eyebrow mb-2">Launch timeline</div>
+          <ol className="space-y-1.5 text-[12px] text-ink-soft">
+            <li className="flex items-center gap-2"><span className="text-ink-muted font-mono text-[10px] w-10">Day 1</span> Strategy</li>
+            <li className="flex items-center gap-2"><span className="text-ink-muted font-mono text-[10px] w-10">Day 3</span> Design</li>
+            <li className="flex items-center gap-2"><span className="text-ink-muted font-mono text-[10px] w-10">Day 7</span> Development</li>
+            <li className="flex items-center gap-2 text-brand-ink font-medium"><span className="font-mono text-[10px] w-10">Day 10</span> Launch</li>
+          </ol>
+        </OrbitCard>
+
+        {/* Phase 4 — more cards */}
+        <OrbitCard progress={progress} phase={[0.54, 0.62, 0.82, 0.9]} angle={-Math.PI * 0.55} radius={1.75} height={0.45} z={0.2}>
+          <div className="text-eyebrow mb-2">Included</div>
+          <div className="space-y-1.5 text-[12px]">
+            <Check small>Website design</Check>
+            <Check small>Development</Check>
+            <Check small>SEO setup</Check>
+            <Check small>Analytics</Check>
+            <Check small>CMS integration</Check>
+          </div>
+        </OrbitCard>
+
+        <OrbitCard progress={progress} phase={[0.58, 0.66, 0.84, 0.92]} angle={Math.PI * 0.4} radius={1.85} height={-0.4} z={0.35}>
+          <div className="mb-2 flex items-center gap-0.5">
+            {[0,1,2,3,4].map((i) => (
+              <svg key={i} width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
+                <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+            ))}
+          </div>
+          <p className="text-[12px] leading-snug text-ink-soft">
+            "Delivered in <span className="text-ink font-medium">9 days</span> — better than agencies quoting 3 months."
+          </p>
+          <div className="mt-2 text-[10px] text-ink-muted">— Founder, Scartec</div>
+        </OrbitCard>
+
+        <ContactShadows position={[0, -1.05, 0]} opacity={0.32} blur={2.6} far={3} resolution={1024} color="#0a0a0a" />
       </Suspense>
-      {/* Soft contact shadow */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.7, 0]} receiveShadow>
-        <circleGeometry args={[3, 64]} />
-        <shadowMaterial transparent opacity={0.18} />
-      </mesh>
     </Canvas>
   );
 }
 
-// ————————————————————————————————————————————————————————————————
-// Floating info card — appears within a scroll progress window
-// ————————————————————————————————————————————————————————————————
-
-type CardProps = {
-  progress: MotionValue<number>;
-  range: [number, number, number, number]; // fade-in start, full-in, full-out start, fade-out end
-  position: string; // tailwind position classes
-  drift?: { x?: number; y?: number };
-  children: React.ReactNode;
-};
-
-function FloatingCard({ progress, range, position, drift, children }: CardProps) {
-  const opacity = useTransform(progress, range, [0, 1, 1, 0]);
-  const y = useTransform(progress, range, [
-    24 + (drift?.y ?? 0),
-    0,
-    0,
-    -24 + (drift?.y ?? 0),
-  ]);
-  const x = useTransform(progress, range, [
-    (drift?.x ?? 0) + 12,
-    0,
-    0,
-    (drift?.x ?? 0) - 12,
-  ]);
-  const scale = useTransform(progress, range, [0.96, 1, 1, 0.98]);
-
+function Check({ children, small }: { children: React.ReactNode; small?: boolean }) {
   return (
-    <motion.div
-      style={{ opacity, y, x, scale }}
-      className={`pointer-events-none absolute ${position} z-30 hidden w-[230px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur md:block`}
-    >
+    <div className={`flex items-center gap-2 ${small ? "text-[12px]" : "text-[12px]"} text-ink-soft`}>
+      <svg className={`${small ? "size-3" : "size-3.5"} text-brand`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-// ————————————————————————————————————————————————————————————————
-// Section
-// ————————————————————————————————————————————————————————————————
-
+// Client-only gate so Three doesn't run in SSR
 function ClientScene({ progress }: { progress: MotionValue<number> }) {
   const [mounted, setMounted] = useState(false);
-  useMotionValueEvent(progress, "change", () => {});
   if (typeof window === "undefined") return null;
-  // Defer first paint to client to keep Three out of SSR
   if (!mounted) {
     queueMicrotask(() => setMounted(true));
     return null;
   }
   return <Scene progress={progress} />;
 }
+
+// ————————————————————————————————————————————————————————————————
+// Section
+// ————————————————————————————————————————————————————————————————
 
 export function Showcase() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -208,38 +349,38 @@ export function Showcase() {
     offset: ["start start", "end end"],
   });
 
-  // Smooth progress with a tiny lerp for premium feel handled inside R3F frame.
-
-  const [stage, setStage] = useState("01 — Design");
+  const [stage, setStage] = useState("01 — Workspace");
   useMotionValueEvent(scrollYProgress, "change", (p) => {
     const next =
-      p < 0.25 ? "01 — Design" : p < 0.5 ? "02 — Development" : p < 0.75 ? "03 — Analytics" : "04 — Launch";
+      p < 0.2 ? "01 — Workspace" :
+      p < 0.45 ? "02 — Progress" :
+      p < 0.7 ? "03 — Collaboration" :
+      p < 0.9 ? "04 — Delivery" : "05 — Live";
     setStage((prev) => (prev === next ? prev : next));
   });
+
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.05, 0.92, 1], [1, 1, 1, 0.7]);
 
   return (
     <section
       ref={wrapRef}
       id="showcase"
-      aria-label="Scroll-driven showcase of the Averra build process"
+      aria-label="A scroll-driven look inside the Averra workspace"
       className="relative bg-background"
-      style={{ height: "320vh" }}
+      style={{ height: "420vh" }}
     >
-      {/* Sticky stage */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Ambient backdrop */}
+        {/* Ambient backdrop — soft, minimal, single green bloom */}
         <div aria-hidden className="absolute inset-0">
-          <div className="absolute left-1/2 top-1/2 h-[900px] w-[1200px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.10),transparent_60%)] blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 h-[720px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.07),transparent_65%)] blur-3xl" />
           <div
-            className="absolute inset-0 opacity-[0.18]"
+            className="absolute inset-0 opacity-[0.14]"
             style={{
               backgroundImage:
                 "linear-gradient(to right, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px)",
-              backgroundSize: "64px 64px",
-              maskImage:
-                "radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%)",
-              WebkitMaskImage:
-                "radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%)",
+              backgroundSize: "72px 72px",
+              maskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 80%)",
+              WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, black 30%, transparent 80%)",
             }}
           />
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
@@ -247,174 +388,37 @@ export function Showcase() {
         </div>
 
         {/* Header */}
-        <div className="absolute inset-x-0 top-16 z-20 mx-auto max-w-7xl px-6">
+        <motion.div style={{ opacity: headerOpacity }} className="absolute inset-x-0 top-20 z-30 mx-auto max-w-7xl px-6">
           <Reveal>
             <div className="flex flex-col items-center gap-4">
-              <Eyebrow>The build, scroll by scroll</Eyebrow>
-              <h2 className="text-display text-center text-[clamp(2rem,4.5vw,3.5rem)] max-w-[20ch]">
-                From first pixel to <span className="text-serif-italic">production</span>.
+              <Eyebrow>Inside the workspace</Eyebrow>
+              <h2 className="text-display text-center text-[clamp(2rem,4.2vw,3.25rem)] max-w-[22ch]">
+                A delivery system built like <span className="text-serif-italic">a product</span>.
               </h2>
-              <motion.span className="text-eyebrow mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-brand-ink">
+              <span className="text-eyebrow mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-brand-ink">
                 {stage}
-              </motion.span>
+              </span>
             </div>
           </Reveal>
-        </div>
+        </motion.div>
 
-        {/* 3D stage (client only) */}
+        {/* 3D centerpiece (compact, centered) */}
         <div className="absolute inset-0">
           <ClientScene progress={scrollYProgress} />
         </div>
 
-        {/* Floating cards */}
-        <div className="absolute inset-0 mx-auto max-w-7xl px-6">
-          {/* Stage 1 — Design */}
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.02, 0.1, 0.22, 0.3]}
-            position="left-4 top-[22%]"
-          >
-            <div className="text-eyebrow mb-2">Design approval</div>
-            <p className="text-[12px] leading-snug text-ink-soft">
-              Hero, services, packages — approved in <span className="text-ink font-medium">1 round</span>.
-            </p>
-            <div className="mt-3 flex items-center gap-2 text-[11px] text-brand-ink">
-              <span className="size-1.5 rounded-full bg-brand" /> 3 / 3 screens signed off
-            </div>
-          </FloatingCard>
-
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.05, 0.13, 0.24, 0.32]}
-            position="right-4 top-[18%]"
-          >
-            <div className="text-eyebrow mb-2">Website progress</div>
-            <div className="mb-1 flex items-center justify-between text-[11px] text-ink-muted">
-              <span>Design</span>
-              <span className="text-brand-ink font-medium">100%</span>
-            </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-foreground/8">
-              <div className="h-full w-full rounded-full bg-brand" />
-            </div>
-            <div className="mt-2 text-[10px] text-ink-muted">Day 3 of 9</div>
-          </FloatingCard>
-
-          {/* Stage 2 — Development */}
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.27, 0.35, 0.47, 0.55]}
-            position="left-8 top-[28%]"
-          >
-            <div className="text-eyebrow mb-2">Client portal</div>
-            <p className="text-[12px] leading-snug text-ink-soft">
-              New build deployed to staging. <span className="text-ink font-medium">12 components</span> shipped.
-            </p>
-            <div className="mt-2 text-[10px] text-ink-muted">Updated 4 min ago</div>
-          </FloatingCard>
-
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.3, 0.38, 0.48, 0.56]}
-            position="right-8 top-[24%]"
-          >
-            <div className="text-eyebrow mb-2">Performance</div>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-semibold text-ink">0.6s</span>
-              <span className="text-[11px] text-brand-ink">LCP</span>
-            </div>
-            <div className="mt-1 text-[10px] text-ink-muted">98 / 100 Lighthouse</div>
-          </FloatingCard>
-
-          {/* Stage 3 — Analytics */}
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.52, 0.6, 0.72, 0.8]}
-            position="left-4 top-[20%]"
-          >
-            <div className="text-eyebrow mb-2">Analytics growth</div>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-semibold text-ink">+3.4×</span>
-              <span className="text-[11px] text-brand-ink">sessions</span>
-            </div>
-            <svg viewBox="0 0 180 40" className="mt-3 h-8 w-full">
-              <path
-                d="M0,35 C25,33 50,28 75,22 C100,18 125,12 180,3"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="text-brand"
-              />
-              <path
-                d="M0,35 C25,33 50,28 75,22 C100,18 125,12 180,3 L180,40 L0,40 Z"
-                className="fill-brand/12"
-              />
-            </svg>
-          </FloatingCard>
-
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.55, 0.63, 0.73, 0.81]}
-            position="right-4 top-[26%]"
-          >
-            <div className="text-eyebrow mb-2">Conversion uplift</div>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl font-semibold text-ink">+248%</span>
-              <span className="text-[11px] text-brand-ink">vs. previous site</span>
-            </div>
-            <div className="mt-2 text-[10px] text-ink-muted">First 30 days post-launch</div>
-          </FloatingCard>
-
-          {/* Stage 4 — Launch */}
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.77, 0.85, 0.95, 1]}
-            position="left-6 top-[24%]"
-          >
-            <div className="text-eyebrow mb-2">Project milestone</div>
-            <div className="flex items-center gap-2 text-[12px] text-ink-soft">
-              <svg className="size-3.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Production deployment
-            </div>
-            <div className="mt-1 flex items-center gap-2 text-[12px] text-ink-soft">
-              <svg className="size-3.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              DNS + SSL live
-            </div>
-            <div className="mt-2 text-[10px] text-ink-muted">Shipped on day 9</div>
-          </FloatingCard>
-
-          <FloatingCard
-            progress={scrollYProgress}
-            range={[0.8, 0.88, 0.96, 1]}
-            position="right-6 top-[22%]"
-          >
-            <div className="text-eyebrow mb-2">Live</div>
-            <div className="flex items-center gap-2">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
-                <span className="relative inline-flex size-2 rounded-full bg-brand" />
-              </span>
-              <span className="text-[12px] font-medium text-ink">Production healthy</span>
-            </div>
-            <div className="mt-2 text-[10px] text-ink-muted">99.99% uptime · Edge cached</div>
-          </FloatingCard>
-        </div>
-
         {/* Scroll hint */}
-        <div className="absolute inset-x-0 bottom-8 z-20 flex justify-center">
-          <motion.div
-            className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.22em] text-ink-muted"
-            style={{ opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]) }}
-          >
+        <motion.div
+          style={{ opacity: useTransform(scrollYProgress, [0, 0.08], [1, 0]) }}
+          className="absolute inset-x-0 bottom-10 z-30 flex justify-center"
+        >
+          <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.22em] text-ink-muted">
             Scroll
             <svg width="10" height="14" viewBox="0 0 10 14" fill="none">
               <path d="M5 1v12m0 0L1 9m4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
