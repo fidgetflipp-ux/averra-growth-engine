@@ -10,35 +10,44 @@ import {
 import { Eyebrow, Reveal } from "./primitives";
 
 // ————————————————————————————————————————————————————————————————
-// Scroll-driven workspace — 5 states, centered, premium.
+// Inside the Averra workspace — one website, five transformations.
 // ————————————————————————————————————————————————————————————————
 
 const STAGES = [
-  { id: 0, label: "Strategy",      pill: "Strategy",      progress: 18,  activity: "Positioning finalized" },
-  { id: 1, label: "Design",        pill: "Design",        progress: 42,  activity: "Homepage approved" },
-  { id: 2, label: "Development",   pill: "Development",   progress: 72,  activity: "Components shipped" },
-  { id: 3, label: "Optimization",  pill: "Optimization",  progress: 90,  activity: "Analytics connected" },
-  { id: 4, label: "Launch",        pill: "Live",          progress: 100, activity: "Deployed to production" },
+  { id: 0, label: "Strategy",     phase: "Strategy" },
+  { id: 1, label: "Design",       phase: "Design" },
+  { id: 2, label: "Development",  phase: "Development" },
+  { id: 3, label: "Optimization", phase: "Optimization" },
+  { id: 4, label: "Launch",       phase: "Live" },
 ] as const;
 
-const MILESTONES = [
-  "Strategy workshop completed",
-  "Design approved",
-  "Development in progress",
-  "SEO & analytics configured",
-  "Ready for launch",
-];
+type NoteKind = "check" | "spark" | "chart" | "rocket" | "dot";
+type Note = { icon: NoteKind; title: string; time: string };
 
-const ACTIVITY = [
-  { stage: 0, text: "Strategy workshop completed", meta: "Day 1" },
-  { stage: 1, text: "Homepage approved",           meta: "2 min ago" },
-  { stage: 1, text: "Brand assets uploaded",       meta: "18 min ago" },
-  { stage: 2, text: "Components shipped to staging", meta: "Day 6" },
-  { stage: 2, text: "Lighthouse: 98 / 100",        meta: "Day 7" },
-  { stage: 3, text: "SEO configured",              meta: "Day 8" },
-  { stage: 3, text: "Analytics connected",         meta: "Day 8" },
-  { stage: 4, text: "Deployed to production",     meta: "Day 9" },
-];
+const NOTES_BY_STAGE: Record<number, Note[]> = {
+  0: [
+    { icon: "check", title: "Positioning approved", time: "Day 1" },
+    { icon: "dot",   title: "Sitemap finalized",    time: "Day 2" },
+  ],
+  1: [
+    { icon: "check", title: "Homepage approved",       time: "2 min ago" },
+    { icon: "spark", title: "Client feedback received", time: "4 min ago" },
+  ],
+  2: [
+    { icon: "dot",   title: "CMS connected",       time: "Day 6" },
+    { icon: "chart", title: "Development 72%",     time: "Day 7" },
+  ],
+  3: [
+    { icon: "check", title: "SEO configured",       time: "Day 8" },
+    { icon: "chart", title: "Analytics connected",  time: "Day 8" },
+    { icon: "spark", title: "Performance 98",       time: "Day 8" },
+  ],
+  4: [
+    { icon: "rocket", title: "Launch scheduled",       time: "Today" },
+    { icon: "check",  title: "Deployed successfully",  time: "Just now" },
+    { icon: "dot",    title: "Live on custom domain",  time: "Now" },
+  ],
+};
 
 function stageForProgress(p: number) {
   if (p < 0.18) return 0;
@@ -49,98 +58,312 @@ function stageForProgress(p: number) {
 }
 
 // ————————————————————————————————————————————————————————————————
-// Floating notification — small, lightweight, secondary
+// Tiny icon set for notifications
 // ————————————————————————————————————————————————————————————————
 
-type NoteProps = {
-  progress: MotionValue<number>;
-  window: [number, number, number, number];
-  position: string;
-  drift: { x: [number, number]; y: [number, number] };
-  icon: "check" | "dot" | "spark" | "rocket" | "chart";
-  title: string;
-  time: string;
-};
-
-function FloatingNote({ progress, window, position, drift, icon, title, time }: NoteProps) {
-  const opacity = useTransform(progress, window, [0, 1, 1, 0]);
-  const y = useTransform(progress, [window[0], window[3]], drift.y);
-  const x = useTransform(progress, [window[0], window[3]], drift.x);
-  const scale = useTransform(progress, window, [0.96, 1, 1, 0.98]);
-
-  return (
-    <motion.div
-      style={{ opacity, y, x, scale }}
-      className={`pointer-events-none absolute ${position} z-40 hidden lg:flex items-center gap-2.5 rounded-xl border border-foreground/8 bg-white/95 px-3 py-2 shadow-card backdrop-blur`}
-    >
-      <span className="flex size-6 items-center justify-center rounded-lg bg-brand/12 text-brand-ink">
-        <NoteIcon kind={icon} />
-      </span>
-      <div className="flex flex-col leading-tight">
-        <span className="text-[12px] font-medium text-ink">{title}</span>
-        <span className="text-[10px] text-ink-muted">{time}</span>
-      </div>
-    </motion.div>
-  );
-}
-
-function NoteIcon({ kind }: { kind: NoteProps["icon"] }) {
+function NoteIcon({ kind }: { kind: NoteKind }) {
   if (kind === "check")
     return (
-      <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+      <svg className="size-3 text-brand-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
         <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   if (kind === "spark")
     return (
-      <svg className="size-3" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z" />
-      </svg>
-    );
-  if (kind === "rocket")
-    return (
-      <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M5 19l3-3m6-12s5 1 7 3-3 7-3 7l-4-4-7 5-2-2 5-7-4-4s5-5 8-5z" strokeLinecap="round" strokeLinejoin="round" />
+      <svg className="size-3 text-brand-ink" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z" />
       </svg>
     );
   if (kind === "chart")
     return (
-      <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M3 17l5-5 4 4 8-8m0 0v5m0-5h-5" strokeLinecap="round" strokeLinejoin="round" />
+      <svg className="size-3 text-brand-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  if (kind === "rocket")
+    return (
+      <svg className="size-3 text-brand-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+        <path d="M5 15c-1 3 1 5 4 4M14.5 4.5c3-1 5 1 4 4l-7 7-4-4 7-7zM9 14l-3 3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   return <span className="size-1.5 rounded-full bg-brand" />;
 }
 
 // ————————————————————————————————————————————————————————————————
-// The workspace itself
+// Contextual notifications — stage-scoped, OS update tone
 // ————————————————————————————————————————————————————————————————
 
-function Workspace({
+const NOTE_SLOTS = [
+  "right-[2%] top-[18%]",
+  "right-[4%] top-[44%]",
+  "left-[2%] top-[60%]",
+] as const;
+
+function NotificationStack({ stage }: { stage: number }) {
+  const notes = NOTES_BY_STAGE[stage] ?? [];
+  return (
+    <>
+      {notes.slice(0, 3).map((note, i) => (
+        <AnimatePresence key={`${stage}-${i}`} mode="wait">
+          <motion.div
+            initial={{ opacity: 0, x: i === 2 ? -6 : 6, y: 0 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: i === 2 ? -4 : 4 }}
+            transition={{ duration: 0.55, delay: 0.15 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+            className={`pointer-events-none absolute ${NOTE_SLOTS[i]} z-40 hidden md:flex items-center gap-2 rounded-full border border-foreground/8 bg-white/85 px-2.5 py-1.5 shadow-card backdrop-blur-md`}
+          >
+            <span className="flex size-5 items-center justify-center rounded-full bg-brand/12">
+              <NoteIcon kind={note.icon} />
+            </span>
+            <span className="text-[11px] font-medium text-ink leading-none">{note.title}</span>
+            <span className="text-[10px] font-mono text-ink-muted leading-none">{note.time}</span>
+          </motion.div>
+        </AnimatePresence>
+      ))}
+    </>
+  );
+}
+
+// ————————————————————————————————————————————————————————————————
+// The evolving website canvas — one site, five fidelity layers
+// ————————————————————————————————————————————————————————————————
+
+function StageLayer({
+  active,
+  children,
+}: {
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.div
+      initial={false}
+      animate={{ opacity: active ? 1 : 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="absolute inset-0"
+      style={{ pointerEvents: active ? "auto" : "none" }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function WireframeLayer() {
+  return (
+    <div className="flex h-full flex-col gap-3 p-5">
+      {/* Nav */}
+      <div className="flex items-center justify-between rounded-md border border-dashed border-foreground/18 px-3 py-2">
+        <span className="h-1.5 w-14 rounded-full bg-foreground/14" />
+        <div className="flex gap-2">
+          {[0, 1, 2, 3].map((i) => (
+            <span key={i} className="h-1 w-6 rounded-full bg-foreground/12" />
+          ))}
+        </div>
+        <span className="h-3 w-14 rounded-sm bg-foreground/14" />
+      </div>
+      {/* Hero */}
+      <div className="relative flex flex-1 flex-col items-start justify-center gap-2 rounded-md border border-dashed border-foreground/18 px-5">
+        <span className="absolute left-2 top-2 text-[8px] font-mono uppercase tracking-wider text-ink-muted">section · hero</span>
+        <span className="h-2.5 w-3/5 rounded-full bg-foreground/16" />
+        <span className="h-2.5 w-2/5 rounded-full bg-foreground/16" />
+        <span className="mt-1 h-1.5 w-1/2 rounded-full bg-foreground/10" />
+        <span className="mt-3 h-6 w-24 rounded-md border border-dashed border-foreground/22" />
+        <span className="absolute bottom-2 right-2 text-[8px] font-mono uppercase tracking-wider text-ink-muted">cta</span>
+      </div>
+      {/* Cards */}
+      <div className="grid grid-cols-3 gap-2">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="aspect-[4/3] rounded-md border border-dashed border-foreground/18 p-2">
+            <span className="block h-1.5 w-2/3 rounded-full bg-foreground/14" />
+            <span className="mt-1 block h-1 w-1/2 rounded-full bg-foreground/10" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DesignLayer() {
+  return (
+    <div className="flex h-full flex-col gap-3 p-5">
+      <div className="flex items-center justify-between rounded-md bg-white px-3 py-2 ring-1 ring-foreground/6">
+        <span className="text-[10px] font-semibold text-ink">ScarTec</span>
+        <div className="flex gap-3 text-[9px] text-ink-soft">
+          <span>Science</span><span>Pipeline</span><span>About</span><span>Contact</span>
+        </div>
+        <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[9px] font-medium text-brand-ink">Trial</span>
+      </div>
+      <div className="relative flex flex-1 flex-col items-start justify-center gap-1.5 overflow-hidden rounded-md bg-gradient-to-br from-[oklch(0.96_0.03_150)] via-[oklch(0.98_0.01_150)] to-[oklch(0.94_0.04_150)] px-5 ring-1 ring-foreground/6">
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(127,185,138,0.18),transparent_60%)]" />
+        <span className="relative text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">therapeutics</span>
+        <h3 className="relative text-[18px] font-semibold leading-tight text-ink">
+          Therapeutics, <span className="italic font-serif text-brand-ink">reimagined</span>.
+        </h3>
+        <p className="relative max-w-[80%] text-[10px] leading-snug text-ink-soft">
+          Precision scar therapy backed by a decade of clinical research.
+        </p>
+        <span className="relative mt-2 inline-flex h-6 items-center rounded-md bg-ink px-3 text-[10px] font-medium text-white">Explore pipeline</span>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        {[
+          { t: "Discovery", c: "from-[oklch(0.95_0.03_150)] to-[oklch(0.9_0.05_150)]" },
+          { t: "Trials",    c: "from-[oklch(0.95_0.02_180)] to-[oklch(0.9_0.04_180)]" },
+          { t: "Care",      c: "from-[oklch(0.95_0.03_120)] to-[oklch(0.9_0.05_120)]" },
+        ].map((card) => (
+          <div key={card.t} className={`aspect-[4/3] rounded-md bg-gradient-to-br ${card.c} p-2 ring-1 ring-foreground/6`}>
+            <span className="text-[8px] font-mono uppercase tracking-wider text-ink-muted">{card.t}</span>
+            <div className="mt-1 h-1.5 w-3/4 rounded-full bg-white/60" />
+            <div className="mt-1 h-1 w-1/2 rounded-full bg-white/40" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DevelopmentLayer() {
+  return (
+    <div className="relative flex h-full flex-col gap-3 p-5">
+      <div className="flex items-center justify-between rounded-md bg-white px-3 py-2 ring-1 ring-foreground/8 shadow-sm">
+        <span className="text-[10px] font-semibold text-ink">ScarTec</span>
+        <div className="flex gap-3 text-[9px] text-ink">
+          <span>Science</span><span>Pipeline</span><span>About</span><span>Contact</span>
+        </div>
+        <span className="rounded-full bg-brand px-2 py-0.5 text-[9px] font-medium text-white">Start trial</span>
+      </div>
+      <div className="relative flex flex-1 flex-col items-start justify-center gap-1.5 overflow-hidden rounded-md bg-gradient-to-br from-[oklch(0.96_0.03_150)] via-[oklch(0.98_0.01_150)] to-[oklch(0.94_0.04_150)] px-5 ring-1 ring-foreground/8 shadow-sm">
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(127,185,138,0.22),transparent_60%)]" />
+        <span className="relative text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">therapeutics</span>
+        <h3 className="relative text-[18px] font-semibold leading-tight text-ink">
+          Therapeutics, <span className="italic font-serif text-brand-ink">reimagined</span>.
+        </h3>
+        <p className="relative max-w-[80%] text-[10px] leading-snug text-ink-soft">
+          Precision scar therapy backed by a decade of clinical research.
+        </p>
+        <div className="relative mt-2 flex items-center gap-2">
+          <span className="inline-flex h-6 items-center rounded-md bg-ink px-3 text-[10px] font-medium text-white">Explore pipeline</span>
+          <span className="text-[10px] text-ink-soft">→ Talk to research</span>
+        </div>
+        <span className="absolute right-2 top-2 rounded bg-white/70 px-1.5 py-0.5 font-mono text-[8px] text-ink-muted">components · 12</span>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        {[
+          { t: "Discovery", n: "12 programs", c: "from-[oklch(0.95_0.03_150)] to-[oklch(0.88_0.06_150)]" },
+          { t: "Trials",    n: "Phase II",    c: "from-[oklch(0.95_0.02_180)] to-[oklch(0.88_0.05_180)]" },
+          { t: "Care",      n: "47 clinics",  c: "from-[oklch(0.95_0.03_120)] to-[oklch(0.88_0.06_120)]" },
+        ].map((card) => (
+          <div key={card.t} className={`aspect-[4/3] rounded-md bg-gradient-to-br ${card.c} p-2 ring-1 ring-foreground/8 shadow-sm`}>
+            <span className="text-[8px] font-mono uppercase tracking-wider text-ink-muted">{card.t}</span>
+            <div className="mt-0.5 text-[11px] font-semibold text-ink">{card.n}</div>
+            <div className="mt-1 h-1 w-2/3 rounded-full bg-white/50" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function OptimizationLayer() {
+  return (
+    <div className="relative h-full">
+      {/* Same as dev */}
+      <DevelopmentLayer />
+      {/* Performance overlay */}
+      <motion.div
+        initial={{ opacity: 0, y: -6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="absolute left-5 right-5 top-3 z-10 flex items-center justify-between rounded-md border border-foreground/10 bg-white/95 px-3 py-1.5 shadow-card backdrop-blur"
+      >
+        {[
+          { k: "LCP", v: "0.6s" },
+          { k: "CLS", v: "0.01" },
+          { k: "SEO", v: "100" },
+          { k: "A11y", v: "100" },
+        ].map((m) => (
+          <div key={m.k} className="flex items-baseline gap-1">
+            <span className="text-[8px] font-mono uppercase tracking-wider text-ink-muted">{m.k}</span>
+            <span className="text-[11px] font-semibold text-brand-ink">{m.v}</span>
+          </div>
+        ))}
+      </motion.div>
+      {/* Scanline sweep */}
+      <motion.div
+        aria-hidden
+        initial={{ y: "-10%", opacity: 0 }}
+        animate={{ y: "110%", opacity: [0, 0.5, 0] }}
+        transition={{ duration: 1.8, delay: 0.6, ease: "easeInOut" }}
+        className="pointer-events-none absolute inset-x-0 z-10 h-12 bg-gradient-to-b from-transparent via-brand/15 to-transparent"
+      />
+    </div>
+  );
+}
+
+function LaunchLayer() {
+  return (
+    <div className="relative h-full">
+      <DevelopmentLayer />
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="absolute bottom-3 right-5 z-10 flex items-center gap-2 rounded-full border border-brand/30 bg-white/95 px-3 py-1.5 shadow-card backdrop-blur"
+      >
+        <span className="relative flex size-1.5">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
+          <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
+        </span>
+        <span className="text-[10px] font-medium text-ink">scartec.com</span>
+        <span className="text-[10px] font-mono text-ink-muted">99.99%</span>
+      </motion.div>
+    </div>
+  );
+}
+
+function WebsiteCanvas({ stage }: { stage: number }) {
+  return (
+    <div className="relative h-full w-full overflow-hidden rounded-b-[14px] bg-[oklch(0.985_0.003_150)]">
+      <StageLayer active={stage === 0}><WireframeLayer /></StageLayer>
+      <StageLayer active={stage === 1}><DesignLayer /></StageLayer>
+      <StageLayer active={stage === 2}><DevelopmentLayer /></StageLayer>
+      <StageLayer active={stage === 3}><OptimizationLayer /></StageLayer>
+      <StageLayer active={stage === 4}><LaunchLayer /></StageLayer>
+    </div>
+  );
+}
+
+// ————————————————————————————————————————————————————————————————
+// The Averra workspace frame — custom OS-style chrome, not a browser
+// ————————————————————————————————————————————————————————————————
+
+function AverraMark() {
+  return (
+    <span className="flex size-4 items-center justify-center rounded-[4px] bg-ink text-white">
+      <svg viewBox="0 0 12 12" className="size-2.5" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M2 10L6 2l4 8M3.5 7h5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  );
+}
+
+function WorkspaceFrame({
   progress,
   stage,
 }: {
   progress: MotionValue<number>;
   stage: number;
 }) {
-  // Smooth progress bar driven by scroll — interpolates between stage anchors
-  const progressWidth = useTransform(progress, [0, 0.18, 0.38, 0.6, 0.8, 1], [
-    "8%", "22%", "48%", "78%", "95%", "100%",
-  ]);
-
-  // 3D rotation tied to scroll — visible but premium-restrained
   const rotY = useTransform(progress, [0, 0.5, 1], [-18, 0, 18]);
   const rotX = useTransform(progress, [0, 0.5, 1], [2, 0, 2]);
   const liftZ = useTransform(progress, [0, 0.5, 1], [-10, 20, -10]);
 
-  // Subtle brighten in launch phase
   const glow = useTransform(progress, [0.78, 0.92], [0, 1]);
   const glowShadow = useTransform(
     glow,
     (g) =>
-      `0 30px 80px -30px rgba(15, 23, 19, 0.22), 0 0 0 1px rgba(15,23,19,0.05), 0 0 ${
-        40 * g
-      }px rgba(127, 185, 138, ${0.18 * g})`,
+      `0 40px 90px -40px rgba(15, 23, 19, 0.28), 0 0 0 1px rgba(15,23,19,0.05), 0 0 ${
+        60 * g
+      }px rgba(127, 185, 138, ${0.22 * g})`,
   );
 
   const current = STAGES[stage];
@@ -157,312 +380,42 @@ function Workspace({
         transformPerspective: 1600,
         transformStyle: "preserve-3d",
       }}
-      className="relative mx-auto w-[min(520px,82vw)] overflow-hidden rounded-2xl border border-foreground/10 bg-white will-change-transform"
+      className="relative mx-auto h-[460px] w-[min(560px,84vw)] overflow-hidden rounded-2xl border border-foreground/10 bg-white/70 backdrop-blur-xl will-change-transform"
     >
-      {/* Window chrome */}
-      <div className="flex items-center justify-between border-b border-foreground/8 bg-[oklch(0.985_0.003_150)] px-4 py-2.5">
-        <div className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-foreground/15" />
-          <span className="size-2.5 rounded-full bg-foreground/15" />
-          <span className="size-2.5 rounded-full bg-foreground/15" />
+      {/* Status bar */}
+      <div className="flex h-9 items-center justify-between border-b border-foreground/8 bg-white/60 px-3 backdrop-blur">
+        <div className="flex items-center gap-2">
+          <AverraMark />
+          <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-ink-muted">averra</span>
+          <span className="h-3 w-px bg-foreground/12" />
+          <span className="text-[11px] font-medium text-ink">ScarTec Therapeutics</span>
         </div>
-        <div className="flex items-center gap-2 rounded-md bg-white/70 px-2.5 py-1 text-[10px] font-mono text-ink-muted">
-          <span className="size-1.5 rounded-full bg-brand" />
-          averra.app / scartec
+        <div className="flex items-center gap-2">
+          <motion.div
+            key={current.phase}
+            initial={{ opacity: 0, y: -3 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+              launched ? "bg-brand/15 text-brand-ink" : "bg-foreground/6 text-ink-soft"
+            }`}
+          >
+            <span className="relative flex size-1.5">
+              {launched && (
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
+              )}
+              <span className={`relative inline-flex size-1.5 rounded-full ${launched ? "bg-brand" : "bg-ink/40"}`} />
+            </span>
+            {current.phase}
+          </motion.div>
         </div>
-        <div className="w-[40px]" />
       </div>
 
-      <div className="grid grid-cols-[148px_1fr]">
-        {/* Sidebar */}
-        <aside className="border-r border-foreground/8 bg-[oklch(0.988_0.003_150)] p-3 text-[11px]">
-          <div className="px-2 pb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">
-            Project
-          </div>
-          {[
-            { label: "Overview",   active: stage >= 0 && stage < 1 },
-            { label: "Design",     active: stage === 1 },
-            { label: "Build",      active: stage === 2 },
-            { label: "Optimize",   active: stage === 3 },
-            { label: "Launch",     active: stage === 4 },
-          ].map((item) => (
-            <motion.div
-              key={item.label}
-              animate={{
-                backgroundColor: item.active ? "rgba(127,185,138,0.12)" : "rgba(0,0,0,0)",
-                color: item.active ? "#1a201c" : "#5b6360",
-              }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-0.5 flex items-center gap-2 rounded-md px-2 py-1.5"
-            >
-              <span
-                className={`size-1.5 rounded-full ${item.active ? "bg-brand" : "bg-foreground/20"}`}
-              />
-              {item.label}
-            </motion.div>
-          ))}
-          <div className="mt-4 px-2 pb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">
-            Team
-          </div>
-          <div className="flex -space-x-1.5 px-2">
-            {["#cfe6d5", "#e8d9c4", "#d6dde8", "#e0d4e8"].map((c, i) => (
-              <span key={i} className="size-5 rounded-full border-2 border-white" style={{ background: c }} />
-            ))}
-          </div>
-        </aside>
-
-        {/* Main content */}
-        <div className="p-5">
-          {/* Header row */}
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">
-                Project
-              </div>
-              <div className="mt-0.5 text-[15px] font-semibold text-ink">ScarTec Therapeutics</div>
-            </div>
-            <motion.div
-              key={current.pill}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium ${
-                launched ? "bg-brand/15 text-brand-ink" : "bg-foreground/8 text-ink"
-              }`}
-            >
-              <span className={`size-1.5 rounded-full ${launched ? "bg-brand" : "bg-ink/50"}`} />
-              {current.pill}
-            </motion.div>
-          </div>
-
-          {/* Stat row */}
-          <div className="mt-4 grid grid-cols-3 gap-3">
-            <Stat label="Progress" value={`${current.progress}%`} accent />
-            <Stat label="Launch" value="Jun 26" />
-            <Stat label="Day" value={`${[1, 3, 7, 8, 9][stage]} / 9`} />
-          </div>
-
-          {/* Progress bar */}
-          <div className="mt-4">
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-foreground/8">
-              <motion.div
-                className="h-full rounded-full bg-brand"
-                style={{ width: progressWidth }}
-              />
-            </div>
-          </div>
-
-          {/* Milestones */}
-          <div className="mt-5">
-            <div className="mb-2 flex items-center justify-between">
-              <div className="text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">
-                Milestones
-              </div>
-              <div className="text-[10px] text-ink-muted">{Math.min(stage + 1, 5)} / 5</div>
-            </div>
-            <ul className="space-y-1.5">
-              {MILESTONES.map((m, i) => {
-                const done = i < stage || (i === stage && stage === 4);
-                const active = i === stage && stage !== 4;
-                return (
-                  <li key={m} className="flex items-center gap-2.5 text-[12px]">
-                    <motion.span
-                      animate={{
-                        backgroundColor: done ? "rgb(127,185,138)" : "rgba(0,0,0,0)",
-                        borderColor: done ? "rgb(127,185,138)" : active ? "rgb(127,185,138)" : "rgba(15,15,15,0.18)",
-                      }}
-                      transition={{ duration: 0.45 }}
-                      className="flex size-3.5 items-center justify-center rounded-full border"
-                    >
-                      {done && (
-                        <svg className="size-2 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4">
-                          <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      )}
-                      {active && <span className="size-1 rounded-full bg-brand" />}
-                    </motion.span>
-                    <motion.span
-                      animate={{
-                        color: done ? "#1a201c" : active ? "#1a201c" : "#8a918d",
-                        textDecoration: done && i < 2 ? "none" : "none",
-                      }}
-                      transition={{ duration: 0.4 }}
-                      className="flex-1"
-                    >
-                      {m}
-                    </motion.span>
-                    {active && (
-                      <span className="text-[9px] font-mono uppercase tracking-wider text-brand-ink">
-                        In progress
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          {/* Preview / launch panel */}
-          <div className="mt-5">
-            <div className="mb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">
-              Latest preview
-            </div>
-            <div className="relative overflow-hidden rounded-lg border border-foreground/8 bg-[oklch(0.985_0.003_150)] p-3">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={stage}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <PreviewForStage stage={stage} />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Activity */}
-          <div className="mt-5">
-            <div className="mb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-ink-muted">
-              Activity
-            </div>
-            <ul className="space-y-1.5">
-              <AnimatePresence initial={false}>
-                {ACTIVITY.filter((a) => a.stage <= stage)
-                  .slice(-4)
-                  .map((a) => (
-                    <motion.li
-                      key={`${a.stage}-${a.text}`}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="flex items-center justify-between gap-3 text-[11px]"
-                    >
-                      <span className="flex items-center gap-2 text-ink-soft">
-                        <span className="size-1 rounded-full bg-brand" />
-                        {a.text}
-                      </span>
-                      <span className="text-[10px] text-ink-muted">{a.meta}</span>
-                    </motion.li>
-                  ))}
-              </AnimatePresence>
-            </ul>
-          </div>
-
-          {/* Launch banner — appears in final stage */}
-          <AnimatePresence>
-            {launched && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-5 flex items-center gap-3 rounded-xl border border-brand/30 bg-brand/8 px-4 py-3"
-              >
-                <span className="flex size-7 items-center justify-center rounded-full bg-brand text-white">
-                  <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                    <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-                <div className="flex flex-col leading-tight">
-                  <span className="text-[12px] font-semibold text-ink">Ready for launch</span>
-                  <span className="text-[10px] text-ink-muted">All systems green · countdown 00:00:00</span>
-                </div>
-                <span className="ml-auto text-[10px] font-mono uppercase tracking-wider text-brand-ink">Live</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+      {/* Canvas */}
+      <div className="relative h-[calc(100%-2.25rem)]">
+        <WebsiteCanvas stage={stage} />
       </div>
     </motion.div>
-  );
-}
-
-function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
-  return (
-    <div className="rounded-lg border border-foreground/8 bg-[oklch(0.988_0.003_150)] px-3 py-2">
-      <div className="text-[9px] font-mono uppercase tracking-[0.16em] text-ink-muted">{label}</div>
-      <motion.div
-        key={value}
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className={`mt-0.5 text-[14px] font-semibold ${accent ? "text-brand-ink" : "text-ink"}`}
-      >
-        {value}
-      </motion.div>
-    </div>
-  );
-}
-
-function PreviewForStage({ stage }: { stage: number }) {
-  if (stage === 0) {
-    return (
-      <div className="grid grid-cols-3 gap-2 text-[10px]">
-        {["Audience", "Goals", "Positioning"].map((t) => (
-          <div key={t} className="rounded-md bg-white p-2 ring-1 ring-foreground/6">
-            <div className="mb-1 text-[9px] font-mono uppercase tracking-wider text-ink-muted">{t}</div>
-            <div className="h-1 w-3/4 rounded-full bg-foreground/12" />
-            <div className="mt-1 h-1 w-1/2 rounded-full bg-foreground/8" />
-          </div>
-        ))}
-      </div>
-    );
-  }
-  if (stage === 1) {
-    return (
-      <div className="grid grid-cols-3 gap-2">
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="aspect-[4/3] rounded-md bg-gradient-to-br from-[oklch(0.96_0.02_150)] to-[oklch(0.92_0.04_150)] ring-1 ring-foreground/6" />
-        ))}
-      </div>
-    );
-  }
-  if (stage === 2) {
-    return (
-      <pre className="overflow-hidden rounded-md bg-[oklch(0.18_0.01_150)] p-3 text-[10px] leading-relaxed text-[oklch(0.92_0.02_150)] font-mono">
-{`<Hero
-  headline="Premium websites,"
-  cta="Start your project"
-  accent="brand"
-/>
-// ✓ 12 components shipped
-// ✓ Lighthouse 98 / 100`}
-      </pre>
-    );
-  }
-  if (stage === 3) {
-    return (
-      <div className="grid grid-cols-3 gap-2">
-        {[
-          { k: "LCP", v: "0.6s" },
-          { k: "CLS", v: "0.01" },
-          { k: "SEO", v: "100" },
-        ].map((m) => (
-          <div key={m.k} className="rounded-md bg-white p-2 ring-1 ring-foreground/6">
-            <div className="text-[9px] font-mono uppercase tracking-wider text-ink-muted">{m.k}</div>
-            <div className="mt-0.5 text-[14px] font-semibold text-ink">{m.v}</div>
-          </div>
-        ))}
-      </div>
-    );
-  }
-  return (
-    <div className="flex items-center justify-between rounded-md bg-white p-3 ring-1 ring-foreground/6">
-      <div>
-        <div className="text-[10px] font-mono uppercase tracking-wider text-ink-muted">Production</div>
-        <div className="mt-0.5 text-[12px] font-medium text-ink">scartec.com</div>
-      </div>
-      <div className="flex items-center gap-1.5 text-[10px] text-brand-ink">
-        <span className="relative flex size-1.5">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
-          <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
-        </span>
-        Live · 99.99%
-      </div>
-    </div>
   );
 }
 
@@ -524,57 +477,11 @@ export function Showcase() {
           </Reveal>
         </div>
 
-        {/* Workspace + floating notes */}
+        {/* Frame + contextual notifications */}
         <div className="relative z-20 mt-56 w-full">
           <div className="relative mx-auto" style={{ perspective: 1400 }}>
-            {/* Notes */}
-            <FloatingNote
-              progress={scrollYProgress}
-              window={[0.08, 0.18, 0.32, 0.42]}
-              position="left-[6%] top-[18%]"
-              drift={{ x: [-10, 0], y: [12, -10] }}
-              icon="check"
-              title="Design approved"
-              time="2 min ago"
-            />
-            <FloatingNote
-              progress={scrollYProgress}
-              window={[0.14, 0.24, 0.4, 0.5]}
-              position="right-[6%] top-[12%]"
-              drift={{ x: [10, 0], y: [10, -8] }}
-              icon="spark"
-              title="Client feedback received"
-              time="4 min ago"
-            />
-            <FloatingNote
-              progress={scrollYProgress}
-              window={[0.46, 0.55, 0.72, 0.8]}
-              position="left-[4%] bottom-[14%]"
-              drift={{ x: [-12, 0], y: [-14, 8] }}
-              icon="chart"
-              title="Analytics connected"
-              time="Day 8"
-            />
-            <FloatingNote
-              progress={scrollYProgress}
-              window={[0.52, 0.6, 0.78, 0.86]}
-              position="right-[5%] top-[28%]"
-              drift={{ x: [12, 0], y: [-10, 8] }}
-              icon="check"
-              title="SEO configured"
-              time="Day 8"
-            />
-            <FloatingNote
-              progress={scrollYProgress}
-              window={[0.78, 0.86, 0.98, 1]}
-              position="right-[7%] bottom-[16%]"
-              drift={{ x: [10, 0], y: [10, -6] }}
-              icon="rocket"
-              title="Launch scheduled"
-              time="Jun 26"
-            />
-
-            <Workspace progress={scrollYProgress} stage={stage} />
+            <NotificationStack stage={stage} />
+            <WorkspaceFrame progress={scrollYProgress} stage={stage} />
           </div>
         </div>
 
