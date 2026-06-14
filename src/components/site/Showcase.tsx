@@ -1,5 +1,5 @@
 import { Suspense, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, RoundedBox, Environment, ContactShadows } from "@react-three/drei";
 import {
   motion,
