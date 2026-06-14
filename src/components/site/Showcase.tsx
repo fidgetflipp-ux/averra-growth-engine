@@ -243,7 +243,7 @@ export function Showcase() {
                 From first pixel to <span className="text-serif-italic">production</span>.
               </h2>
               <motion.span className="text-eyebrow mt-1 font-mono text-[10px] uppercase tracking-[0.22em] text-brand-ink">
-                {stageLabel as unknown as string}
+                {stage}
               </motion.span>
             </div>
           </Reveal>
