@@ -36,6 +36,7 @@ function Index() {
       <Nav />
       <main>
         <Hero />
+        <Showcase />
         <SocialProof />
         <Services />
         <FeaturedWork />
