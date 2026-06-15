@@ -1,75 +1,75 @@
-# Floating Averra Workspace Canvas
 
-Replace the current project-dashboard card in `src/components/site/Showcase.tsx` with a single evolving website canvas housed in a custom Averra workspace frame. One website, five visible transformations. No browser chrome, no laptop frame, no page swaps.
+# Averra — Premium Web Agency Site
 
-## What changes
+A single-page (with sub-routes for legal/work) dark-mode site benchmarked against convertt.co, Linear, Vercel, Stripe, Framer. Built on the existing TanStack Start + Tailwind v4 stack.
 
-1. **Workspace frame** — custom Averra OS-style shell (not browser, not laptop)
-2. **Website canvas** — one site that morphs through 5 build stages
-3. **Notifications** — stage-based, max 2–3 visible, software-update tone
-4. **Cleanup** — remove the dashboard sidebar, stats grid, milestone list, activity feed, launch banner, preview-panel-inside-card
+## Design system
 
-## The frame
+- **Mode:** Dark only. Near-black canvas (`oklch(0.14 0.01 270)`), elevated surfaces, hairline borders at ~8% white.
+- **Accent:** Single restrained accent — soft electric violet/indigo `oklch(0.72 0.18 285)` with a paired glow token for gradients and rings. (No purple-on-white gradient slop — used sparingly as light, not fill.)
+- **Type:** Display — Geist or Instrument Serif for one editorial accent; UI — Inter Tight / Geist Sans. Tight tracking on display (-0.04em), generous line-height on body.
+- **Scale:** Big — hero headline clamps from 56px to 128px. Section headings 40–72px.
+- **Surfaces:** Subtle radial/linear gradients, 1px borders, tasteful glass only on floating elements (nav pill, grader card).
+- **Motion:** Framer Motion. Scroll-triggered reveals (y+opacity, 600ms, custom easing), magnetic buttons, marquee for logos, parallax on hero visual, number count-ups, cursor-follow glow on service cards.
+- All tokens defined in `src/styles.css` under `@theme` + `:root`. No hardcoded colors in components.
 
-Ultra-minimal floating glass panel. Rounded corners (16px), thin top status bar, soft depth shadow, subtle border. Inspired by Linear / Arc / Vision Pro.
+## Page structure (`src/routes/index.tsx` + section components)
 
-Top status bar (~36px) contains, left to right:
-- Averra mark (small monogram, ~14px)
-- Project name: **ScarTec Therapeutics**
-- Live status dot + label
-- Phase pill: Strategy → Design → Development → Optimization → Launch (animates on stage change)
+1. **Floating nav** — glass pill, centered, links: Work, Services, Process, Grader, Contact + primary CTA.
+2. **Hero** — Massive headline "Web experiences engineered for growth.", subhead, two CTAs (Start your project / Book a consultation). Centerpiece: animated 3D-feeling gradient orb + drifting grid + parallax layers (CSS + Framer Motion, no Three.js).
+3. **Social proof strip** — Real, honest metrics only (projects shipped, avg conversion lift, avg page-speed score, years in business). Marquee of *tech stack* logos (Next, Shopify, Webflow, Framer, Stripe, Vercel) instead of fake client logos.
+4. **Services** — 4 cards (Web Design, Web Development, Conversion Optimization, Brand Positioning) in a bento layout. Cursor-tracked spotlight, animated border-beam on hover, micro-icons.
+5. **Featured work** — Large luxury showcase cards with full-bleed mockups, outcome-first copy ("+212% conversion", "2.1s → 0.6s LCP"). Horizontal scroll on desktop, stacked on mobile.
+6. **Process** — Discover → Design → Develop → Launch. Vertical timeline on desktop with a scroll-progress line, animated numerals.
+7. **Results** — Large stat block (count-up on scroll) with ambient glow card treatment.
+8. **Website grader (lead magnet)** — Glassmorphic input card: paste URL → scores across Design / Trust / Performance / Conversion as animated radial gauges + overall score. Email gate to send full report. (Implementation detail below.)
+9. **Final CTA** — Editorial centered block: "Your website should be your best salesperson." + two buttons.
+10. **Footer** — Minimal: wordmark, three columns (Studio / Work / Contact), legal row, tiny status dot ("Booking Q1 2027").
 
-No traffic-light dots. No URL bar. The canvas below occupies ~90% of frame height.
+## Website grader — technical approach
 
-Frame keeps the current scroll-driven 3D rotation/lift and the `scale: 0.86` sizing so it doesn't overlap the headline.
+- Frontend form posts URL to a server function `gradeWebsite` (`src/lib/grader.functions.ts`).
+- Server fn fetches the URL, runs heuristics in pure JS (no headless browser — workerd can't run it):
+  - **Performance:** HTML size, image count, render-blocking tags, response time, gzip header.
+  - **Trust:** HTTPS, valid SSL header, presence of meta description, OG tags, favicon, contact info.
+  - **Design:** Viewport meta, responsive hints, font count, inline-style ratio, semantic HTML ratio.
+  - **Conversion:** CTA detection (button/anchor copy heuristics), form presence, above-fold text density.
+- Returns 4 scores 0–100 + overall. Email capture stored only if Lovable Cloud is enabled later — for v1, render result inline and offer "Email me the full report" as a mailto fallback.
+- Lead magnet does NOT require backend on day one; everything is computed in the server fn from the fetched HTML.
 
-## The evolving website canvas
+## Files to create
 
-A single site morphing in place. Same hero block, same nav, same sections — they gain fidelity each stage. Cross-fade content layers with framer-motion so the structure feels continuous, not swapped.
+```text
+src/routes/index.tsx                 (compose sections, set head/meta + JSON-LD)
+src/routes/work.$slug.tsx            (case study placeholder route)
+src/components/site/Nav.tsx
+src/components/site/Hero.tsx
+src/components/site/SocialProof.tsx
+src/components/site/Services.tsx
+src/components/site/FeaturedWork.tsx
+src/components/site/Process.tsx
+src/components/site/Results.tsx
+src/components/site/Grader.tsx
+src/components/site/FinalCta.tsx
+src/components/site/Footer.tsx
+src/components/site/primitives/      (MagneticButton, RevealOnScroll, CountUp, SpotlightCard, Marquee, GradientOrb)
+src/lib/grader.functions.ts          (createServerFn — fetch + heuristics)
+src/styles.css                       (tokens, fonts via <link> in __root)
+```
 
-**Stage 0 — Strategy (wireframe)**
-Grey skeleton wireframe: nav placeholder bar, hero block with two text bars + CTA rectangle, three feature placeholder cards, footer bar. Mono dashed outlines. Annotations like "H1", "CTA", "section" in faint mono.
+Dependencies to add: `framer-motion`, `lucide-react` (already common), `zod` (for grader input).
 
-**Stage 1 — Design (high-fidelity mock)**
-Same blocks, now styled: real type for hero ("Therapeutics, reimagined."), serif-italic accent word, soft brand gradient hero background, real card layouts with image placeholders, brand color appears. Looks like a Figma comp.
+## SEO & polish
 
-**Stage 2 — Development (coded)**
-Same layout, now sharper: real imagery in cards, real microcopy, a subtle code-bracket overlay fading out at top corner, a tiny "components: 12" mono tag. Pixel-perfect feel.
+- Per-route `head()` with title <60ch, description <160ch, OG/Twitter, JSON-LD `Organization` + `ProfessionalService`.
+- Single H1 per page. Semantic sectioning. `prefers-reduced-motion` respected on all animations.
+- Lazy-load heavy visuals, `loading="lazy"` on below-fold images, preconnect to font origin.
 
-**Stage 3 — Optimization**
-Site stays. A thin performance overlay appears at top of canvas: LCP 0.6s · CLS 0.01 · SEO 100 · A11y 100, animated in. A scanline sweep passes once.
+## Out of scope (v1)
 
-**Stage 4 — Launch (live)**
-Overlay clears. Status pill flips to "Live". A soft brand glow halos the frame. A small "scartec.com · 99.99%" badge anchors bottom-right of canvas. Subtle pulse on the live dot.
+- Real CMS / case study content (use 3 polished placeholder case studies with generated visuals).
+- Auth, payments, persistent lead storage (no Cloud yet — can add later if you want lead capture stored).
 
-Everything is CSS/HTML mock — no real images needed beyond existing tokens and gradients.
+## Quality bar
 
-## Notifications
-
-Smaller, refined, OS-update tone. Max 2–3 visible at once. Each is a thin pill (~28px tall): tiny icon + one line of text + faint timestamp. Glass background, hairline border, soft shadow. Subtle fade + 4px slide in/out, no drift, no rotation.
-
-Stage-mapped (only this stage's notes are mounted):
-
-- Strategy: Positioning approved · Sitemap finalized
-- Design: Homepage approved · Client feedback received
-- Development: CMS connected · Development 72%
-- Optimization: SEO configured · Analytics connected · Performance 98
-- Launch: Launch scheduled · Deployed successfully · Live on custom domain
-
-Positioned around (not on top of) the frame: two on the right edge, one on the left, staggered vertically. They appear with the stage, exit when the stage changes.
-
-## Files
-
-- `src/components/site/Showcase.tsx` — only file touched
-  - Delete `Workspace` body (sidebar/stat/milestones/activity/launch banner) and `PreviewForStage`
-  - Add `WorkspaceFrame` (custom chrome) wrapping `WebsiteCanvas`
-  - Add `WebsiteCanvas` with 5 stage layers, cross-faded by `stage` prop
-  - Replace 5 `FloatingNote` instances with stage-keyed notification group (2–3 per stage)
-  - Keep: scroll wrapper, stage detection, 3D transform values, header, stage rail at bottom, ambient backdrop
-
-## Out of scope
-
-- No new dependencies
-- No route, data, or backend changes
-- Header copy and stage rail unchanged
-- Section height (420vh) unchanged
+When done, the homepage should feel like a €15k+ studio's own site: restrained motion, oversized typography, generous whitespace, one accent color used like a spotlight, zero generic-agency tropes.

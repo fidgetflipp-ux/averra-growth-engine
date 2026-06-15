@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import heroLaptop from "@/assets/hero-laptop.jpg";
 import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 
 export function Hero() {
@@ -205,6 +206,68 @@ export function Hero() {
         </Reveal>
       </div>
 
+      {/* Hero device — real product photography */}
+      <Reveal delay={0.4}>
+        <div className="mx-auto mt-24 max-w-6xl px-6">
+          <div className="relative">
+            <motion.img
+              src={heroLaptop}
+              alt="Averra premium website preview displayed on a MacBook Pro"
+              width={1600}
+              height={1100}
+              className="relative z-10 mx-auto w-full"
+              initial={{ scale: 0.96, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            />
+            {/* floating metric chips */}
+            <motion.div
+              className="absolute -left-2 top-10 z-20 hidden rounded-2xl border border-foreground/8 bg-white p-4 shadow-card md:block animate-float-slow"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1, duration: 0.7 }}
+            >
+              <div className="text-eyebrow">Conversion</div>
+              <div className="mt-1.5 flex items-baseline gap-2">
+                <span className="text-2xl font-semibold text-ink">+3.4×</span>
+                <span className="text-xs text-brand-ink">vs. previous site</span>
+              </div>
+            </motion.div>
+            <motion.div
+              className="absolute -right-2 top-28 z-20 hidden rounded-2xl border border-foreground/8 bg-white p-4 shadow-card md:block animate-float-slow"
+              style={{ animationDelay: "2s" }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1.2, duration: 0.7 }}
+            >
+              <div className="text-eyebrow">Production timeline</div>
+              <div className="mt-1.5 flex items-baseline gap-2">
+                <span className="text-2xl font-semibold text-ink">9 days</span>
+                <span className="text-xs text-ink-muted">from booking to deployment</span>
+              </div>
+            </motion.div>
+            <motion.div
+              className="absolute bottom-16 left-1/2 z-20 hidden -translate-x-1/2 rounded-2xl border border-foreground/8 bg-white px-5 py-3 shadow-card md:block"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.4, duration: 0.7 }}
+            >
+              <div className="flex items-center gap-3 text-xs text-ink-soft">
+                <span className="flex items-center gap-1">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
+                      <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                  ))}
+                </span>
+                <span className="font-medium text-ink">4.9</span>
+                <span className="h-3 w-px bg-foreground/15" />
+                <span>120+ projects shipped</span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }
