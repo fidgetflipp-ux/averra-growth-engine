@@ -51,113 +51,125 @@ export function Hero() {
         </Reveal>
 
         <div className="relative">
-          {/* Card 1 — Website Progress (top left) */}
+          {/* Card 1 — Launch Roadmap (top left) */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "0.5s" }}
-            className="absolute left-0 top-10 z-20 hidden w-[220px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
+            className="absolute left-0 top-8 z-20 hidden w-[232px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
           >
-            <div className="text-eyebrow mb-3">Website Progress</div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-[12px] text-ink-soft">
-                <svg className="size-3.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Strategy complete
+            <div className="text-eyebrow mb-4">Launch roadmap</div>
+            <div className="relative space-y-3.5">
+              {/* timeline rail */}
+              <div className="absolute left-[5px] top-1.5 h-[calc(100%-12px)] w-px bg-foreground/6" />
+
+              <div className="relative flex items-start gap-3">
+                <span className="relative z-10 mt-0.5 block size-[11px] rounded-full border-[1.5px] border-brand bg-white" />
+                <div>
+                  <div className="text-[11.5px] font-medium leading-tight text-ink-soft">Strategy complete</div>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-[12px] text-ink-soft">
-                <svg className="size-3.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Design approved
+
+              <div className="relative flex items-start gap-3">
+                <span className="relative z-10 mt-0.5 block size-[11px] rounded-full border-[1.5px] border-brand bg-white" />
+                <div>
+                  <div className="text-[11.5px] font-medium leading-tight text-ink-soft">Design approved</div>
+                </div>
+              </div>
+
+              <div className="relative flex items-start gap-3">
+                <span className="relative z-10 mt-0.5 block size-[11px] rounded-full border-[1.5px] border-foreground/15 bg-white" />
+                <div>
+                  <div className="text-[11.5px] font-medium leading-tight text-ink">Development in progress</div>
+                </div>
               </div>
             </div>
-            <div className="mt-3">
-              <div className="mb-1 flex items-center justify-between text-[10px] text-ink-muted">
-                <span>Development</span>
-                <span className="font-medium text-brand-ink">72%</span>
-              </div>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-foreground/8">
-                <div className="h-full w-[72%] rounded-full bg-brand" />
-              </div>
+
+            <div className="mt-4 flex items-center gap-2 pt-3 border-t border-foreground/6">
+              <span className="size-1 rounded-full bg-brand/60" />
+              <span className="text-[10px] text-ink-muted">Launch target</span>
+              <span className="ml-auto text-[11px] font-semibold tabular-nums text-ink">Jun 26</span>
             </div>
-            <div className="mt-2.5 text-[10px] text-ink-muted">Launch target: June 26</div>
           </motion.div>
 
-          {/* Card 2 — Included (bottom left) */}
+          {/* Card 2 — One Engagement (bottom left) */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "2s" }}
-            className="absolute left-4 top-[230px] z-20 hidden w-[200px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
+            className="absolute left-4 top-[220px] z-20 hidden w-[210px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
           >
-            <div className="text-eyebrow mb-3">Included</div>
-            <div className="space-y-1.5">
+            <div className="text-eyebrow mb-4">One engagement</div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2">
               {[
-                "Website design",
+                "Design",
                 "Development",
-                "SEO setup",
-                "CMS integration",
-                "Analytics",
+                "CRO",
+                "SEO",
+                "CMS",
               ].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-[12px] text-ink-soft">
-                  <svg className="size-3 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <div key={item} className="flex items-center gap-1.5">
+                  <svg className="size-2.5 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                     <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  {item}
+                  <span className="text-[12px] text-ink-soft">{item}</span>
                 </div>
               ))}
             </div>
+            <div className="mt-4 pt-3 border-t border-foreground/6">
+              <span className="text-[10px] text-ink-muted">Everything required to launch</span>
+            </div>
           </motion.div>
 
-          {/* Card 3 — Conversion Impact (top right) */}
+          {/* Card 3 — Recent Result (top right) */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "1.2s" }}
-            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
+            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle overflow-hidden"
           >
-            <div className="text-eyebrow mb-2">Conversion Impact</div>
-            <div className="mt-1 text-[28px] font-semibold leading-none text-ink">+248%</div>
-            <div className="mt-1 text-[11px] text-ink-muted">Lead increase</div>
-            <svg viewBox="0 0 180 40" className="mt-3 h-8 w-full">
+            <div className="text-eyebrow mb-3">Recent result</div>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[32px] font-semibold leading-none tracking-tight text-ink">3.4×</span>
+            </div>
+            <div className="mt-1 text-[12px] text-ink-soft">demo bookings</div>
+            <div className="mt-1 text-[10px] text-ink-muted">90 days post launch</div>
+
+            {/* subtle background chart */}
+            <svg viewBox="0 0 200 48" className="absolute -bottom-2 -right-2 h-14 w-[140px] opacity-[0.07]" aria-hidden>
               <path
-                d="M0,35 C25,33 50,28 75,24 C100,20 125,14 180,4"
+                d="M0,44 C30,42 60,36 90,28 C120,20 150,12 200,4"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.5"
-                className="text-brand"
+                strokeWidth="2"
+                className="text-ink"
               />
               <path
-                d="M0,35 C25,33 50,28 75,24 C100,20 125,14 180,4 L180,40 L0,40 Z"
-                className="fill-brand/12"
+                d="M0,44 C30,42 60,36 90,28 C120,20 150,12 200,4 L200,48 L0,48 Z"
+                className="fill-ink"
               />
             </svg>
           </motion.div>
 
-          {/* Card 4 — Client Testimonial (bottom right) */}
+          {/* Card 4 — Client Feedback (bottom right) */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "2.8s" }}
-            className="absolute right-6 top-[210px] z-20 hidden w-[260px] rounded-2xl border border-foreground/8 bg-white/95 p-4 shadow-card backdrop-blur xl:block animate-float-subtle"
+            className="absolute right-4 top-[220px] z-20 hidden w-[260px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
           >
-            <div className="mb-2 flex items-center gap-0.5">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <svg key={i} width="10" height="10" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
-                  <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                </svg>
-              ))}
-            </div>
-            <p className="text-[12px] leading-snug text-ink-soft">
-              "The entire website was delivered in 9 days and looked better than agencies we spoke to that quoted 3 months."
+            <div className="text-eyebrow mb-4">Client feedback</div>
+            <p className="text-[13px] leading-relaxed text-ink-soft" style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic' }}>
+              "Delivered in 9 days. Outperformed agencies that quoted 3 months."
             </p>
-            <div className="mt-2 text-[11px] text-ink-muted">— Founder</div>
+            <div className="mt-4 flex items-center gap-2">
+              <span className="h-px w-4 bg-foreground/15" />
+              <span className="text-[11px] text-ink-muted">Founder, clinical-stage biotech</span>
+            </div>
           </motion.div>
 
           <h1 className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
