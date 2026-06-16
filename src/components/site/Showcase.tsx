@@ -18,9 +18,10 @@ import annotatedAsset from "@/assets/yeon-annotated.png.asset.json";
 const STAGES = [
   { id: 0, label: "Wireframe",    phase: "Wireframe" },
   { id: 1, label: "Design",       phase: "Design" },
-  { id: 2, label: "Development",  phase: "Development" },
-  { id: 3, label: "Optimization", phase: "Optimization" },
-  { id: 4, label: "Launch",       phase: "Live" },
+  { id: 2, label: "Review",       phase: "Review" },
+  { id: 3, label: "Development",  phase: "Development" },
+  { id: 4, label: "Optimization", phase: "Optimization" },
+  { id: 5, label: "Launch",       phase: "Live" },
 ] as const;
 
 type NoteKind = "check" | "spark" | "chart" | "rocket" | "dot";
@@ -29,13 +30,17 @@ type Note = { icon: NoteKind; title: string; time: string };
 const NOTES_BY_STAGE: Record<number, Note[]> = {
   0: [],
   1: [],
-  2: [],
-  3: [
+  2: [
+    { icon: "spark", title: "Design approved by client", time: "Day 4" },
+    { icon: "check", title: "Feedback resolved",         time: "Day 4" },
+  ],
+  3: [],
+  4: [
     { icon: "check", title: "SEO configured",              time: "Day 8" },
     { icon: "chart", title: "Analytics connected",         time: "Day 8" },
     { icon: "spark", title: "Performance score 98",        time: "Day 8" },
   ],
-  4: [
+  5: [
     { icon: "rocket", title: "Deployed successfully", time: "Just now" },
     { icon: "check",  title: "Live on custom domain", time: "Now" },
     { icon: "dot",    title: "Launch completed",      time: "Now" },
@@ -43,11 +48,12 @@ const NOTES_BY_STAGE: Record<number, Note[]> = {
 };
 
 function stageForProgress(p: number) {
-  if (p < 0.18) return 0;
-  if (p < 0.38) return 1;
-  if (p < 0.6) return 2;
-  if (p < 0.8) return 3;
-  return 4;
+  if (p < 0.15) return 0;
+  if (p < 0.30) return 1;
+  if (p < 0.45) return 2;
+  if (p < 0.60) return 3;
+  if (p < 0.80) return 4;
+  return 5;
 }
 
 // ————————————————————————————————————————————————————————————————
@@ -211,6 +217,36 @@ function DesignLayer({ interactive = false }: { interactive?: boolean }) {
   );
 }
 
+function AnnotatedLayer() {
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-black">
+      <img
+        src={annotatedAsset.url}
+        alt="Yeon Ritual — Design review annotations"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        draggable={false}
+      />
+      {/* Annotation cursor hint */}
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.9, 0.9, 0] }}
+        transition={{ duration: 3, repeat: Infinity, repeatDelay: 1.2, times: [0, 0.2, 0.8, 1] }}
+        className="pointer-events-none absolute left-[62%] top-[28%] z-10"
+      >
+        <svg viewBox="0 0 24 24" className="size-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" fill="white">
+          <path d="M3 2l7 18 2-8 8-2L3 2z" />
+        </svg>
+      </motion.div>
+      {/* Subtle review badge */}
+      <div className="pointer-events-none absolute left-5 top-5 z-20 flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-3 py-1.5 backdrop-blur-md">
+        <span className="size-2 rounded-full bg-[#A78BFA]" />
+        <span className="text-[10px] font-medium text-white/90">Design review</span>
+      </div>
+    </div>
+  );
+}
+
 function StageLayer({ active, children }: { active: boolean; children: React.ReactNode }) {
   return (
     <motion.div
@@ -230,11 +266,12 @@ function WebsiteCanvas({ stage }: { stage: number }) {
     <div className="relative h-full w-full overflow-hidden rounded-b-[14px] bg-black">
       <StageLayer active={stage === 0}><WireframeLayer /></StageLayer>
       <StageLayer active={stage === 1}><DesignLayer /></StageLayer>
-      <StageLayer active={stage >= 2}><DesignLayer interactive={stage >= 2} /></StageLayer>
+      <StageLayer active={stage === 2}><AnnotatedLayer /></StageLayer>
+      <StageLayer active={stage >= 3}><DesignLayer interactive={stage >= 3} /></StageLayer>
 
       {/* Optimization overlay */}
       <AnimatePresence>
-        {stage === 3 && (
+        {stage === 4 && (
           <motion.div
             key="opt-overlay"
             initial={{ opacity: 0, y: -6 }}
@@ -260,7 +297,7 @@ function WebsiteCanvas({ stage }: { stage: number }) {
 
       {/* Launch glow */}
       <AnimatePresence>
-        {stage === 4 && (
+        {stage === 5 && (
           <motion.div
             key="launch-glow"
             initial={{ opacity: 0 }}
@@ -313,7 +350,7 @@ function WorkspaceFrame({
   );
 
   const current = STAGES[stage];
-  const launched = stage === 4;
+  const launched = stage === 5;
   const url = launched ? "yeonritual.com" : "preview.averra.app/yeon-ritual";
 
   return (
@@ -415,7 +452,7 @@ export function Showcase() {
       id="showcase"
       aria-label="Inside the Averra workspace"
       className="relative bg-background"
-      style={{ height: "500vh", overflow: "visible" }}
+      style={{ height: "600vh" }}
     >
       <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
         {/* Ambient backdrop */}
@@ -474,40 +511,6 @@ export function Showcase() {
         </div>
       </div>
 
-      {/* Overflowing annotated frame — bleeds into the next section */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-6"
-        style={{ transform: "translateY(38%)" }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-[1180px] overflow-hidden rounded-2xl border border-foreground/12 bg-black shadow-[0_60px_120px_-40px_rgba(15,23,19,0.55),0_0_0_1px_rgba(15,23,19,0.06)]"
-        >
-          {/* Frame chrome */}
-          <div className="flex h-9 items-center gap-3 border-b border-white/8 bg-black/85 px-4 backdrop-blur">
-            <div className="flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-white/20" />
-              <span className="size-2 rounded-full bg-white/20" />
-              <span className="size-2 rounded-full bg-white/20" />
-            </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-white/45">averra · design review</span>
-            <span className="ml-auto flex items-center gap-1.5 rounded-full bg-white/8 px-2.5 py-0.5 text-[10px] font-medium text-white/70">
-              <span className="size-1.5 rounded-full bg-[#A78BFA]" />
-              Annotated
-            </span>
-          </div>
-          <img
-            src={annotatedAsset.url}
-            alt="Annotated Yeon Ritual design review"
-            className="block h-auto w-full"
-            draggable={false}
-          />
-        </motion.div>
-      </div>
     </section>
   );
 }
