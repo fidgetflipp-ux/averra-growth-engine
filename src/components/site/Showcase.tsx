@@ -266,11 +266,12 @@ function WebsiteCanvas({ stage }: { stage: number }) {
     <div className="relative h-full w-full overflow-hidden rounded-b-[14px] bg-black">
       <StageLayer active={stage === 0}><WireframeLayer /></StageLayer>
       <StageLayer active={stage === 1}><DesignLayer /></StageLayer>
-      <StageLayer active={stage >= 2}><DesignLayer interactive={stage >= 2} /></StageLayer>
+      <StageLayer active={stage === 2}><AnnotatedLayer /></StageLayer>
+      <StageLayer active={stage >= 3}><DesignLayer interactive={stage >= 3} /></StageLayer>
 
       {/* Optimization overlay */}
       <AnimatePresence>
-        {stage === 3 && (
+        {stage === 4 && (
           <motion.div
             key="opt-overlay"
             initial={{ opacity: 0, y: -6 }}
@@ -296,7 +297,7 @@ function WebsiteCanvas({ stage }: { stage: number }) {
 
       {/* Launch glow */}
       <AnimatePresence>
-        {stage === 4 && (
+        {stage === 5 && (
           <motion.div
             key="launch-glow"
             initial={{ opacity: 0 }}
