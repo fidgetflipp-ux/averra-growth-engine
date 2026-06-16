@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { Eyebrow, Reveal } from "./primitives";
 import heroAsset from "@/assets/yeon-ritual-hero.png.asset.json";
+import annotatedAsset from "@/assets/yeon-annotated.png.asset.json";
 
 // ————————————————————————————————————————————————————————————————
 // Inside the Averra workspace — building yeonritual.com, live.
