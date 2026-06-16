@@ -350,7 +350,7 @@ function WorkspaceFrame({
   );
 
   const current = STAGES[stage];
-  const launched = stage === 4;
+  const launched = stage === 5;
   const url = launched ? "yeonritual.com" : "preview.averra.app/yeon-ritual";
 
   return (
