@@ -511,40 +511,6 @@ export function Showcase() {
         </div>
       </div>
 
-      {/* Overflowing annotated frame — bleeds into the next section */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-6"
-        style={{ transform: "translateY(38%)" }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-[1180px] overflow-hidden rounded-2xl border border-foreground/12 bg-black shadow-[0_60px_120px_-40px_rgba(15,23,19,0.55),0_0_0_1px_rgba(15,23,19,0.06)]"
-        >
-          {/* Frame chrome */}
-          <div className="flex h-9 items-center gap-3 border-b border-white/8 bg-black/85 px-4 backdrop-blur">
-            <div className="flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-white/20" />
-              <span className="size-2 rounded-full bg-white/20" />
-              <span className="size-2 rounded-full bg-white/20" />
-            </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-white/45">averra · design review</span>
-            <span className="ml-auto flex items-center gap-1.5 rounded-full bg-white/8 px-2.5 py-0.5 text-[10px] font-medium text-white/70">
-              <span className="size-1.5 rounded-full bg-[#A78BFA]" />
-              Annotated
-            </span>
-          </div>
-          <img
-            src={annotatedAsset.url}
-            alt="Annotated Yeon Ritual design review"
-            className="block h-auto w-full"
-            draggable={false}
-          />
-        </motion.div>
-      </div>
     </section>
   );
 }
