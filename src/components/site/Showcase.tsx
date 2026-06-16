@@ -415,7 +415,7 @@ export function Showcase() {
       id="showcase"
       aria-label="Inside the Averra workspace"
       className="relative bg-background"
-      style={{ height: "500vh" }}
+      style={{ height: "500vh", overflow: "visible" }}
     >
       <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
         {/* Ambient backdrop */}
