@@ -217,6 +217,36 @@ function DesignLayer({ interactive = false }: { interactive?: boolean }) {
   );
 }
 
+function AnnotatedLayer() {
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-black">
+      <img
+        src={annotatedAsset.url}
+        alt="Yeon Ritual — Design review annotations"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        draggable={false}
+      />
+      {/* Annotation cursor hint */}
+      <motion.div
+        aria-hidden
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.9, 0.9, 0] }}
+        transition={{ duration: 3, repeat: Infinity, repeatDelay: 1.2, times: [0, 0.2, 0.8, 1] }}
+        className="pointer-events-none absolute left-[62%] top-[28%] z-10"
+      >
+        <svg viewBox="0 0 24 24" className="size-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" fill="white">
+          <path d="M3 2l7 18 2-8 8-2L3 2z" />
+        </svg>
+      </motion.div>
+      {/* Subtle review badge */}
+      <div className="pointer-events-none absolute left-5 top-5 z-20 flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-3 py-1.5 backdrop-blur-md">
+        <span className="size-2 rounded-full bg-[#A78BFA]" />
+        <span className="text-[10px] font-medium text-white/90">Design review</span>
+      </div>
+    </div>
+  );
+}
+
 function StageLayer({ active, children }: { active: boolean; children: React.ReactNode }) {
   return (
     <motion.div
