@@ -18,9 +18,10 @@ import annotatedAsset from "@/assets/yeon-annotated.png.asset.json";
 const STAGES = [
   { id: 0, label: "Wireframe",    phase: "Wireframe" },
   { id: 1, label: "Design",       phase: "Design" },
-  { id: 2, label: "Development",  phase: "Development" },
-  { id: 3, label: "Optimization", phase: "Optimization" },
-  { id: 4, label: "Launch",       phase: "Live" },
+  { id: 2, label: "Review",       phase: "Review" },
+  { id: 3, label: "Development",  phase: "Development" },
+  { id: 4, label: "Optimization", phase: "Optimization" },
+  { id: 5, label: "Launch",       phase: "Live" },
 ] as const;
 
 type NoteKind = "check" | "spark" | "chart" | "rocket" | "dot";
@@ -29,13 +30,17 @@ type Note = { icon: NoteKind; title: string; time: string };
 const NOTES_BY_STAGE: Record<number, Note[]> = {
   0: [],
   1: [],
-  2: [],
-  3: [
+  2: [
+    { icon: "spark", title: "Design approved by client", time: "Day 4" },
+    { icon: "check", title: "Feedback resolved",         time: "Day 4" },
+  ],
+  3: [],
+  4: [
     { icon: "check", title: "SEO configured",              time: "Day 8" },
     { icon: "chart", title: "Analytics connected",         time: "Day 8" },
     { icon: "spark", title: "Performance score 98",        time: "Day 8" },
   ],
-  4: [
+  5: [
     { icon: "rocket", title: "Deployed successfully", time: "Just now" },
     { icon: "check",  title: "Live on custom domain", time: "Now" },
     { icon: "dot",    title: "Launch completed",      time: "Now" },
@@ -43,11 +48,12 @@ const NOTES_BY_STAGE: Record<number, Note[]> = {
 };
 
 function stageForProgress(p: number) {
-  if (p < 0.18) return 0;
-  if (p < 0.38) return 1;
-  if (p < 0.6) return 2;
-  if (p < 0.8) return 3;
-  return 4;
+  if (p < 0.15) return 0;
+  if (p < 0.30) return 1;
+  if (p < 0.45) return 2;
+  if (p < 0.60) return 3;
+  if (p < 0.80) return 4;
+  return 5;
 }
 
 // ————————————————————————————————————————————————————————————————
