@@ -454,7 +454,7 @@ export function Showcase() {
       className="relative bg-background"
       style={{ height: "600vh" }}
     >
-      <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
+      <div className="sticky top-0 z-30 flex h-screen w-full flex-col items-center justify-center">
         {/* Ambient backdrop */}
         <div aria-hidden className="absolute inset-0">
           <div className="absolute left-1/2 top-1/2 h-[720px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.06),transparent_65%)] blur-3xl" />
