@@ -486,7 +486,7 @@ export function Showcase() {
 
         {/* Frame + contextual notifications */}
         <div className="relative z-20 mt-4 flex w-full flex-1 items-center justify-center px-6">
-          <div className="relative mx-auto" style={{ width: "min(64vw, 1080px)", maxHeight: "62vh", perspective: 1800 }}>
+          <div className="relative mx-auto" style={{ width: "min(72vw, 1080px)", maxHeight: "78vh", perspective: 1800 }}>
             <NotificationStack stage={stage} />
             <WorkspaceFrame progress={scrollYProgress} stage={stage} />
           </div>
