@@ -9,7 +9,6 @@ import {
 } from "framer-motion";
 import { Eyebrow, Reveal } from "./primitives";
 import heroAsset from "@/assets/yeon-ritual-hero.png.asset.json";
-import annotatedAsset from "@/assets/yeon-annotated.png.asset.json";
 
 // ————————————————————————————————————————————————————————————————
 // Inside the Averra workspace — building yeonritual.com, live.
@@ -18,10 +17,9 @@ import annotatedAsset from "@/assets/yeon-annotated.png.asset.json";
 const STAGES = [
   { id: 0, label: "Wireframe",    phase: "Wireframe" },
   { id: 1, label: "Design",       phase: "Design" },
-  { id: 2, label: "Review",       phase: "Review" },
-  { id: 3, label: "Development",  phase: "Development" },
-  { id: 4, label: "Optimization", phase: "Optimization" },
-  { id: 5, label: "Launch",       phase: "Live" },
+  { id: 2, label: "Development",  phase: "Development" },
+  { id: 3, label: "Optimization", phase: "Optimization" },
+  { id: 4, label: "Launch",       phase: "Live" },
 ] as const;
 
 type NoteKind = "check" | "spark" | "chart" | "rocket" | "dot";
@@ -30,17 +28,13 @@ type Note = { icon: NoteKind; title: string; time: string };
 const NOTES_BY_STAGE: Record<number, Note[]> = {
   0: [],
   1: [],
-  2: [
-    { icon: "spark", title: "Design approved by client", time: "Day 4" },
-    { icon: "check", title: "Feedback resolved",         time: "Day 4" },
-  ],
-  3: [],
-  4: [
+  2: [],
+  3: [
     { icon: "check", title: "SEO configured",              time: "Day 8" },
     { icon: "chart", title: "Analytics connected",         time: "Day 8" },
     { icon: "spark", title: "Performance score 98",        time: "Day 8" },
   ],
-  5: [
+  4: [
     { icon: "rocket", title: "Deployed successfully", time: "Just now" },
     { icon: "check",  title: "Live on custom domain", time: "Now" },
     { icon: "dot",    title: "Launch completed",      time: "Now" },
@@ -48,12 +42,11 @@ const NOTES_BY_STAGE: Record<number, Note[]> = {
 };
 
 function stageForProgress(p: number) {
-  if (p < 0.15) return 0;
-  if (p < 0.30) return 1;
-  if (p < 0.45) return 2;
-  if (p < 0.60) return 3;
-  if (p < 0.80) return 4;
-  return 5;
+  if (p < 0.18) return 0;
+  if (p < 0.38) return 1;
+  if (p < 0.6) return 2;
+  if (p < 0.8) return 3;
+  return 4;
 }
 
 // ————————————————————————————————————————————————————————————————
@@ -217,36 +210,6 @@ function DesignLayer({ interactive = false }: { interactive?: boolean }) {
   );
 }
 
-function AnnotatedLayer() {
-  return (
-    <div className="relative h-full w-full overflow-hidden bg-black">
-      <img
-        src={annotatedAsset.url}
-        alt="Yeon Ritual — Design review annotations"
-        className="absolute inset-0 h-full w-full object-cover object-center"
-        draggable={false}
-      />
-      {/* Annotation cursor hint */}
-      <motion.div
-        aria-hidden
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.9, 0.9, 0] }}
-        transition={{ duration: 3, repeat: Infinity, repeatDelay: 1.2, times: [0, 0.2, 0.8, 1] }}
-        className="pointer-events-none absolute left-[62%] top-[28%] z-10"
-      >
-        <svg viewBox="0 0 24 24" className="size-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" fill="white">
-          <path d="M3 2l7 18 2-8 8-2L3 2z" />
-        </svg>
-      </motion.div>
-      {/* Subtle review badge */}
-      <div className="pointer-events-none absolute left-5 top-5 z-20 flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-3 py-1.5 backdrop-blur-md">
-        <span className="size-2 rounded-full bg-[#A78BFA]" />
-        <span className="text-[10px] font-medium text-white/90">Design review</span>
-      </div>
-    </div>
-  );
-}
-
 function StageLayer({ active, children }: { active: boolean; children: React.ReactNode }) {
   return (
     <motion.div
@@ -266,12 +229,11 @@ function WebsiteCanvas({ stage }: { stage: number }) {
     <div className="relative h-full w-full overflow-hidden rounded-b-[14px] bg-black">
       <StageLayer active={stage === 0}><WireframeLayer /></StageLayer>
       <StageLayer active={stage === 1}><DesignLayer /></StageLayer>
-      <StageLayer active={stage === 2}><AnnotatedLayer /></StageLayer>
-      <StageLayer active={stage >= 3}><DesignLayer interactive={stage >= 3} /></StageLayer>
+      <StageLayer active={stage >= 2}><DesignLayer interactive={stage >= 2} /></StageLayer>
 
       {/* Optimization overlay */}
       <AnimatePresence>
-        {stage === 4 && (
+        {stage === 3 && (
           <motion.div
             key="opt-overlay"
             initial={{ opacity: 0, y: -6 }}
@@ -297,7 +259,7 @@ function WebsiteCanvas({ stage }: { stage: number }) {
 
       {/* Launch glow */}
       <AnimatePresence>
-        {stage === 5 && (
+        {stage === 4 && (
           <motion.div
             key="launch-glow"
             initial={{ opacity: 0 }}
@@ -350,7 +312,7 @@ function WorkspaceFrame({
   );
 
   const current = STAGES[stage];
-  const launched = stage === 5;
+  const launched = stage === 4;
   const url = launched ? "yeonritual.com" : "preview.averra.app/yeon-ritual";
 
   return (
@@ -452,9 +414,9 @@ export function Showcase() {
       id="showcase"
       aria-label="Inside the Averra workspace"
       className="relative bg-background"
-      style={{ height: "600vh" }}
+      style={{ height: "500vh" }}
     >
-      <div className="sticky top-0 z-30 flex h-screen w-full flex-col items-center justify-center">
+      <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden">
         {/* Ambient backdrop */}
         <div aria-hidden className="absolute inset-0">
           <div className="absolute left-1/2 top-1/2 h-[720px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.06),transparent_65%)] blur-3xl" />
@@ -486,7 +448,7 @@ export function Showcase() {
 
         {/* Frame + contextual notifications */}
         <div className="relative z-20 mt-4 flex w-full flex-1 items-center justify-center px-6">
-          <div className="relative mx-auto" style={{ width: "min(84vw, 1140px)", perspective: 1800 }}>
+          <div className="relative mx-auto" style={{ width: "min(64vw, 1080px)", maxHeight: "62vh", perspective: 1800 }}>
             <NotificationStack stage={stage} />
             <WorkspaceFrame progress={scrollYProgress} stage={stage} />
           </div>
@@ -510,7 +472,6 @@ export function Showcase() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }
