@@ -9,13 +9,13 @@ export function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const videoOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [0.55, 0.25, 0]);
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.5, 0]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden pt-36 pb-20">
-      {/* Background video — premium ambient layer */}
+      {/* Background video — full-bleed ambient layer */}
       <motion.div
         aria-hidden
         style={{ y: videoY, opacity: videoOpacity, scale: videoScale }}
@@ -30,35 +30,17 @@ export function Hero() {
           preload="auto"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        {/* readability scrims */}
-        <div className="absolute inset-0 bg-background/55" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background" />
       </motion.div>
 
-      {/* Layered background — mesh gradient + grid + grain for premium depth */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+      {/* Readability scrims + edge fades — sit above video, below content */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+        {/* soft top→bottom darken for text legibility, keeps video visible */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/10 to-background" />
+        {/* radial vignette focusing center */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,transparent_0%,oklch(from_var(--background)_l_c_h_/_0.25)_70%,transparent_100%)]" />
 
-        {/* sage mesh gradient — soft, contained blooms */}
-        <div className="absolute left-1/2 top-[-20%] h-[760px] w-[1180px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.09),transparent_60%)] blur-3xl" />
-        <div className="absolute -left-48 top-48 h-[480px] w-[560px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.05),transparent_65%)] blur-3xl" />
-        <div className="absolute -right-48 top-16 h-[520px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.05),transparent_65%)] blur-3xl" />
-
-        {/* subtle grid — fades from center */}
-        <div
-          className="absolute inset-0 opacity-[0.22]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.14 0.005 260 / 0.05) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-            maskImage:
-              "radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%)",
-          }}
-        />
-
-        {/* very faint grain — overlay blend keeps it light, not muddy */}
-        <svg className="absolute inset-0 h-full w-full opacity-[0.04] mix-blend-overlay" xmlns="http://www.w3.org/2000/svg">
+        {/* very faint grain */}
+        <svg className="absolute inset-0 h-full w-full opacity-[0.05] mix-blend-overlay" xmlns="http://www.w3.org/2000/svg">
           <filter id="hero-noise">
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
           </filter>
@@ -66,8 +48,9 @@ export function Hero() {
         </svg>
 
         {/* bottom fade for clean transition into next section */}
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-background" />
       </div>
+
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <Reveal>
