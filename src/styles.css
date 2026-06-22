@@ -112,21 +112,21 @@
   ::selection { background: color-mix(in oklab, var(--brand) 30%, transparent); color: var(--ink); }
 }
 
-/* Editorial display — confident serif at large sizes */
+/* Editorial display — confident sans at large sizes, keynote-grade */
 @utility text-display {
-  font-family: var(--font-display);
-  font-weight: 380;
-  font-variation-settings: "opsz" 144, "SOFT" 30;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
-  padding-bottom: 0.06em;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  padding-bottom: 0.04em;
+  font-feature-settings: "ss01", "cv11";
 }
 
 @utility text-serif-italic {
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 380;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
   padding-right: 0.04em;
 }
 
