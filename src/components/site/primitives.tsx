@@ -49,11 +49,11 @@ export function CtaPrimary({
   href?: string;
   size?: "md" | "lg";
 }) {
-  const pad = size === "lg" ? "px-8 py-4 text-[15px]" : "px-5 py-3 text-sm";
+  const pad = size === "lg" ? "px-7 py-4 text-[15px]" : "px-5 py-3 text-sm";
   return (
     <a
       href={href}
-      className={`group inline-flex items-center gap-2 rounded-2xl bg-ink ${pad} font-medium tracking-[-0.005em] text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-20px_oklch(0.14_0.005_260/0.35)]`}
+      className={`group inline-flex items-center gap-2 rounded-full bg-ink ${pad} font-medium text-white transition-all duration-300 hover:bg-ink/90 hover:shadow-lift`}
     >
       {children}
       {arrow}
@@ -70,11 +70,11 @@ export function CtaGhost({
   href?: string;
   size?: "md" | "lg";
 }) {
-  const pad = size === "lg" ? "px-8 py-4 text-[15px]" : "px-5 py-3 text-sm";
+  const pad = size === "lg" ? "px-7 py-4 text-[15px]" : "px-5 py-3 text-sm";
   return (
     <a
       href={href}
-      className={`group inline-flex items-center gap-2 rounded-2xl border border-foreground/10 bg-transparent ${pad} font-medium tracking-[-0.005em] text-ink transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-foreground/25 hover:bg-white`}
+      className={`group inline-flex items-center gap-2 rounded-full border border-foreground/12 bg-white ${pad} font-medium text-ink transition-all duration-300 hover:border-foreground/25`}
     >
       {children}
       {arrow}

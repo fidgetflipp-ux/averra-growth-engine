@@ -24,15 +24,15 @@ export function Nav() {
         scrolled ? "bg-white/85 backdrop-blur-xl hairline-b" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Logo />
 
-        <nav className="hidden items-center gap-12 md:flex">
+        <nav className="hidden items-center gap-10 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-[13px] font-normal text-ink-soft/80 transition-colors duration-200 hover:text-ink"
+              className="text-sm font-medium text-ink-soft transition-colors hover:text-ink"
             >
               {l.label}
             </a>

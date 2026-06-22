@@ -3,7 +3,7 @@ import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-44 pb-32">
+    <section className="relative overflow-hidden pt-36 pb-20">
       {/* Layered background — mesh gradient + grid + grain for premium depth */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* sage mesh gradient — soft, contained blooms */}
@@ -172,7 +172,7 @@ export function Hero() {
             </div>
           </motion.div>
 
-          <h1 className="text-display relative z-10 mx-auto max-w-[900px] text-center text-[clamp(64px,8vw,112px)]">
+          <h1 className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
             <Reveal>
               <span className="block">Premium websites,</span>
             </Reveal>
@@ -185,21 +185,22 @@ export function Hero() {
         </div>
 
         <Reveal delay={0.18}>
-          <p className="mx-auto mt-12 max-w-[650px] text-center text-[21px] font-normal leading-[1.6] text-ink-soft">
-            A senior design and engineering studio for ambitious businesses.
-            Reserve a slot and we ship a conversion-grade website in 7–14 days.
+          <p className="mx-auto mt-8 max-w-xl text-center text-[17px] leading-[1.6] text-ink-soft">
+            Averra is a senior design and engineering studio for ambitious
+            businesses. Choose a package, reserve a slot, and we ship a
+            conversion-grade website in 7–14 days.
           </p>
         </Reveal>
 
         <Reveal delay={0.26}>
-          <div className="mt-14 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <CtaPrimary href="#packages" size="lg">Start your website</CtaPrimary>
             <CtaGhost href="#work" size="lg">See recent work</CtaGhost>
           </div>
         </Reveal>
 
         <Reveal delay={0.34}>
-          <div className="mt-16 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-[13px] text-ink-muted">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-ink-muted">
             <span className="flex items-center gap-2">
               <span className="size-1 rounded-full bg-brand" />
               Fixed price, no hourly billing
