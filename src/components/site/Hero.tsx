@@ -1,5 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
+import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 
 export function Hero() {
   return (
