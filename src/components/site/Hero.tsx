@@ -4,10 +4,40 @@ import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [0.55, 0.25, 0]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+
   return (
-    <section className="relative overflow-hidden pt-36 pb-20">
+    <section ref={sectionRef} className="relative overflow-hidden pt-36 pb-20">
+      {/* Background video — premium ambient layer */}
+      <motion.div
+        aria-hidden
+        style={{ y: videoY, opacity: videoOpacity, scale: videoScale }}
+        className="pointer-events-none absolute inset-0 z-0"
+      >
+        <video
+          src={heroVideo.url}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* readability scrims */}
+        <div className="absolute inset-0 bg-background/55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background" />
+      </motion.div>
+
       {/* Layered background — mesh gradient + grid + grain for premium depth */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+
         {/* sage mesh gradient — soft, contained blooms */}
         <div className="absolute left-1/2 top-[-20%] h-[760px] w-[1180px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.09),transparent_60%)] blur-3xl" />
         <div className="absolute -left-48 top-48 h-[480px] w-[560px] rounded-full bg-[radial-gradient(ellipse_at_center,theme(colors.brand.DEFAULT/0.05),transparent_65%)] blur-3xl" />
