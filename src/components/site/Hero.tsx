@@ -3,7 +3,7 @@ import { CtaPrimary, CtaGhost, Reveal } from "./primitives";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-36 pb-20">
+    <section className="relative overflow-hidden pt-44 pb-32">
       {/* Layered background — mesh gradient + grid + grain for premium depth */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* sage mesh gradient — soft, contained blooms */}
