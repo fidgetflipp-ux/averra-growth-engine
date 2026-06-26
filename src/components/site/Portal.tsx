@@ -1,7 +1,8 @@
 import { useRef } from "react";
-import { useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Hero } from "./Hero";
 import { MonolithStage } from "./hero/MonolithStage";
+import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 
 /**
  * PortalStage — the architectural hero.
@@ -38,16 +39,8 @@ export function PortalStage() {
       style={{ height: "220vh" }}
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Calm wash — single soft sage bloom */}
-        <div aria-hidden className="absolute inset-0 bg-background">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(ellipse 60% 50% at 50% 70%, rgba(127,185,138,0.08), transparent 70%)",
-            }}
-          />
-        </div>
+        {/* Cinematic ambient background — calm, never loud */}
+        <AmbientBackground progress={progress} />
 
         {/* The monolith — full viewport canvas */}
         <MonolithStage progress={progress} />
