@@ -10,6 +10,8 @@ import { Packages } from "@/components/site/Packages";
 import { Booking } from "@/components/site/Booking";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
+import { CinematicIntro } from "@/components/site/CinematicIntro";
+import { ClientOnly } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,8 +36,13 @@ function Index() {
   return (
     <div className="relative">
       <Nav />
+      <ClientOnly fallback={null}>
+        <CinematicIntro />
+      </ClientOnly>
       <main>
-        <Hero />
+        <div id="hero-anchor">
+          <Hero />
+        </div>
         <Showcase />
         <SocialProof />
         <Services />
