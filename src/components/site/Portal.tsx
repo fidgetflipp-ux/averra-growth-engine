@@ -42,13 +42,7 @@ export function PortalStage() {
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
         <AmbientBackground progress={progress} />
 
-        {/* The light portal — R3F canvas covering the viewport. */}
-        <div className="absolute inset-0">
-          <LightPortalCanvas progress={progress} />
-        </div>
 
-        {/* Subtle spectral fringe overlay around the glass perimeter */}
-        <PortalDispersion progress={progress} />
 
         {/* Hero text */}
         <div className="absolute inset-0 z-10">
