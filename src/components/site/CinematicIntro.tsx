@@ -232,10 +232,9 @@ export function CinematicIntro() {
     }
     const allStaged = stageEls.flat();
 
-    // Initial hidden state for staged elements (subtle, no overshoot)
-    if (allStaged.length) {
-      gsap.set(allStaged, { autoAlpha: 0, y: 20 });
-    }
+    // Build the reveal timeline up-front with fromTo so the start state is
+    // enforced regardless of any CSS animations on the targets.
+    if (navEl) gsap.set(navEl, { autoAlpha: 0, y: -8 });
 
     // Park hero fullscreen behind canvas so the reveal happens IN PLACE.
     const fixHero = () => {
@@ -254,33 +253,35 @@ export function CinematicIntro() {
     };
     fixHero();
 
-    // Nav appears first — keep it hidden until the reveal begins.
-    if (navEl) gsap.set(navEl, { autoAlpha: 0, y: -8 });
+    const revealTl = gsap.timeline({ paused: true });
+    if (navEl) {
+      revealTl.fromTo(
+        navEl,
+        { autoAlpha: 0, y: -8 },
+        { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        0
+      );
+    }
+    stageEls.forEach((nodes, i) => {
+      if (!nodes.length) return;
+      revealTl.fromTo(
+        nodes,
+        { autoAlpha: 0, y: 20 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+          stagger: 0.05,
+          overwrite: "auto",
+        },
+        0.12 + i * 0.09
+      );
+    });
+    // Apply the start state immediately
+    revealTl.progress(0).pause();
 
-    let revealTl: gsap.core.Timeline | null = null;
-    const buildRevealTimeline = () => {
-      const tl = gsap.timeline({ paused: true });
-      // Nav first
-      if (navEl) {
-        tl.to(navEl, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0);
-      }
-      // Then stages 1..6, very small stagger, restrained easing
-      stageEls.forEach((nodes, i) => {
-        if (!nodes.length) return;
-        tl.to(
-          nodes,
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power2.out",
-            stagger: 0.05,
-          },
-          0.12 + i * 0.09
-        );
-      });
-      return tl;
-    };
+
 
     const st = ScrollTrigger.create({
       trigger: spacerRef.current!,
@@ -289,46 +290,51 @@ export function CinematicIntro() {
       scrub: 0.4,
       onUpdate: (self) => {
         const p = self.progress;
-        const idx = Math.min(totalUsed - 1, Math.round(p * (totalUsed - 1)));
+
+        // Phase A (0 → 0.80): scrub frames through the entire sequence.
+        // Phase B (0.80 → 1.00): hold the final frame, dissolve canvas,
+        // stage hero in. Frames must NOT keep changing during the fade.
+        const framePhase = gsap.utils.clamp(0, 1, p / 0.8);
+        const idx = Math.min(
+          totalUsed - 1,
+          Math.round(framePhase * (totalUsed - 1))
+        );
         currentRef.i = idx;
 
-        // Reveal window: final 15% of the pin
-        const r = gsap.utils.clamp(0, 1, (p - 0.85) / 0.15);
+        // Reveal window: final 20% of the pin
+        const r = gsap.utils.clamp(0, 1, (p - 0.8) / 0.2);
 
-        // Canvas fades from 1 → 0 across the reveal window
+        // Canvas dissolves with a subtle camera dolly-in: opacity → 0,
+        // scale → 1.06, blur → 8px. The hero underneath is already in
+        // place so the world feels like it 'breathes' into the page.
         if (wrapRef.current) {
-          // Ease the fade so the world dissolves rather than wipes
           const eased = r * r * (3 - 2 * r); // smoothstep
-          gsap.set(wrapRef.current, { autoAlpha: 1 - eased });
+          const scale = 1 + 0.06 * eased;
+          const blur = 8 * eased;
+          gsap.set(wrapRef.current, {
+            autoAlpha: 1 - eased,
+            scale,
+            filter: `blur(${blur.toFixed(2)}px)`,
+            transformOrigin: "50% 50%",
+          });
         }
 
+
         // Drive the reveal timeline by the same progress
-        if (!revealTl) revealTl = buildRevealTimeline();
         revealTl.progress(r);
+
       },
       onLeave: () => {
-        // Release hero into the page; scroll position equals top of hero's
-        // natural flow position, so no jump.
         unfixHero();
         if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 0, pointerEvents: "none" });
       },
       onEnterBack: () => {
-        // Re-park hero behind the canvas for the scrub
         fixHero();
         if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1, pointerEvents: "none" });
       },
     });
 
-    // Subtle ambient drift on the canvas while it's visible — keeps the
-    // world feeling alive even when the user pauses.
-    const ambient = gsap.to(wrapRef.current, {
-      backgroundPositionY: "+=6",
-      x: 0,
-      duration: 8,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
+
 
     return () => {
       cancelled = true;
@@ -336,7 +342,7 @@ export function CinematicIntro() {
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("resize", resize);
       st.kill();
-      ambient.kill();
+      
       revealTl?.kill();
       gsap.ticker.remove(raf);
       lenis.destroy();
