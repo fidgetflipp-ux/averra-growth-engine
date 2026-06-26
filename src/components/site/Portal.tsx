@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Hero } from "./Hero";
-import { MonolithStage } from "./hero/MonolithStage";
+
 import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 
 /**
@@ -42,8 +42,6 @@ export function PortalStage() {
         {/* Cinematic ambient background — calm, never loud */}
         <AmbientBackground progress={progress} />
 
-        {/* The monolith — full viewport canvas */}
-        <MonolithStage progress={progress} />
 
         {/* Hero text overlay */}
         <div className="absolute inset-0 z-10">
