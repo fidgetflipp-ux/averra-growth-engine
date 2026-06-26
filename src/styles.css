@@ -172,14 +172,6 @@
   animation: float-subtle 6s ease-in-out infinite;
 }
 
-@keyframes portal-highlight {
-  0%   { transform: translateX(-30%) skewX(-12deg); opacity: 0; }
-  20%  { opacity: 0.85; }
-  60%  { opacity: 0.85; }
-  100% { transform: translateX(280%) skewX(-12deg); opacity: 0; }
-}
-
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

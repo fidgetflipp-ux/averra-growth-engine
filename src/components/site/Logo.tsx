@@ -1,13 +1,8 @@
-import { Link } from "@tanstack/react-router";
 import averraLogo from "@/assets/averra-logo.png.asset.json";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
-    <Link
-      to="/"
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`group inline-flex items-center gap-2.5 ${className}`}
-    >
+    <a href="/" className={`group inline-flex items-center gap-2.5 ${className}`}>
       <img
         src={averraLogo.url}
         alt="Averra"
@@ -16,6 +11,6 @@ export function Logo({ className = "" }: { className?: string }) {
       <span className="text-[17px] font-semibold tracking-[-0.02em] text-ink">
         Averra
       </span>
-    </Link>
+    </a>
   );
 }
