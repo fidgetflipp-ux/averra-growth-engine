@@ -255,34 +255,63 @@ function easeInOutCubic(x: number) {
  * doesn't cost a frame.
  */
 export function PortalDispersion({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0, 0.2, 0.7, 0.92, 1], [0, 0.25, 0.6, 0.3, 0]);
+  const opacity = useTransform(progress, [0, 0.15, 0.7, 0.92, 1], [0.55, 0.7, 0.95, 0.5, 0]);
+  const rotate = useTransform(progress, [0, 1], [0, 4]);
+  const scale = useTransform(progress, [0, 1], [1, 1.18]);
   return (
-    <div
+    <motion.div
       aria-hidden
+      style={{ opacity }}
       className="pointer-events-none absolute inset-0 flex items-center justify-center"
     >
-      <div
+      <motion.div
         style={{
-          // approximate the glass rect at rest; scales subtly with viewport
           width: "min(46vw, 540px)",
           height: "min(78vh, 760px)",
           position: "relative",
+          rotate,
+          scale,
         }}
+        className="rounded-[4px]"
       >
+        {/* Faint outer halo — the only proof the glass is there at rest */}
+        <span
+          className="absolute -inset-2 rounded-[8px]"
+          style={{
+            boxShadow:
+              "0 0 0 1px rgba(255,255,255,0.55), 0 0 60px 0 rgba(190,210,200,0.18), inset 0 0 0 1px rgba(255,255,255,0.45)",
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.0) 30%, rgba(255,255,255,0.0) 70%, rgba(255,255,255,0.05) 100%)",
+          }}
+        />
+        {/* Travelling highlight — slow, alive */}
+        <span
+          className="absolute inset-0 overflow-hidden rounded-[4px]"
+          style={{ mixBlendMode: "screen" }}
+        >
+          <span
+            className="absolute -inset-y-10 left-0 w-[40%] animate-[portal-highlight_14s_ease-in-out_infinite] opacity-70"
+            style={{
+              background:
+                "linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.0) 30%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.0) 70%, transparent 100%)",
+              filter: "blur(6px)",
+            }}
+          />
+        </span>
         {/* corner spectral fringes */}
         {([
-          ["-top-px -left-px", "linear-gradient(135deg, rgba(255,180,180,0.6), rgba(180,220,255,0.0))"],
-          ["-top-px -right-px", "linear-gradient(225deg, rgba(180,255,210,0.55), rgba(180,200,255,0.0))"],
-          ["-bottom-px -left-px", "linear-gradient(45deg, rgba(200,210,255,0.5), rgba(255,210,180,0.0))"],
-          ["-bottom-px -right-px", "linear-gradient(315deg, rgba(255,220,180,0.55), rgba(180,255,220,0.0))"],
+          ["-top-1 -left-1", "radial-gradient(circle at 0% 0%, rgba(255,170,170,0.55), rgba(180,220,255,0) 60%)"],
+          ["-top-1 -right-1", "radial-gradient(circle at 100% 0%, rgba(180,255,210,0.5), rgba(180,200,255,0) 60%)"],
+          ["-bottom-1 -left-1", "radial-gradient(circle at 0% 100%, rgba(200,210,255,0.5), rgba(255,210,180,0) 60%)"],
+          ["-bottom-1 -right-1", "radial-gradient(circle at 100% 100%, rgba(255,220,180,0.55), rgba(180,255,220,0) 60%)"],
         ] as const).map(([pos, bg], i) => (
           <span
             key={i}
-            className={`absolute ${pos} h-24 w-24 rounded-full blur-2xl`}
+            className={`absolute ${pos} h-32 w-32 rounded-full blur-2xl`}
             style={{ background: bg as string, mixBlendMode: "screen" }}
           />
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

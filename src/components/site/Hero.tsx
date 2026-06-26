@@ -11,9 +11,9 @@ type Props = {
  * Text fades and lifts away as the camera moves through the monolith.
  */
 export function Hero({ progress }: Props) {
-  const opacity = useTransform(progress, [0, 0.12, 0.32], [1, 1, 0]);
-  const y = useTransform(progress, [0, 0.32], [0, -28]);
-  const blur = useTransform(progress, [0, 0.32], ["0px", "3px"]);
+  const opacity = useTransform(progress, [0, 0.25, 0.5], [1, 1, 0]);
+  const y = useTransform(progress, [0, 0.5], [0, -40]);
+  const blur = useTransform(progress, [0, 0.5], ["0px", "4px"]);
   const filter = useTransform(blur, (b) => `blur(${b})`);
 
   return (
