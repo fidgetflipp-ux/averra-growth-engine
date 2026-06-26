@@ -5,7 +5,7 @@ import { Problem } from "@/components/site/Problem";
 import { Manifesto } from "@/components/site/Manifesto";
 import { Showcase } from "@/components/site/Showcase";
 import { SocialProof } from "@/components/site/SocialProof";
-import { Services } from "@/components/site/Services";
+
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { Process } from "@/components/site/Process";
 import { Packages } from "@/components/site/Packages";
