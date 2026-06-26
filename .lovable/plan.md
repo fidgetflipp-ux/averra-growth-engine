@@ -1,148 +1,124 @@
 
-# Architectural Hero & First Transition
+# Averra — The Movie
 
-Rebuild the hero's signature object as a real 3D fused-glass monolith and replace the Hero→Showcase handoff with a single cinematic camera reveal. No other sections change. The existing typography, color, badge, headline, CTAs and Showcase content stay intact.
+> **Prime directive.** Do not optimize for more information. Optimize for stronger emotion. Every screen should make the visitor feel something before asking them to understand something. If a design decision increases clarity but decreases emotional impact, rethink it. If a design decision looks impressive but does not increase trust, remove it. The website should feel inevitable, not decorated.
 
-## 1. Hero — strip and breathe
+The goal is not to convince CEOs to hire Averra. The goal is to make CEOs aspire to become the kind of company Averra works with. The site does not say *"we want your business."* It says *"this is how exceptional companies present themselves."*
 
-File: `src/components/site/Hero.tsx`
+---
 
-Keep:
-- Nav (already separate)
-- Availability badge
-- Headline ("Premium websites, delivered in days.")
-- Supporting line
-- Primary + secondary CTA
-- One architectural object (new, see §2)
+## The five non-negotiables
 
-Remove:
-- Background video and its scroll-tied parallax/opacity/scale
-- Ambient vignette layer driven by cursor
-- Grid + scrim stack
-- All decorative motion on text container
+1. **One continuous scene.** No hard visual resets between sections. Each section inherits at least one element (color field, motif, motion, type, or material) from the section above it. The camera never cuts.
+2. **One question per section.** A section exists only to answer one psychological question. If it answers none, it is deleted.
+3. **Tension before proof.** Problem and belief precede the work. Emotional stakes are established before any credential.
+4. **One signature, repeated.** *Architectural reveal.* Nothing appears — everything **opens**. Headlines, images, case studies, pricing, booking. The visitor leaves remembering "the site that revealed itself."
+5. **Cut another 30%.** Before adding a chip, card, border, or icon — try to communicate the same thing with a headline, a sentence, and an image. Usually that is enough.
 
-Whitespace pass:
-- `min-h-[100vh]` → `min-h-[110vh]`
-- Section padding: `pt-40 pb-40` → `pt-48 pb-56`
-- Headline → object spacing: `mt-28` → `mt-40`
-- Headline max-width unchanged; tighten supporting copy column to `max-w-[30ch]`
-- Background becomes a single near-white wash with one extremely soft sage radial bloom (≤8% opacity) centered low-mid. No grid, no noise, no video.
+---
 
-## 2. The architectural object — fused crystal monolith
+## The scene order (the movie)
 
-New file: `src/components/site/hero/Monolith.tsx`
+Each scene lists its **one question**, what is **inherited** from the previous scene, and the **reveal** that defines it. No section ends — it hands off.
 
-Hybrid render. R3F owns the object. CSS owns the camera/transition wrapper.
+### 1. HERO — *Why should I care?*
+- **Inherits:** nothing (this is the opening shot).
+- **Holds:** ambient video, single headline, one CTA, one quiet meta line. Remove the second CTA, the pulsing badge intensity, and any decoration that competes with the type.
+- **Reveal signature:** the headline does not fade in. It **unmasks** — a thin sage line draws horizontally, and the type appears as the line passes, left to right. One headline, one reveal. That is the whole hero.
+- **Hand-off:** the same horizontal line, now a single hairline, continues down the page and becomes the structural rule that all subsequent sections inherit. The camera follows that line.
 
-Geometry — three ultra-thin planes fused into one slab:
-- Plane A (front):  0.020 thick, full size, centered z = 0
-- Plane B (core):   0.024 thick, full size, z = −0.018
-- Plane B (back):   0.020 thick, full size, z = −0.036
-- Slight bevel on each plane edge (RoundedBox, radius 0.04, smoothness 6)
-- Proportion: 1 × 1.55 × 0.08 (golden-ratio-ish vertical slab)
+### 2. THE PROBLEM — *Is this about me?* (new)
+- **Inherits:** the hairline rule from the hero; the same dark/quiet background; no new visual language.
+- **One spread, one sentence,** set in serif italic, large, left-aligned, generous leading:
+  > *Your website is the first employee every customer meets. Most companies hire the wrong one.*
+- No image. No CTA. No card. Whitespace does the work. The hairline from the hero is the only graphic element on screen.
+- **Hand-off:** the hairline thickens slightly and the background begins to warm — we are moving into belief.
 
-Material — `MeshPhysicalMaterial`:
-- transmission 1.0, ior 1.45, thickness 0.6
-- roughness 0.05, metalness 0
-- attenuationColor `#e8efe9` (faint sage), attenuationDistance 1.8
-- clearcoat 1, clearcoatRoughness 0.08
-- envMapIntensity 0.7
+### 3. MANIFESTO — *Why do these people exist?*
+- **Inherits:** the warming background and the same serif italic voice from The Problem (so it reads as the same narrator continuing to speak).
+- Five short lines, revealed one at a time as the visitor scrolls. Each line unmasks via the same horizontal-line motif as the hero. No imagery.
+- **Hand-off:** the final line stays pinned briefly as the next section's first project image begins to **open** behind it (an architectural shutter wipe from edge to center).
 
-Lighting & env:
-- `<Environment preset="studio" />` from drei (no visible background)
-- One directional key light, soft warm fill, subtle rim from behind
-- Tone mapping ACES, exposure ~1.0
+### 4. WORK — *Can they actually do it?*
+- **Inherits:** the shutter-reveal motion. The first project image is mid-reveal as the manifesto exits.
+- **Two case studies only.** ScarTec Therapeutics and Yeon Ritual. Each gets its own full-viewport editorial spread:
+  - Cover frame opens (architectural reveal — frame draws first, image fills inside it).
+  - One serif headline (the outcome, not the project name).
+  - Four short lines: Problem · Thinking · Execution · Outcome. Label left, prose right. Two sentences max per line.
+  - One oversized metric on its own row.
+- No tag pills, no chips, no "01 / 02," no "View case" button. The next case is the next scroll.
+- **Hand-off:** the closing metric type from case 2 dissolves into the next section's eyebrow — same weight, same position, different word. Continuity through typography.
 
-Ambient motion (calm, almost imperceptible, all on the object group):
-- rotation.y: sine ±0.04 rad over 14s
-- rotation.x: sine ±0.015 rad over 18s (offset phase)
-- position.y: sine ±0.012 over 9s
-- No idle plane separation. Idle state reads as one slab.
+### 5. PROOF — *Are others like me already here?*
+- **Inherits:** the editorial type rhythm from Work. The marquee ticker is removed entirely.
+- One large pull-quote (serif italic, ~40px), attributed to a role + company type. Below it: three verified metrics on a single hairline row. Optionally a quiet wordmark row in muted ink — text-only until real logos are provided.
+- ~70vh. Mostly whitespace. This scene exists only to let the visitor exhale and feel "the right people are already here."
+- **Hand-off:** the hairline row extends and becomes the spine of the Process timeline.
 
-Cursor parallax:
-- Normalized pointer → spring (stiffness 40, damping 22)
-- Adds rotation.y ±0.06, rotation.x ±0.04, group.x ±0.05
-- Lighting key light position lerps with pointer for a slow specular shift
+### 6. PROCESS — *Can I trust them?*
+- **Inherits:** the hairline spine, which is now vertical and runs the full height of the section.
+- Sticky-left, scrolling-right. Left: current phase name in serif + one sentence. Right: four stops (Discover · Design · Build · Launch) reveal in sequence along the spine. Each stop opens via the same architectural reveal — frame first, then content fills.
+- Closes with one line, no card: *"Predictable. Senior. On time. Every time."*
+- **Hand-off:** the spine continues into Pricing and becomes the divider between packages.
 
-Plane separation (driven by scroll, not idle):
-- `separation` uniform 0→1
-- Plane A translates +z by 0.10·s
-- Plane B (back) translates −z by 0.10·s
-- All three rotate.y diverge by ±0.06·s
-- At s=0 they read as one slab; at s≈0.35 depth is visible; at s=1 they form the portal (see §3)
+### 7. PRICING — *Is this worth it?*
+- **Inherits:** the vertical spine as the divider between packages. No card borders — the spine is the structure.
+- Four certainty words above the packages, set as hairline-separated words, not pills: *Fixed investment · Fixed timeline · Senior team · On time.*
+- Each package leads with **outcome + timeline**, not a deliverables list. Deliverables collapse into a quiet "What's included" disclosure.
+- One closing line: *"No retainers. No surprises. No junior handoff."*
+- **Hand-off:** the spine narrows to a single point at the bottom of pricing and becomes the FAQ rule.
 
-Canvas:
-- `<Canvas dpr={[1, 1.75]} gl={{ antialias: true, alpha: true }} camera={{ position: [0, 0, 3.2], fov: 32 }}>`
-- Transparent background; the section's CSS wash shows through
-- Sized via wrapper, default ~520×640 in hero, escalates during transition (see §3)
-- `frameloop="always"` while in view, `"demand"` when offscreen (IntersectionObserver)
+### 8. FAQ — *What's the catch?*
+- **Inherits:** the single hairline rule. Each question sits on the rule; opening a question **opens** the answer downward (architectural reveal — height animates from 0, content unmasks). No boxes, no chevrons in circles, no shadow.
+- Eight questions written as the objections a CEO actually has. Default collapsed. Mono question numbers.
+- **Hand-off:** the rule continues into the testimonials wall.
 
-Floor contact:
-- Soft elliptical shadow rendered in CSS under the canvas (not in 3D), tied to scroll so it stretches as the object lifts
+### 9. TESTIMONIALS — *Will I feel good about this decision?*
+- **Inherits:** the hairline rule as separators between quotes.
+- 4–6 short quotes in a dense editorial grid. Pure typography. No avatars, no card backgrounds, no stars. Role + company type only.
+- **Hand-off:** the final quote's hairline becomes the top edge of the booking surface.
 
-## 3. The transition — Hero into Showcase as one camera move
+### 10. BOOKING — *Why shouldn't I do this today?*
+- **Inherits:** the hairline as the top edge, and the architectural reveal as the form behavior — fields open in sequence as the visitor advances, never all at once.
+- One reassurance line above the form: *"30 minutes. No pitch. We'll tell you honestly if we're the right fit."*
+- Spacing and hierarchy tightened. Flow unchanged.
+- **Closing frame:** after the form, one last serif italic line on an otherwise empty screen — the manifesto's final beat. The movie ends quietly.
 
-This replaces the current "section scrolls underneath an enlarging card" handoff. There is no second section sliding up. The visitor is moved through the object into the Showcase room.
+**Removed entirely:** the client marquee, the services-as-features section, decorative card numbering, the hero's secondary CTA, duplicate pulse rings, all stock imagery, all icon chips, all gradient card backgrounds, the "01 / 02 / 03" labels, any "View more" affordances that don't lead to a real destination.
 
-New wrapper file: `src/components/site/Portal.tsx`
-Edits: `src/routes/index.tsx` (wrap Hero + Showcase in a single `PortalStage`), `src/components/site/Showcase.tsx` (reveal-from-glass entry, no own intro animation).
+> Note: there is no standalone "Services" scene. Services were features pretending to be a section. The work itself answers the same question more powerfully. If after Phase 2 it still feels missing, we add it back as a single quiet line in the manifesto — not a section.
 
-Architecture:
+---
 
-```text
-<PortalStage>           ← position: relative, height = 220vh
-  <StickyViewport>      ← position: sticky, top:0, h:100vh, overflow:hidden
-    <HeroLayer/>        ← opacity & blur tied to scroll
-    <MonolithStage/>    ← R3F canvas, scales + camera dollies via scroll
-    <ShowcaseLayer/>    ← initially hidden behind the glass
-  </StickyViewport>
-  <Spacer 220vh/>       ← provides the scroll distance
-</PortalStage>
-```
+## The signature: architectural reveal
 
-Scroll progress `p` ∈ [0,1] across the sticky range, driven by a single `useScroll` + `useSpring` (stiffness 60, damping 22, mass 0.8) to add inertia. All sub-animations read this one spring — no per-element scroll listeners.
+One motion, applied everywhere, recognizable within three seconds:
 
-Choreography:
+- **Frame first, content second.** Every reveal draws a thin sage line that defines the boundary of the element (headline baseline, image frame, FAQ row, form field), and only then does the content fill inside that boundary.
+- **Easing:** `cubic-bezier(0.22, 1, 0.36, 1)` only. Durations 600–900ms for hero-scale reveals, 300–450ms for inline reveals. No bounce, no spring overshoot.
+- **Direction:** horizontal for type, shutter (edge → center) for images, vertical for disclosure (FAQ, form fields). Never random.
+- **Budget:** one reveal per viewport on first paint. Scroll reveals stagger by 80ms maximum. No parallax beyond 16px. No scroll-jacking, ever.
+- **Performance:** transform + opacity only. No layout animation. No new libraries — `framer-motion` already installed covers everything.
 
-- p 0.00 – 0.15 — Idle hero. Object as single slab. Text fully visible.
-- p 0.15 – 0.35 — Detachment. Headline + CTAs fade to 0 and translate y −24px with blur(2px). Object lifts slightly (group.y +0.15), brightness of key light rises ~12%. Plane separation starts (0→0.4).
-- p 0.35 – 0.60 — Camera follow. R3F camera dollies from z 3.2 → z 1.6, fov 32 → 28. Object rotates from 0 → ~0.18 rad on y, then back to 0 (a believable pan-around). Planes continue to fan to separation 0.85. Outer planes rotate to face camera; inner plane stays parallel — visually it begins to read as a portal frame.
-- p 0.60 – 0.85 — Portal formation. Planes scale on x/y from 1 → ~2.4 (still within the canvas), camera z → 0.6, fov → 24. The object now fills the viewport. Material thickness lerps 0.6 → 0.15, transmission stays 1, roughness 0.05 → 0.02 — glass becomes clearer. A faint internal vignette dissolves.
-- p 0.85 – 1.00 — Dissolve. Glass `opacity` (material) lerps 1 → 0 with a brief refractive caustic flash (`envMapIntensity` 0.7 → 1.4 → 0.9). ShowcaseLayer was already mounted at p≥0.55 with `opacity 0`, `scale 1.04`, `blur(8px)`. It lerps to `opacity 1`, `scale 1`, `blur 0` across 0.85–1.0. Hero DOM is fully gone by p=0.6.
-- p ≥ 1.00 — Sticky releases. Normal scroll resumes inside Showcase. Showcase no longer plays its own intro (its first state is the resting state of the portal reveal).
+This is the only motion language on the site. Anything that does not fit it is removed.
 
-Reverse direction is the same curve played backwards — the planes reassemble into the monolith as the user scrolls up. Nothing pops.
+---
 
-Golden rule compliance:
-- ShowcaseLayer is mounted from p=0.55 onward, behind the glass — it always existed, it is revealed by the glass clearing.
-- Hero text doesn't get unmounted with a swap; it dims and the camera leaves it behind.
-- The monolith doesn't disappear at the end — its material goes to 0 opacity while the planes are already at viewport scale, so it reads as "we walked through it."
+## Phased delivery
 
-## 4. Motion + perf rules
+You approve and I implement **one phase at a time**, stopping for review between phases.
 
-- All easing: `cubic-bezier(0.22, 1, 0.36, 1)` or framer `useSpring` with damping ≥ 20. No bounce, no overshoot anywhere.
-- One `useScroll` per `PortalStage`. All downstream values are `useTransform` off that single progress spring. No nested ScrollTriggers.
-- R3F: `frameloop="demand"` outside the portal range, `"always"` inside (toggled via IntersectionObserver on `StickyViewport`).
-- `Canvas` `dpr` clamped to `[1, 1.75]`; on `prefers-reduced-motion`, the portal collapses to a 250ms cross-fade and the monolith renders as a single static frame with no idle animation.
-- No layout-triggering properties animated. Only `transform`, `opacity`, `filter`, and R3F uniforms.
+- **Phase 1 — The opening act.** Hero (refined with the unmask reveal), The Problem (new), Manifesto (new), and the continuity system (shared hairline, hand-off transitions, single easing). This is the entire "tension before proof" arc.
+- **Phase 2 — The proof.** Work (two editorial case studies: ScarTec, Yeon Ritual), Proof (replaces the marquee), Process (sticky timeline on the spine).
+- **Phase 3 — The decision.** Pricing (spine + certainty words), FAQ (architectural disclosure), Testimonials wall, Booking polish, closing frame.
 
-## 5. Files
+## Technical notes
 
-Created:
-- `src/components/site/hero/Monolith.tsx` — R3F scene (planes, material, lights, ambient + cursor + separation logic)
-- `src/components/site/hero/MonolithStage.tsx` — Canvas wrapper, IntersectionObserver, scroll prop fan-out
-- `src/components/site/Portal.tsx` — `PortalStage` + `StickyViewport`, owns the single `useScroll`/spring, renders HeroLayer, MonolithStage, ShowcaseLayer
+- New components: `Problem.tsx`, `Manifesto.tsx`, `CaseStudy.tsx` (used twice inside `FeaturedWork.tsx`), `FAQ.tsx`, `TestimonialsWall.tsx`, `ClosingFrame.tsx`, and a shared `Reveal` primitive extended with the line-unmask + shutter variants.
+- Refactored in place: `Hero.tsx`, `SocialProof.tsx` (becomes Proof), `Process.tsx`, `Packages.tsx`, `Booking.tsx`. `Services.tsx` is removed from the route.
+- `src/routes/index.tsx` section order becomes: Hero · Problem · Manifesto · Showcase · FeaturedWork (two CaseStudies) · Proof · Process · Packages · FAQ · TestimonialsWall · Booking · ClosingFrame · Footer.
+- All copy uses realistic, swap-ready placeholders. No fake logos. No new dependencies. No backend or schema changes.
 
-Edited:
-- `src/components/site/Hero.tsx` — strip background/video/grid/scrim, remove existing glass-slab JSX, slim copy column, accept a `progress` motion value prop and bind text fade/blur to it. No longer renders its own section sizing — `PortalStage` owns viewport.
-- `src/components/site/Showcase.tsx` — remove its own scroll-driven entry intro (the portal handles entry). Internal stage progression remains unchanged.
-- `src/routes/index.tsx` — replace adjacent `<Hero />` and `<Showcase />` with `<PortalStage><Hero/><Showcase/></PortalStage>`.
+---
 
-No package installs needed — `three`, `@react-three/fiber`, `@react-three/drei`, `framer-motion` already in `package.json`.
-
-## 6. Explicitly out of scope
-
-- Services, Featured Work, Process, Packages, Booking, Footer — untouched.
-- Typography, color tokens, badge, CTAs, logo — untouched.
-- Showcase's internal 5-stage content — untouched.
-- No new dependencies, no new assets.
+**Approve to begin Phase 1.** I implement only the opening act, then stop so you can feel the tension before we earn the proof.
