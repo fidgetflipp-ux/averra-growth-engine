@@ -41,9 +41,8 @@ function Index() {
         <Problem />
         <Manifesto />
         <Showcase />
-        <SocialProof />
-        <Services />
         <FeaturedWork />
+        <SocialProof />
         <Process />
         <Packages />
         <Booking />
