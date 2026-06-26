@@ -1,75 +1,53 @@
-# Floating Averra Workspace Canvas
+# Cinematic intro sequence → existing hero
 
-Replace the current project-dashboard card in `src/components/site/Showcase.tsx` with a single evolving website canvas housed in a custom Averra workspace frame. One website, five visible transformations. No browser chrome, no laptop frame, no page swaps.
+361 frames pin to scroll, then dissolve into the existing Hero with no perceptible cut.
 
-## What changes
+## Stack note
+This project is **TanStack Start + Vite + React 19**, not Next.js. The motion stack you asked for works identically here — I'll install **GSAP + ScrollTrigger + Lenis** and use them as specified. Frames go to the Lovable CDN (not `/public/frames`) because that's how this project ships binaries; behavior is unchanged.
 
-1. **Workspace frame** — custom Averra OS-style shell (not browser, not laptop)
-2. **Website canvas** — one site that morphs through 5 build stages
-3. **Notifications** — stage-based, max 2–3 visible, software-update tone
-4. **Cleanup** — remove the dashboard sidebar, stats grid, milestone list, activity feed, launch banner, preview-panel-inside-card
+## 1. Frame pipeline
+- Extract both zips → 361 WebPs to `/tmp/frames/`.
+- Loop `lovable-assets create` to push every frame; pointers land in `src/assets/frames/frame_NNNN.webp.asset.json`.
+- Generate `src/assets/frames/manifest.ts` exporting `FRAMES: string[]` (length 361, ordered).
 
-## The frame
+## 2. Rendering engine — `src/components/site/CinematicIntro.tsx`
+- Fullscreen `<canvas>` inside a `position: sticky` wrapper; outer section is **~600vh tall** so 361 frames map to a long, slow scrub (~1.6vh per frame — feels physically attached, not snappy).
+- Single `Image[]` array. Strategy:
+  - **Eager**: frames 1–24 awaited before fade-in (covers first paint with no stutter).
+  - **Progressive**: remaining 337 frames decoded in background, concurrency = 6, prioritised by proximity to current index.
+- Render loop: `requestAnimationFrame` reads a ref (`currentFrame`) updated by ScrollTrigger's `onUpdate`; only draws if index changed. Canvas sized to `devicePixelRatio`, `image-rendering: high-quality`, `object-fit: cover` math centered.
+- Zero React re-renders during scrub (everything via refs).
 
-Ultra-minimal floating glass panel. Rounded corners (16px), thin top status bar, soft depth shadow, subtle border. Inspired by Linear / Arc / Vision Pro.
+## 3. Scroll wiring
+- **Lenis** mounted once at the route level (`src/routes/index.tsx`) with `lerp: 0.1`, autoRaf driving GSAP's ticker (`gsap.ticker.add(time => lenis.raf(time*1000))`).
+- **ScrollTrigger** on the intro section: `pin: true`, `scrub: 0.5` (tiny smoothing so scroll feels weighty, not laggy), `start: "top top"`, `end: "bottom bottom"`. `onUpdate` writes `Math.round(progress * 360)` to the frame ref.
+- Backward scroll just decrements naturally — no special handling needed.
 
-Top status bar (~36px) contains, left to right:
-- Averra mark (small monogram, ~14px)
-- Project name: **ScarTec Therapeutics**
-- Live status dot + label
-- Phase pill: Strategy → Design → Development → Optimization → Launch (animates on stage change)
+## 4. The handoff (the critical part)
+The existing Hero **stays exactly where it is**. The intro section sits **above** it in the DOM. The illusion:
 
-No traffic-light dots. No URL bar. The canvas below occupies ~90% of frame height.
+1. Frames 0–340 → canvas full opacity, Hero hidden (`opacity: 0`, still in layout below).
+2. Frames 340–355 → ScrollTrigger timeline begins:
+   - Canvas opacity 1 → 1 (held)
+   - Hero opacity 0 → 1 with subtle 12px upward translate (nav, headline, copy, buttons — staggered 80ms, `power2.out`, no scale, no bounce)
+3. Frames 355–361 → canvas opacity 1 → 0 over the last ~6 frames while the final frame is still painted. Hero is already at full opacity underneath.
+4. Pin releases. User is now scrolling the real Hero with the video background — they never saw a cut.
 
-Frame keeps the current scroll-driven 3D rotation/lift and the `scale: 0.86` sizing so it doesn't overlap the headline.
+Because the final frame's composition (centred subject, generous negative space, white-ish ground) matches the existing Hero's centred headline + subtle video bg, the eye reads it as one continuous space. No reposition of the Hero is needed.
 
-## The evolving website canvas
+## 5. Mobile / reduced-motion / perf
+- `< 768px`: shorten pinned section to ~300vh, step by 2 frames (180 effective) to halve decode work.
+- `prefers-reduced-motion`: skip the sequence entirely — render only the final frame as a static image, fade straight into Hero.
+- Pause RAF + abort pending decodes on `visibilitychange`.
+- Memory cap: keep `Image` references in a Map; never decode beyond what's loaded.
 
-A single site morphing in place. Same hero block, same nav, same sections — they gain fidelity each stage. Cross-fade content layers with framer-motion so the structure feels continuous, not swapped.
+## 6. Out of scope
+- No changes to Hero, Showcase, Services, or any other section.
+- No new sections, no overlay copy on the canvas, no particles, no flares.
+- No backend.
 
-**Stage 0 — Strategy (wireframe)**
-Grey skeleton wireframe: nav placeholder bar, hero block with two text bars + CTA rectangle, three feature placeholder cards, footer bar. Mono dashed outlines. Annotations like "H1", "CTA", "section" in faint mono.
+## Files touched
+- **New**: `src/assets/frames/*` (361 pointers + manifest.ts), `src/components/site/CinematicIntro.tsx`, `src/hooks/use-lenis.ts`
+- **Edited**: `src/routes/index.tsx` (mount Lenis + render `<CinematicIntro />` above `<Hero />`), `package.json` (add `gsap`, `lenis`)
 
-**Stage 1 — Design (high-fidelity mock)**
-Same blocks, now styled: real type for hero ("Therapeutics, reimagined."), serif-italic accent word, soft brand gradient hero background, real card layouts with image placeholders, brand color appears. Looks like a Figma comp.
-
-**Stage 2 — Development (coded)**
-Same layout, now sharper: real imagery in cards, real microcopy, a subtle code-bracket overlay fading out at top corner, a tiny "components: 12" mono tag. Pixel-perfect feel.
-
-**Stage 3 — Optimization**
-Site stays. A thin performance overlay appears at top of canvas: LCP 0.6s · CLS 0.01 · SEO 100 · A11y 100, animated in. A scanline sweep passes once.
-
-**Stage 4 — Launch (live)**
-Overlay clears. Status pill flips to "Live". A soft brand glow halos the frame. A small "scartec.com · 99.99%" badge anchors bottom-right of canvas. Subtle pulse on the live dot.
-
-Everything is CSS/HTML mock — no real images needed beyond existing tokens and gradients.
-
-## Notifications
-
-Smaller, refined, OS-update tone. Max 2–3 visible at once. Each is a thin pill (~28px tall): tiny icon + one line of text + faint timestamp. Glass background, hairline border, soft shadow. Subtle fade + 4px slide in/out, no drift, no rotation.
-
-Stage-mapped (only this stage's notes are mounted):
-
-- Strategy: Positioning approved · Sitemap finalized
-- Design: Homepage approved · Client feedback received
-- Development: CMS connected · Development 72%
-- Optimization: SEO configured · Analytics connected · Performance 98
-- Launch: Launch scheduled · Deployed successfully · Live on custom domain
-
-Positioned around (not on top of) the frame: two on the right edge, one on the left, staggered vertically. They appear with the stage, exit when the stage changes.
-
-## Files
-
-- `src/components/site/Showcase.tsx` — only file touched
-  - Delete `Workspace` body (sidebar/stat/milestones/activity/launch banner) and `PreviewForStage`
-  - Add `WorkspaceFrame` (custom chrome) wrapping `WebsiteCanvas`
-  - Add `WebsiteCanvas` with 5 stage layers, cross-faded by `stage` prop
-  - Replace 5 `FloatingNote` instances with stage-keyed notification group (2–3 per stage)
-  - Keep: scroll wrapper, stage detection, 3D transform values, header, stage rail at bottom, ambient backdrop
-
-## Out of scope
-
-- No new dependencies
-- No route, data, or backend changes
-- Header copy and stage rail unchanged
-- Section height (420vh) unchanged
+Approve to build.
