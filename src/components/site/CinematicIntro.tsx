@@ -215,33 +215,32 @@ export function CinematicIntro() {
 
     progressiveLoad();
 
-    // ---- ScrollTrigger: scrub frame index + one-shot hero pop at end ----
+    // ---- ScrollTrigger: scrub frame index, then one-shot hero pop on leave ----
     const heroEl = document.getElementById("hero-anchor");
 
     // start hero hidden + slightly scaled down for the pop
-    if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.92, y: 24 });
+    if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.9, y: 28 });
 
     let popped = false;
     const popHero = () => {
       if (popped) return;
       popped = true;
       const tl = gsap.timeline();
-      // fade out the canvas quickly
       if (wrapRef.current) {
-        tl.to(wrapRef.current, { autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 0);
+        tl.to(wrapRef.current, { autoAlpha: 0, duration: 0.5, ease: "power3.out" }, 0);
       }
-      // pop the hero in
       if (heroEl) {
-        tl.to(
+        tl.fromTo(
           heroEl,
+          { autoAlpha: 0, scale: 0.9, y: 28 },
           {
             autoAlpha: 1,
             scale: 1,
             y: 0,
-            duration: 0.7,
-            ease: "back.out(1.6)",
+            duration: 0.8,
+            ease: "back.out(1.7)",
           },
-          0.1
+          0.15
         );
       }
     };
@@ -250,7 +249,7 @@ export function CinematicIntro() {
       popped = false;
       gsap.killTweensOf([wrapRef.current, heroEl].filter(Boolean));
       if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1 });
-      if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.92, y: 24 });
+      if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.9, y: 28 });
     };
 
     const st = ScrollTrigger.create({
@@ -262,11 +261,15 @@ export function CinematicIntro() {
         const p = self.progress;
         const idx = Math.min(totalUsed - 1, Math.round(p * (totalUsed - 1)));
         currentRef.i = idx;
-
-        if (p >= 0.985) popHero();
-        else if (p < 0.95) unpopHero();
+        // keep canvas fully opaque during the scrub; hero stays hidden
+        if (!popped) {
+          if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1 });
+        }
       },
+      onLeave: () => popHero(),
+      onEnterBack: () => unpopHero(),
     });
+
 
 
     return () => {
