@@ -188,7 +188,7 @@ export function Hero() {
             </div>
           </motion.div>
 
-          <h1 className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
+          <h1 data-hero-stage="2" className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
             <Reveal>
               <span className="block">Premium websites,</span>
             </Reveal>
@@ -201,7 +201,7 @@ export function Hero() {
         </div>
 
         <Reveal delay={0.18}>
-          <p className="mx-auto mt-8 max-w-xl text-center text-[17px] leading-[1.6] text-ink-soft">
+          <p data-hero-stage="3" className="mx-auto mt-8 max-w-xl text-center text-[17px] leading-[1.6] text-ink-soft">
             Averra is a senior design and engineering studio for ambitious
             businesses. Choose a package, reserve a slot, and we ship a
             conversion-grade website in 7–14 days.
@@ -209,14 +209,14 @@ export function Hero() {
         </Reveal>
 
         <Reveal delay={0.26}>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div data-hero-stage="4" className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <CtaPrimary href="#packages" size="lg">Start your website</CtaPrimary>
             <CtaGhost href="#work" size="lg">See recent work</CtaGhost>
           </div>
         </Reveal>
 
         <Reveal delay={0.34}>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-ink-muted">
+          <div data-hero-stage="5" className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-ink-muted">
             <span className="flex items-center gap-2">
               <span className="size-1 rounded-full bg-brand" />
               Fixed price, no hourly billing
@@ -231,6 +231,7 @@ export function Hero() {
             </span>
           </div>
         </Reveal>
+
       </div>
 
     </section>
