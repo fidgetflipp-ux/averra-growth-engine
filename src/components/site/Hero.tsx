@@ -54,7 +54,7 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <Reveal>
-          <div className="mx-auto mb-9 flex w-fit items-center gap-2.5 rounded-full hairline bg-white/80 px-3.5 py-1.5 text-xs font-medium text-ink-soft backdrop-blur">
+          <div data-hero-stage="1" className="mx-auto mb-9 flex w-fit items-center gap-2.5 rounded-full hairline bg-white/80 px-3.5 py-1.5 text-xs font-medium text-ink-soft backdrop-blur">
             <span className="relative flex size-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
               <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
@@ -64,6 +64,7 @@ export function Hero() {
             Q1 production
           </div>
         </Reveal>
+
 
         <div className="relative">
           {/* Card 1 — Launch Roadmap (top left) */}
