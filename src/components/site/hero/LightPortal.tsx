@@ -45,7 +45,7 @@ function Scene({ progress }: { progress: MotionValue<number> }) {
   const pointer = useRef({ x: 0, y: 0, tx: 0, ty: 0 });
   const glassGroup = useRef<THREE.Group>(null);
   const glassMesh = useRef<THREE.Mesh>(null);
-  const edgeRef = useRef<THREE.Mesh>(null);
+  const edgeGroup = useRef<THREE.Group>(null);
   const backdrop = useRef<THREE.Mesh>(null);
 
   // texture for the world behind the glass — same hero used by Showcase,
