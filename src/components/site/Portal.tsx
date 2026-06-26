@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { Hero } from "./Hero";
-import { LightPortalCanvas, PortalDispersion } from "./hero/LightPortal";
 
 import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 
