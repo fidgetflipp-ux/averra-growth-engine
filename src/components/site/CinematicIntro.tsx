@@ -215,11 +215,43 @@ export function CinematicIntro() {
 
     progressiveLoad();
 
-    // ---- ScrollTrigger: scrub frame index + tail fade ----
+    // ---- ScrollTrigger: scrub frame index + one-shot hero pop at end ----
     const heroEl = document.getElementById("hero-anchor");
 
-    // start hero hidden
-    if (heroEl) gsap.set(heroEl, { autoAlpha: 0, y: 18 });
+    // start hero hidden + slightly scaled down for the pop
+    if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.92, y: 24 });
+
+    let popped = false;
+    const popHero = () => {
+      if (popped) return;
+      popped = true;
+      const tl = gsap.timeline();
+      // fade out the canvas quickly
+      if (wrapRef.current) {
+        tl.to(wrapRef.current, { autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 0);
+      }
+      // pop the hero in
+      if (heroEl) {
+        tl.to(
+          heroEl,
+          {
+            autoAlpha: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "back.out(1.6)",
+          },
+          0.1
+        );
+      }
+    };
+    const unpopHero = () => {
+      if (!popped) return;
+      popped = false;
+      gsap.killTweensOf([wrapRef.current, heroEl].filter(Boolean));
+      if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1 });
+      if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.92, y: 24 });
+    };
 
     const st = ScrollTrigger.create({
       trigger: spacerRef.current!,
@@ -231,27 +263,11 @@ export function CinematicIntro() {
         const idx = Math.min(totalUsed - 1, Math.round(p * (totalUsed - 1)));
         currentRef.i = idx;
 
-        // tail handoff window
-        if (p >= 0.82) {
-          // hero fade in across 0.82 → 0.96
-          const hp = gsap.utils.clamp(0, 1, (p - 0.82) / 0.14);
-          if (heroEl) {
-            gsap.set(heroEl, {
-              autoAlpha: hp,
-              y: 18 * (1 - hp),
-            });
-          }
-          // canvas fade out across 0.90 → 1.0
-          const cp = gsap.utils.clamp(0, 1, (p - 0.9) / 0.1);
-          if (wrapRef.current) {
-            gsap.set(wrapRef.current, { autoAlpha: 1 - cp });
-          }
-        } else {
-          if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1 });
-          if (heroEl) gsap.set(heroEl, { autoAlpha: 0, y: 18 });
-        }
+        if (p >= 0.985) popHero();
+        else if (p < 0.95) unpopHero();
       },
     });
+
 
     return () => {
       cancelled = true;
