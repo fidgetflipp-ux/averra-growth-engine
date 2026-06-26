@@ -215,41 +215,71 @@ export function CinematicIntro() {
 
     progressiveLoad();
 
-    // ---- ScrollTrigger: scrub frame index, then one-shot hero pop on leave ----
+    // ---- Continuous transition: hero lives BEHIND the canvas during the
+    //      cinematic, then is released into the page when we leave the pin.
     const heroEl = document.getElementById("hero-anchor");
+    const navEl = document.querySelector<HTMLElement>("header,[data-site-nav]");
 
-    // start hero hidden + slightly scaled down for the pop
-    if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.9, y: 28 });
-
-    let popped = false;
-    const popHero = () => {
-      if (popped) return;
-      popped = true;
-      const tl = gsap.timeline();
-      if (wrapRef.current) {
-        tl.to(wrapRef.current, { autoAlpha: 0, duration: 0.5, ease: "power3.out" }, 0);
+    // Collect staged elements for the reveal sequence
+    const stageEls: HTMLElement[][] = [];
+    if (heroEl) {
+      for (let s = 1; s <= 6; s++) {
+        const nodes = Array.from(
+          heroEl.querySelectorAll<HTMLElement>(`[data-hero-stage="${s}"]`)
+        );
+        stageEls.push(nodes);
       }
-      if (heroEl) {
-        tl.fromTo(
-          heroEl,
-          { autoAlpha: 0, scale: 0.9, y: 28 },
+    }
+    const allStaged = stageEls.flat();
+
+    // Initial hidden state for staged elements (subtle, no overshoot)
+    if (allStaged.length) {
+      gsap.set(allStaged, { autoAlpha: 0, y: 20 });
+    }
+
+    // Park hero fullscreen behind canvas so the reveal happens IN PLACE.
+    const fixHero = () => {
+      if (!heroEl) return;
+      heroEl.style.position = "fixed";
+      heroEl.style.inset = "0";
+      heroEl.style.zIndex = "40";
+      heroEl.style.overflow = "hidden";
+    };
+    const unfixHero = () => {
+      if (!heroEl) return;
+      heroEl.style.position = "";
+      heroEl.style.inset = "";
+      heroEl.style.zIndex = "";
+      heroEl.style.overflow = "";
+    };
+    fixHero();
+
+    // Nav appears first — keep it hidden until the reveal begins.
+    if (navEl) gsap.set(navEl, { autoAlpha: 0, y: -8 });
+
+    let revealTl: gsap.core.Timeline | null = null;
+    const buildRevealTimeline = () => {
+      const tl = gsap.timeline({ paused: true });
+      // Nav first
+      if (navEl) {
+        tl.to(navEl, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0);
+      }
+      // Then stages 1..6, very small stagger, restrained easing
+      stageEls.forEach((nodes, i) => {
+        if (!nodes.length) return;
+        tl.to(
+          nodes,
           {
             autoAlpha: 1,
-            scale: 1,
             y: 0,
-            duration: 0.8,
-            ease: "back.out(1.7)",
+            duration: 0.7,
+            ease: "power2.out",
+            stagger: 0.05,
           },
-          0.15
+          0.12 + i * 0.09
         );
-      }
-    };
-    const unpopHero = () => {
-      if (!popped) return;
-      popped = false;
-      gsap.killTweensOf([wrapRef.current, heroEl].filter(Boolean));
-      if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1 });
-      if (heroEl) gsap.set(heroEl, { autoAlpha: 0, scale: 0.9, y: 28 });
+      });
+      return tl;
     };
 
     const st = ScrollTrigger.create({
@@ -261,16 +291,44 @@ export function CinematicIntro() {
         const p = self.progress;
         const idx = Math.min(totalUsed - 1, Math.round(p * (totalUsed - 1)));
         currentRef.i = idx;
-        // keep canvas fully opaque during the scrub; hero stays hidden
-        if (!popped) {
-          if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1 });
+
+        // Reveal window: final 15% of the pin
+        const r = gsap.utils.clamp(0, 1, (p - 0.85) / 0.15);
+
+        // Canvas fades from 1 → 0 across the reveal window
+        if (wrapRef.current) {
+          // Ease the fade so the world dissolves rather than wipes
+          const eased = r * r * (3 - 2 * r); // smoothstep
+          gsap.set(wrapRef.current, { autoAlpha: 1 - eased });
         }
+
+        // Drive the reveal timeline by the same progress
+        if (!revealTl) revealTl = buildRevealTimeline();
+        revealTl.progress(r);
       },
-      onLeave: () => popHero(),
-      onEnterBack: () => unpopHero(),
+      onLeave: () => {
+        // Release hero into the page; scroll position equals top of hero's
+        // natural flow position, so no jump.
+        unfixHero();
+        if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 0, pointerEvents: "none" });
+      },
+      onEnterBack: () => {
+        // Re-park hero behind the canvas for the scrub
+        fixHero();
+        if (wrapRef.current) gsap.set(wrapRef.current, { autoAlpha: 1, pointerEvents: "none" });
+      },
     });
 
-
+    // Subtle ambient drift on the canvas while it's visible — keeps the
+    // world feeling alive even when the user pauses.
+    const ambient = gsap.to(wrapRef.current, {
+      backgroundPositionY: "+=6",
+      x: 0,
+      duration: 8,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
 
     return () => {
       cancelled = true;
@@ -278,11 +336,16 @@ export function CinematicIntro() {
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("resize", resize);
       st.kill();
+      ambient.kill();
+      revealTl?.kill();
       gsap.ticker.remove(raf);
       lenis.destroy();
-      if (heroEl) gsap.set(heroEl, { autoAlpha: 1, y: 0, clearProps: "all" });
+      unfixHero();
+      if (navEl) gsap.set(navEl, { clearProps: "all" });
+      if (allStaged.length) gsap.set(allStaged, { clearProps: "all" });
     };
   }, []);
+
 
   return (
     <>
