@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, MeshTransmissionMaterial, RoundedBox, useTexture } from "@react-three/drei";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useTransform, type MotionValue } from "framer-motion";
 
