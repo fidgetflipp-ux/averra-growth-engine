@@ -54,7 +54,7 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <Reveal>
-          <div className="mx-auto mb-9 flex w-fit items-center gap-2.5 rounded-full hairline bg-white/80 px-3.5 py-1.5 text-xs font-medium text-ink-soft backdrop-blur">
+          <div data-hero-stage="1" className="mx-auto mb-9 flex w-fit items-center gap-2.5 rounded-full hairline bg-white/80 px-3.5 py-1.5 text-xs font-medium text-ink-soft backdrop-blur">
             <span className="relative flex size-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
               <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
@@ -65,6 +65,7 @@ export function Hero() {
           </div>
         </Reveal>
 
+
         <div className="relative">
           {/* Card 1 — Launch Roadmap (top left) */}
           <motion.div
@@ -72,7 +73,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "0.5s" }}
-            className="absolute left-0 top-8 z-20 hidden w-[232px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
+            className="absolute left-0 top-8 z-20 hidden w-[232px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">Launch roadmap</div>
             <div className="relative space-y-3.5">
@@ -114,7 +115,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "2s" }}
-            className="absolute left-4 top-[220px] z-20 hidden w-[210px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
+            className="absolute left-4 top-[220px] z-20 hidden w-[210px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">One engagement</div>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
@@ -144,7 +145,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "1.2s" }}
-            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle overflow-hidden"
+            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle overflow-hidden" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-3">Recent result</div>
             <div className="flex items-baseline gap-1.5">
@@ -175,7 +176,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "2.8s" }}
-            className="absolute right-4 top-[220px] z-20 hidden w-[260px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
+            className="absolute right-4 top-[220px] z-20 hidden w-[260px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">Client feedback</div>
             <p className="text-[13px] leading-relaxed text-ink-soft" style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic' }}>
@@ -187,7 +188,7 @@ export function Hero() {
             </div>
           </motion.div>
 
-          <h1 className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
+          <h1 data-hero-stage="2" className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
             <Reveal>
               <span className="block">Premium websites,</span>
             </Reveal>
@@ -200,7 +201,7 @@ export function Hero() {
         </div>
 
         <Reveal delay={0.18}>
-          <p className="mx-auto mt-8 max-w-xl text-center text-[17px] leading-[1.6] text-ink-soft">
+          <p data-hero-stage="3" className="mx-auto mt-8 max-w-xl text-center text-[17px] leading-[1.6] text-ink-soft">
             Averra is a senior design and engineering studio for ambitious
             businesses. Choose a package, reserve a slot, and we ship a
             conversion-grade website in 7–14 days.
@@ -208,14 +209,14 @@ export function Hero() {
         </Reveal>
 
         <Reveal delay={0.26}>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div data-hero-stage="4" className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <CtaPrimary href="#packages" size="lg">Start your website</CtaPrimary>
             <CtaGhost href="#work" size="lg">See recent work</CtaGhost>
           </div>
         </Reveal>
 
         <Reveal delay={0.34}>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-ink-muted">
+          <div data-hero-stage="5" className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-ink-muted">
             <span className="flex items-center gap-2">
               <span className="size-1 rounded-full bg-brand" />
               Fixed price, no hourly billing
@@ -230,6 +231,7 @@ export function Hero() {
             </span>
           </div>
         </Reveal>
+
       </div>
 
     </section>
