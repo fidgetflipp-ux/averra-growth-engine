@@ -73,7 +73,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "0.5s" }}
-            className="absolute left-0 top-8 z-20 hidden w-[232px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
+            className="absolute left-0 top-8 z-20 hidden w-[232px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">Launch roadmap</div>
             <div className="relative space-y-3.5">
@@ -115,7 +115,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "2s" }}
-            className="absolute left-4 top-[220px] z-20 hidden w-[210px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
+            className="absolute left-4 top-[220px] z-20 hidden w-[210px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">One engagement</div>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
@@ -145,7 +145,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "1.2s" }}
-            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle overflow-hidden"
+            className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle overflow-hidden" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-3">Recent result</div>
             <div className="flex items-baseline gap-1.5">
@@ -176,7 +176,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ animationDelay: "2.8s" }}
-            className="absolute right-4 top-[220px] z-20 hidden w-[260px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle"
+            className="absolute right-4 top-[220px] z-20 hidden w-[260px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">Client feedback</div>
             <p className="text-[13px] leading-relaxed text-ink-soft" style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic' }}>
