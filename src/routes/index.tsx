@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
-import { Hero } from "@/components/site/Hero";
+import { PortalStage } from "@/components/site/Portal";
 import { Showcase } from "@/components/site/Showcase";
 import { SocialProof } from "@/components/site/SocialProof";
 import { Services } from "@/components/site/Services";
@@ -35,7 +35,7 @@ function Index() {
     <div className="relative">
       <Nav />
       <main>
-        <Hero />
+        <PortalStage />
         <Showcase />
         <SocialProof />
         <Services />
