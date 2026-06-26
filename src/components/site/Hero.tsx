@@ -68,13 +68,10 @@ export function Hero() {
 
         <div className="relative">
           {/* Card 1 — Launch Roadmap (top left) */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{ animationDelay: "0.5s" }}
+          <div
             className="absolute left-0 top-8 z-20 hidden w-[232px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
+
             <div className="text-eyebrow mb-4">Launch roadmap</div>
             <div className="relative space-y-3.5">
               {/* timeline rail */}
@@ -107,14 +104,10 @@ export function Hero() {
               <span className="text-[10px] text-ink-muted">Launch target</span>
               <span className="ml-auto text-[11px] font-semibold tabular-nums text-ink">Jun 26</span>
             </div>
-          </motion.div>
+          </div>
 
           {/* Card 2 — One Engagement (bottom left) */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{ animationDelay: "2s" }}
+          <div
             className="absolute left-4 top-[220px] z-20 hidden w-[210px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">One engagement</div>
@@ -137,14 +130,10 @@ export function Hero() {
             <div className="mt-4 pt-3 border-t border-foreground/6">
               <span className="text-[10px] text-ink-muted">Everything required to launch</span>
             </div>
-          </motion.div>
+          </div>
 
           {/* Card 3 — Recent Result (top right) */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{ animationDelay: "1.2s" }}
+          <div
             className="absolute right-0 top-4 z-20 hidden w-[220px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle overflow-hidden" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-3">Recent result</div>
@@ -168,14 +157,10 @@ export function Hero() {
                 className="fill-ink"
               />
             </svg>
-          </motion.div>
+          </div>
 
           {/* Card 4 — Client Feedback (bottom right) */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{ animationDelay: "2.8s" }}
+          <div
             className="absolute right-4 top-[220px] z-20 hidden w-[260px] rounded-2xl border border-foreground/7 bg-white/95 p-5 shadow-card backdrop-blur-xl xl:block animate-float-subtle" data-hero-stage="6"
           >
             <div className="text-eyebrow mb-4">Client feedback</div>
@@ -186,7 +171,8 @@ export function Hero() {
               <span className="h-px w-4 bg-foreground/15" />
               <span className="text-[11px] text-ink-muted">Founder, clinical-stage biotech</span>
             </div>
-          </motion.div>
+          </div>
+
 
           <h1 data-hero-stage="2" className="text-display relative z-10 mx-auto max-w-[18ch] text-center text-[clamp(2.75rem,7.5vw,6rem)]">
             <Reveal>
