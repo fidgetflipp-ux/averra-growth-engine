@@ -126,13 +126,18 @@ function Scene({ progress }: { progress: MotionValue<number> }) {
       }
     }
 
-    // ——— Polished edge brightens as we approach ———
-    if (edgeRef.current) {
+    // ——— Polished edge brightens as we approach, then dissolves ———
+    if (edgeGroup.current) {
       const reveal = THREE.MathUtils.smoothstep(p, 0.1, 0.8);
       const dissolve = 1 - THREE.MathUtils.smoothstep(p, 0.88, 1);
-      const mat = edgeRef.current.material as THREE.MeshPhysicalMaterial;
-      mat.emissiveIntensity = (0.05 + reveal * 0.55) * dissolve;
-      mat.opacity = dissolve;
+      edgeGroup.current.traverse((obj) => {
+        const m = (obj as THREE.Mesh).material as THREE.MeshPhysicalMaterial | undefined;
+        if (m && "emissiveIntensity" in m) {
+          m.emissiveIntensity = (0.08 + reveal * 0.65) * dissolve;
+          m.opacity = 0.95 * dissolve;
+          m.transparent = true;
+        }
+      });
     }
 
     // ——— Backdrop (the Showcase world behind the glass) ———
@@ -200,15 +205,10 @@ function Scene({ progress }: { progress: MotionValue<number> }) {
           />
         </RoundedBox>
 
-        {/* Polished edge — extremely thin frame around the pane */}
-        <mesh ref={edgeRef}>
-          <torusGeometry args={[0, 0, 0, 0]} />
-          {/* placeholder geometry; replaced below with edge frame */}
-          <meshPhysicalMaterial transparent opacity={0} />
-        </mesh>
-
-        {/* Edge frame as four very thin highlights to read as polished glazing */}
-        <EdgeFrame width={W} height={H} thickness={T} />
+        {/* Edge frame — four very thin polished highlights */}
+        <group ref={edgeGroup}>
+          <EdgeFrame width={W} height={H} thickness={T} />
+        </group>
       </group>
     </>
   );
