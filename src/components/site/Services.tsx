@@ -84,10 +84,7 @@ export function Services() {
         </div>
 
         {/* 3D carousel */}
-        <div
-          className="relative flex flex-1 items-center justify-center pt-4 md:pt-6"
-          style={{ perspective: "2000px" }}
-        >
+        <div className="relative flex items-center justify-center pt-2" style={{ perspective: "2000px" }}>
           <div
             className="relative h-[clamp(380px,58vh,560px)] w-[clamp(260px,30vw,360px)]"
             style={{ transformStyle: "preserve-3d" }}
