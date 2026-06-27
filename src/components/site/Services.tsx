@@ -50,11 +50,7 @@ export function Services() {
   });
 
   // active index drifts from 0 → services.length - 1 across the scroll range
-  const activeIndex = useTransform(
-    scrollYProgress,
-    [0.05, 0.95],
-    [0, services.length - 1],
-  );
+  const activeIndex = useTransform(scrollYProgress, [0.05, 0.95], [0, services.length - 1]);
 
   return (
     <section
@@ -75,21 +71,21 @@ export function Services() {
           </Reveal>
           <Reveal delay={0.06}>
             <h2 className="text-display mx-auto mt-8 max-w-5xl text-center text-[clamp(2.25rem,5.5vw,4.5rem)] leading-[1.02] tracking-[-0.02em]">
-              Everything Your Company<br />Needs To{" "}
-              <span className="text-serif-italic">Dominate.</span>
+              Everything Your Company
+              <br />
+              Needs To <span className="text-serif-italic">Dominate.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mx-auto mt-6 max-w-xl text-center text-[15px] leading-[1.7] text-ink-soft">
-              We design and build digital experiences that create authority,
-              trust, and market leadership.
+              We design and build digital experiences that create authority, trust, and market leadership.
             </p>
           </Reveal>
         </div>
 
         {/* 3D carousel */}
         <div
-          className="relative flex flex-1 items-center justify-center pt-16 md:pt-24"
+          className="relative flex flex-1 items-center justify-center pt-10 md:pt-24"
           style={{ perspective: "2000px" }}
         >
           <div
@@ -134,14 +130,8 @@ function Card({
   const ANGLE_STEP = 55; // degrees between adjacent cards on the ring
 
   const rotateY = useTransform(delta, (d) => d * ANGLE_STEP);
-  const translateX = useTransform(
-    delta,
-    (d) => Math.sin((d * ANGLE_STEP * Math.PI) / 180) * RADIUS,
-  );
-  const translateZ = useTransform(
-    delta,
-    (d) => (Math.cos((d * ANGLE_STEP * Math.PI) / 180) - 1) * RADIUS,
-  );
+  const translateX = useTransform(delta, (d) => Math.sin((d * ANGLE_STEP * Math.PI) / 180) * RADIUS);
+  const translateZ = useTransform(delta, (d) => (Math.cos((d * ANGLE_STEP * Math.PI) / 180) - 1) * RADIUS);
 
   const opacity = useTransform(delta, (d) => {
     const a = Math.abs(d);
@@ -208,13 +198,7 @@ function Card({
   );
 }
 
-function Progress({
-  activeIndex,
-  total,
-}: {
-  activeIndex: MotionValue<number>;
-  total: number;
-}) {
+function Progress({ activeIndex, total }: { activeIndex: MotionValue<number>; total: number }) {
   return (
     <div className="flex items-center justify-center gap-3">
       {Array.from({ length: total }).map((_, i) => (
@@ -229,9 +213,7 @@ function Dot({ index, activeIndex }: { index: number; activeIndex: MotionValue<n
     const d = Math.abs(index - v);
     return Math.max(0.2, 1 - d * 0.55);
   });
-  const width = useTransform(activeIndex, (v) =>
-    Math.abs(index - v) < 0.5 ? 28 : 14,
-  );
+  const width = useTransform(activeIndex, (v) => (Math.abs(index - v) < 0.5 ? 28 : 14));
   return (
     <motion.span
       style={{ opacity, width }}
