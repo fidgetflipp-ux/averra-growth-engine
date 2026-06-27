@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { PortalStage } from "@/components/site/Portal";
+import { FutureState } from "@/components/site/FutureState";
 import { Showcase } from "@/components/site/Showcase";
 import { SocialProof } from "@/components/site/SocialProof";
 import { Services } from "@/components/site/Services";
