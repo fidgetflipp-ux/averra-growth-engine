@@ -122,18 +122,44 @@ function Card({
   service: (typeof services)[number];
   total: number;
 }) {
-  // distance from active (signed)
-  const delta = useTransform(activeIndex, (v) => index - v);
-  const rotateY = useTransform(delta, (d) => d * 55);
-  const translateX = useTransform(delta, (d) => d * 240);
-  const translateZ = useTransform(delta, (d) => -Math.abs(d) * 280);
+  // shortest signed distance around the ring → continuous circular orbit
+  const delta = useTransform(activeIndex, (v) => {
+    let d = index - v;
+    if (d > total / 2) d -= total;
+    if (d < -total / 2) d += total;
+    return d;
+  });
+
+  const RADIUS = 380; // ring depth in px
+  const ANGLE_STEP = 55; // degrees between adjacent cards on the ring
+
+  const rotateY = useTransform(delta, (d) => d * ANGLE_STEP);
+  const translateX = useTransform(
+    delta,
+    (d) => Math.sin((d * ANGLE_STEP * Math.PI) / 180) * RADIUS,
+  );
+  const translateZ = useTransform(
+    delta,
+    (d) => (Math.cos((d * ANGLE_STEP * Math.PI) / 180) - 1) * RADIUS,
+  );
+
   const opacity = useTransform(delta, (d) => {
     const a = Math.abs(d);
-    if (a > 2.4) return 0;
-    return Math.max(0, 1 - a * 0.38);
+    if (a >= 2) return 0;
+    if (a >= 1) return 0.55 * (2 - a);
+    return 1;
   });
-  const scale = useTransform(delta, (d) => Math.max(0.7, 1 - Math.abs(d) * 0.08));
+  const scale = useTransform(delta, (d) => {
+    const a = Math.abs(d);
+    if (a <= 1) return 1 - a * 0.18; // center card stands out
+    return Math.max(0.7, 0.82 - (a - 1) * 0.1);
+  });
   const zIndex = useTransform(delta, (d) => 100 - Math.round(Math.abs(d) * 10));
+  const filter = useTransform(delta, (d) => {
+    const a = Math.abs(d);
+    if (a < 0.5) return "blur(0px)";
+    return `blur(${Math.min(5, (a - 0.5) * 3.5)}px)`;
+  });
 
   return (
     <motion.article
@@ -145,10 +171,11 @@ function Card({
         scale,
         opacity,
         zIndex,
+        filter,
         transformStyle: "preserve-3d",
         transformOrigin: "center center",
         transition: "none",
-        willChange: "transform, opacity",
+        willChange: "transform, opacity, filter",
       }}
       aria-label={`${service.italic} ${service.sans} — ${index + 1} of ${total}`}
     >
