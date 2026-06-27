@@ -37,6 +37,7 @@ function Index() {
       <Nav />
       <main>
         <PortalStage />
+        <FutureState />
         <Showcase />
         <SocialProof />
         <Services />
