@@ -85,7 +85,7 @@ export function Services() {
 
         {/* 3D carousel */}
         <div
-          className="relative flex flex-1 items-center justify-center pt-10 md:pt-24"
+          className="relative flex flex-1 items-center justify-center pt-10 md:pt-16"
           style={{ perspective: "2000px" }}
         >
           <div
