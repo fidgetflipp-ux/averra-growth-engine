@@ -227,12 +227,27 @@ function StageLayer({ active, children }: { active: boolean; children: React.Rea
   );
 }
 
+function StageImage({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-black">
+      <img
+        src={src}
+        alt={alt}
+        draggable={false}
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ objectPosition: "center 100%", transform: "scale(1.18)", transformOrigin: "center bottom" }}
+      />
+    </div>
+  );
+}
+
 function WebsiteCanvas({ stage }: { stage: number }) {
   return (
     <div className="relative h-full w-full overflow-hidden rounded-b-[14px] bg-black">
       <StageLayer active={stage === 0}><WireframeLayer /></StageLayer>
-      <StageLayer active={stage === 1}><DesignLayer /></StageLayer>
-      <StageLayer active={stage >= 2}><DesignLayer interactive={stage >= 2} /></StageLayer>
+      <StageLayer active={stage === 1}><StageImage src={designAsset.url} alt="Yeon Ritual — design stage" /></StageLayer>
+      <StageLayer active={stage === 2}><StageImage src={developmentAsset.url} alt="Yeon Ritual — development stage" /></StageLayer>
+      <StageLayer active={stage >= 3}><StageImage src={optimizationAsset.url} alt="Yeon Ritual — optimization stage" /></StageLayer>
 
       {/* Optimization overlay */}
       <AnimatePresence>
