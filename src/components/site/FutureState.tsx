@@ -31,19 +31,23 @@ export function FutureState() {
 
         {/* Headline */}
         <Reveal delay={0.08}>
-          <h2 className="text-display mx-auto mt-10 max-w-[22ch] text-center text-[clamp(2.5rem,6vw,5.25rem)] leading-[1.02] tracking-[-0.025em]">
-            Build the company competitors compare themselves{" "}
+          <h2 className="text-display mx-auto mt-10 max-w-[20ch] text-center text-[clamp(2.5rem,6vw,5.25rem)] leading-[1.02] tracking-[-0.025em]">
+            Become the company competitors benchmark themselves{" "}
             <span className="text-serif-italic">against.</span>
           </h2>
         </Reveal>
 
         {/* Body */}
         <Reveal delay={0.18}>
-          <div className="mx-auto mt-12 max-w-[60ch] text-center text-[17px] leading-[1.7] text-ink-soft">
+          <div className="mx-auto mt-12 max-w-[58ch] text-center text-[17px] leading-[1.7] text-ink-soft">
             <p>
-              Exceptional companies are perceived differently long before they
-              dominate their markets. We build digital experiences that
-              <span className="text-ink"> accelerate that process.</span>
+              Most companies grow faster than perception. The companies that
+              dominate categories understand something earlier: how they are
+              perceived determines who trusts them, hires them, invests in
+              them, and competes with them.
+            </p>
+            <p className="mt-6 text-ink">
+              A world-class digital presence changes that.
             </p>
           </div>
         </Reveal>
