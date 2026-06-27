@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import svcDesign from "@/assets/website-design-figma.png.asset.json";
 import svcDev from "@/assets/svc-dev.jpg";
 import svcCro from "@/assets/svc-cro.jpg";
@@ -38,59 +40,176 @@ const services = [
   },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 export function Services() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  // active index drifts from 0 → services.length - 1 across the scroll range
+  const activeIndex = useTransform(
+    scrollYProgress,
+    [0.05, 0.95],
+    [0, services.length - 1],
+  );
+
   return (
-    <section id="services" className="overflow-hidden bg-white py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal>
-          <h2 className="text-display mx-auto max-w-4xl text-center text-[clamp(2.25rem,5.5vw,4.5rem)] leading-[1.02]">
-            Everything Your Site<br />Needs To <span className="text-serif-italic">Convert.</span>
-          </h2>
-        </Reveal>
-      </div>
+    <section
+      ref={sectionRef}
+      id="services"
+      className="relative bg-white"
+      style={{ height: `${services.length * 100}vh` }}
+    >
+      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+        {/* Eyebrow + headline */}
+        <div className="mx-auto w-full max-w-7xl px-6 pt-20 md:pt-24">
+          <Reveal>
+            <div className="flex items-center justify-center gap-3">
+              <span className="h-px w-10 bg-foreground/20" />
+              <span className="text-eyebrow">Future State</span>
+              <span className="h-px w-10 bg-foreground/20" />
+            </div>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <h2 className="text-display mx-auto mt-8 max-w-5xl text-center text-[clamp(2.25rem,5.5vw,4.5rem)] leading-[1.02] tracking-[-0.02em]">
+              Everything Your Company<br />Needs To{" "}
+              <span className="text-serif-italic">Dominate.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="mx-auto mt-6 max-w-xl text-center text-[15px] leading-[1.7] text-ink-soft">
+              We design and build digital experiences that create authority,
+              trust, and market leadership.
+            </p>
+          </Reveal>
+        </div>
 
-      <Reveal delay={0.1}>
-        <div className="mt-20">
-          <div className="scrollbar-none flex snap-x snap-mandatory gap-5 overflow-x-auto px-[max(1.5rem,calc((100vw-80rem)/2))] pb-6">
-            {services.map((s) => (
-              <article
-                key={s.italic + s.sans}
-                className="group relative aspect-[3/4] w-[min(78vw,420px)] shrink-0 snap-center overflow-hidden rounded-[28px] bg-ink shadow-lift"
-              >
-                {/* image */}
-                <img
-                  src={s.img}
-                  alt={`${s.italic} ${s.sans}`}
-                  loading="lazy"
-                  className="absolute inset-0 size-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.05]"
-                />
-                {/* top → bottom darkening so title + pills stay legible */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-black/0 to-black/70" />
-
-                {/* Title */}
-                <div className="absolute inset-x-0 top-0 px-7 pt-7">
-                  <h3 className="text-display text-white text-[clamp(1.75rem,2.4vw,2.4rem)] leading-[1]">
-                    <span className="text-serif-italic">{s.italic}</span>{" "}
-                    <span className="font-medium">{s.sans}</span>
-                  </h3>
-                </div>
-
-                {/* Pills */}
-                <div className="absolute inset-x-0 bottom-0 flex flex-wrap gap-1.5 px-5 pb-5">
-                  {s.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-[12px] font-medium text-white backdrop-blur-md"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </article>
+        {/* 3D carousel */}
+        <div
+          className="relative flex flex-1 items-center justify-center"
+          style={{ perspective: "2000px" }}
+        >
+          <div
+            className="relative h-[clamp(380px,58vh,560px)] w-[clamp(260px,30vw,360px)]"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {services.map((s, i) => (
+              <Card key={s.italic + s.sans} index={i} activeIndex={activeIndex} service={s} total={services.length} />
             ))}
           </div>
         </div>
-      </Reveal>
+
+        {/* Progress indicator */}
+        <div className="mx-auto w-full max-w-7xl px-6 pb-10">
+          <Progress activeIndex={activeIndex} total={services.length} />
+        </div>
+      </div>
     </section>
+  );
+}
+
+function Card({
+  index,
+  activeIndex,
+  service,
+  total,
+}: {
+  index: number;
+  activeIndex: MotionValue<number>;
+  service: (typeof services)[number];
+  total: number;
+}) {
+  // distance from active (signed)
+  const delta = useTransform(activeIndex, (v) => index - v);
+  const rotateY = useTransform(delta, (d) => d * 55);
+  const translateX = useTransform(delta, (d) => d * 240);
+  const translateZ = useTransform(delta, (d) => -Math.abs(d) * 280);
+  const opacity = useTransform(delta, (d) => {
+    const a = Math.abs(d);
+    if (a > 2.4) return 0;
+    return Math.max(0, 1 - a * 0.38);
+  });
+  const scale = useTransform(delta, (d) => Math.max(0.7, 1 - Math.abs(d) * 0.08));
+  const zIndex = useTransform(delta, (d) => 100 - Math.round(Math.abs(d) * 10));
+
+  return (
+    <motion.article
+      className="absolute inset-0 overflow-hidden rounded-[28px] bg-ink shadow-lift"
+      style={{
+        rotateY,
+        x: translateX,
+        z: translateZ,
+        scale,
+        opacity,
+        zIndex,
+        transformStyle: "preserve-3d",
+        transformOrigin: "center center",
+        transition: "none",
+        willChange: "transform, opacity",
+      }}
+      aria-label={`${service.italic} ${service.sans} — ${index + 1} of ${total}`}
+    >
+      <img
+        src={service.img}
+        alt={`${service.italic} ${service.sans}`}
+        loading="lazy"
+        className="absolute inset-0 size-full object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-black/0 to-black/70" />
+
+      <div className="absolute inset-x-0 top-0 px-7 pt-7">
+        <h3 className="text-display text-white text-[clamp(1.5rem,2.2vw,2.2rem)] leading-[1]">
+          <span className="text-serif-italic">{service.italic}</span>{" "}
+          <span className="font-medium">{service.sans}</span>
+        </h3>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 flex flex-wrap gap-1.5 px-5 pb-5">
+        {service.tags.map((t) => (
+          <span
+            key={t}
+            className="rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-[12px] font-medium text-white backdrop-blur-md"
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+    </motion.article>
+  );
+}
+
+function Progress({
+  activeIndex,
+  total,
+}: {
+  activeIndex: MotionValue<number>;
+  total: number;
+}) {
+  return (
+    <div className="flex items-center justify-center gap-3">
+      {Array.from({ length: total }).map((_, i) => (
+        <Dot key={i} index={i} activeIndex={activeIndex} />
+      ))}
+    </div>
+  );
+}
+
+function Dot({ index, activeIndex }: { index: number; activeIndex: MotionValue<number> }) {
+  const opacity = useTransform(activeIndex, (v) => {
+    const d = Math.abs(index - v);
+    return Math.max(0.2, 1 - d * 0.55);
+  });
+  const width = useTransform(activeIndex, (v) =>
+    Math.abs(index - v) < 0.5 ? 28 : 14,
+  );
+  return (
+    <motion.span
+      style={{ opacity, width }}
+      className="h-[2px] rounded-full bg-ink"
+      transition={{ ease: EASE, duration: 0.6 }}
+    />
   );
 }
