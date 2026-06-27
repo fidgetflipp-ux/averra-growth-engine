@@ -1,70 +1,74 @@
-# Future State — Editorial Section
+# Authority Mechanism — Editorial Thesis Section
 
-A single immersive editorial moment between the hero and the Showcase. No cards, no chrome, no metrics. One eyebrow, one headline, one paragraph, one monumental image, one whispered caption.
+A pure-typography section placed directly below `<FutureState />` and above `<Showcase />`. No cards, icons, images, gradients, or shadows. Type and whitespace carry it.
 
 ## Placement
-Inserted in `src/routes/index.tsx` directly after `<PortalStage />`, before `<Showcase />`. Continues the hero's warm off-white world so the camera doesn't cut — it walks forward.
+`src/routes/index.tsx` — insert `<AuthorityMechanism />` between `<FutureState />` and `<Showcase />`. Inherits the same warm `--surface` background so the camera keeps walking forward — no hard reset.
 
 ## Files
-- **new** `src/components/site/FutureState.tsx` — the section.
-- **new** `src/assets/future-state.jpg.asset.json` — the attached architectural reference image, uploaded via `lovable-assets` from `/mnt/user-uploads/`.
-- **edit** `src/routes/index.tsx` — mount the section.
-- **edit** `src/styles.css` — add one `@utility` for the horizontal mask reveal keyframes (the only new motion primitive).
+- **new** `src/components/site/AuthorityMechanism.tsx`
+- **edit** `src/routes/index.tsx` — mount the section
 
-## Composition (top → bottom)
+No CSS additions — uses existing `text-eyebrow`, `text-display`, `text-serif-italic`, `hairline-t/b`, and the existing `Reveal` primitive's motion vocabulary (opacity + 12px y, 700ms, `cubic-bezier(0.22,1,0.36,1)`).
+
+## Composition
+
 ```text
-                    — FUTURE STATE —              ← mono eyebrow, hairlines either side
-
-         Become the company competitors
-            benchmark themselves against.          ← Fraunces display, ~clamp(2.75rem, 6vw, 5.25rem)
-                                                       "against." in serif italic for one beat of emphasis
-
-         Most companies grow faster than
-         perception. The companies that
-         dominate categories understand
-         something earlier: how they are
-         perceived determines who trusts
-         them, hires them, invests in them,
-         and competes with them.                   ← max-w ~58ch, ink-soft, 1.65 leading
-
-         A world-class digital presence
-         changes that.                             ← own line, ink (full weight) for closure
+                 ── HOW AUTHORITY IS BUILT ──        ← 11px mono, tracking 0.35em, hairlines either side
 
 
-   ┌──────────────────────────────────────────┐
-   │                                          │
-   │        [architectural image]             │   ← max-w 1400px, rounded-[28px],
-   │                                          │     hairline glass border, soft shadow,
-   │                                          │     object-cover, 16:9
-   └──────────────────────────────────────────┘
+           Companies do not dominate markets
+              because they are larger.
+           They dominate because they are
+             perceived differently.                  ← Fraunces, clamp(2rem, 3.4vw, 2.6rem),
+                                                       leading 1.15, centered, max-w ~22ch
+                                                       "perceived differently." in serif italic
 
 
-                  PERCEPTION COMPOUNDS            ← mono eyebrow
+            (large vertical breath — ~14rem)
 
-              Trust accelerates.
-              Pricing power increases.            ← Fraunces, ~22px, ink-soft,
-              Talent follows leaders.                line-height 1.9, centered, one per line
-              Opportunities become inevitable.
+
+             Trust is established before
+              conversations begin.                   ← Fraunces, clamp(1.6rem, 2.4vw, 2.1rem),
+                                                       leading 1.4, max-w 900px, centered
+            Credibility shortens sales cycles.
+             Perception increases pricing power.
+            Exceptional companies attract
+              exceptional people.
+                  Momentum compounds.
+            Eventually markets stop comparing
+                  you to competitors.
+              Competitors compare themselves
+                      to you.                        ← final line — slightly heavier weight
+
+
+              (vertical breath — ~10rem)
+
+
+          A world-class digital presence
+          accelerates that process.                  ← 18px Inter Tight, ink (full weight),
+                                                       centered, max-w 60ch
+
+
+             ── HOW WE BUILD AUTHORITY ──            ← closing eyebrow, transitions to next section
 ```
 
-## Visual rules
-- Background: `--surface` (warm off-white already in tokens) so it inherits the hero's world.
-- Top + bottom hairlines (`hairline-t`, `hairline-b`) — the only dividers.
-- Vertical rhythm: section uses `py-40 md:py-56`, headline → body `mt-12`, body → image `mt-24`, image → caption `mt-20`.
-- Image frame: `rounded-[28px]`, `border border-foreground/8`, `shadow-[0_40px_120px_-40px_oklch(0.14_0.005_260/0.18)]`.
-- Sage accent appears only as a 1px underline beneath the eyebrow rule — restraint over decoration.
+## Motion
+- Each body line is its own `<Reveal>`: opacity 0 → 1, translateY 12px → 0, duration 700ms, ease `cubic-bezier(0.22,1,0.36,1)`, `once: true`, staggered ~140ms by index.
+- Headline and final statement use the same primitive — no new motion patterns.
+- Honors `prefers-reduced-motion` (already global).
 
-## Motion (restrained, the only effects)
-- **Horizontal mask reveal** on the image when it enters viewport: `clip-path` from `inset(0 100% 0 0)` to `inset(0 0 0 0)`, 1.1s, `cubic-bezier(0.22, 1, 0.36, 1)`. Triggered with `useInView({ once: true })`.
-- **Hover**: image scales to 1.02 over 700ms; a `useMotionValue` cursor parallax translates the image ≤5px on X/Y, spring-damped. Frame itself does not move.
-- Headline + body + caption fade/lift via the existing `<Reveal>` primitive — no new patterns.
-- Honors `prefers-reduced-motion` (already global in `styles.css`).
+## Visual rules
+- Background `bg-surface`, `hairline-t hairline-b`, `min-h-screen` flex column centered.
+- Section padding `py-40 md:py-56`, content max-w `1100px`.
+- Body line color `text-ink-soft`; the "Competitors compare themselves to you." line uses `text-ink` for closure.
+- Closing eyebrow doubles as the bridge into Showcase — same hairline treatment as the opening eyebrow.
 
 ## Why this fits the brief
-- Answers one question only: *"Who do I become if I work with them?"*
-- No cards, no chips, no metrics, no video.
-- Inherits the hero's off-white surface, serif system, mono eyebrow, hairlines, and sage — no hard visual reset.
-- The mask reveal is the signature "architectural reveal" gesture — the image is constructed in front of the visitor rather than appearing.
+- Answers exactly one question: *why does presentation matter?*
+- No imagery, no chrome, no decoration — typography and whitespace only.
+- Inherits Future State's surface, serif system, mono eyebrow, hairlines.
+- The closing "HOW WE BUILD AUTHORITY" eyebrow hands the visitor off to the Showcase/process world without a visual cut.
 
 ## After build
-Drive Playwright headless against `localhost:8080`, screenshot the section at 1280×1800 in initial, mid-reveal, and settled states; verify spacing, frame, and that the hero → Future State → Showcase transition reads as one continuous room.
+Drive Playwright at 1280×1800 against `localhost:8080`, screenshot the section in initial, mid-scroll (lines mid-fade), and settled states. Verify spacing reads cinematic and the Future State → Authority Mechanism → Showcase sequence reads as one continuous room.
