@@ -33,20 +33,23 @@ export function Hero({ progress }: Props) {
         </div>
       </Reveal>
 
-      <h1 className="text-display mx-auto max-w-[16ch] text-[clamp(3rem,9vw,7.5rem)] leading-[0.95] tracking-[-0.02em]">
+      <h1 className="text-display mx-auto max-w-[18ch] text-[clamp(2.75rem,7.6vw,6.5rem)] leading-[0.98] tracking-[-0.025em]">
         <Reveal>
-          <span className="block">Premium websites,</span>
+          <span className="block">Build the company</span>
         </Reveal>
         <Reveal delay={0.08}>
           <span className="block">
-            delivered in <span className="text-serif-italic">days</span>.
+            competitors compare themselves{" "}
+            <span className="text-serif-italic">against.</span>
           </span>
         </Reveal>
       </h1>
 
       <Reveal delay={0.2}>
-        <p className="mx-auto mt-8 max-w-[30ch] text-[15px] leading-[1.6] text-ink-muted">
-          A senior studio shipping conversion-grade sites in 7–14 days.
+        <p className="mx-auto mt-8 max-w-[52ch] text-[16px] leading-[1.65] text-ink-muted">
+          Exceptional companies are perceived differently long before they
+          dominate markets. We build digital experiences that accelerate
+          that process.
         </p>
       </Reveal>
 
