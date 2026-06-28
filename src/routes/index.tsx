@@ -42,11 +42,14 @@ function Index() {
       raf = requestAnimationFrame(() => {
         raf = 0;
         const el = document.getElementById("services");
+        const footer = document.querySelector("footer");
         if (!el) return;
         const top = el.getBoundingClientRect().top;
-        // Enter dark when Services top has scrolled past 55% of viewport height.
-        // Reverse symmetrically on scroll up.
-        setIsDark(top < window.innerHeight * 0.55);
+        const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
+        // Dark from when Services hits the top, until Footer enters viewport
+        const enteredServices = top <= 0;
+        const reachedFooter = footerTop <= window.innerHeight * 0.15;
+        setIsDark(enteredServices && !reachedFooter);
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -57,9 +60,13 @@ function Index() {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.classList.toggle("dark-canvas", isDark);
+    return () => document.body.classList.remove("dark-canvas");
+  }, [isDark]);
+
   return (
     <div className="relative">
-      <div className={`dark-canvas-bg${isDark ? " is-dark" : ""}`} aria-hidden />
       <Nav />
       <main className={isDark ? "is-dark" : ""}>
         <PortalStage />
@@ -77,3 +84,4 @@ function Index() {
     </div>
   );
 }
+
