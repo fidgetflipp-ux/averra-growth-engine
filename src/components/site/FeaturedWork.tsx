@@ -4,6 +4,7 @@ import { Eyebrow, Reveal } from "./primitives";
 import scartec from "@/assets/scartec-hero.png.asset.json";
 import yeon from "@/assets/yeon-ritual-hero.png.asset.json";
 
+type Stat = { value: string; label: string };
 type Work = {
   client: string;
   sector: string;
@@ -13,6 +14,13 @@ type Work = {
   period: string;
   cover?: string;
   url?: string;
+  // Expanded case study
+  overview: string;
+  challenge: string;
+  approach: string[];
+  outcome: string;
+  stats: Stat[];
+  gallery: { src?: string; caption: string }[];
 };
 
 const works: Work[] = [
@@ -25,6 +33,28 @@ const works: Work[] = [
     period: "90 days post-launch",
     cover: scartec.url,
     url: "scartec.com",
+    overview:
+      "ScarTec is a clinical-stage biotech developing a first-in-class therapy for fibrotic scarring. Their previous site read like a brochure — we rebuilt it as an investor-grade narrative.",
+    challenge:
+      "Translate dense translational science into a homepage that holds the attention of investors, partners, and KOLs in under sixty seconds — without diluting the rigor.",
+    approach: [
+      "Restructured the IA around the asset, the science, and the team — in that order.",
+      "Designed a quiet, monochrome system with editorial typography to signal seriousness.",
+      "Built a custom mechanism-of-action explainer using scroll-tied SVG.",
+      "Engineered for sub-1s LCP on investor mobile devices.",
+    ],
+    outcome:
+      "Within 90 days of launch, investor page views grew 3.4×, average session time more than doubled, and three Tier 1 funds initiated contact directly through the site.",
+    stats: [
+      { value: "+340%", label: "Investor page views" },
+      { value: "2.6×", label: "Avg. session time" },
+      { value: "0.9s", label: "LCP, mobile" },
+    ],
+    gallery: [
+      { src: scartec.url, caption: "Homepage — above the fold" },
+      { src: scartec.url, caption: "Mechanism of action — scroll module" },
+      { src: scartec.url, caption: "Pipeline & milestones" },
+    ],
   },
   {
     client: "Yeon Ritual",
@@ -35,6 +65,28 @@ const works: Work[] = [
     period: "60 days post-launch",
     cover: yeon.url,
     url: "yeonritual.com",
+    overview:
+      "Yeon Ritual is a Seoul-born luxury skincare house. We rebuilt their storefront as a ceremony — slower, more deliberate, and priced like the product deserves.",
+    challenge:
+      "Move the brand out of the mass-prestige tier on Shopify defaults and stage it like a $400 ritual that customers actively look forward to performing.",
+    approach: [
+      "Replaced the product grid with a guided ritual sequence.",
+      "Commissioned new photography, art-directed by our team.",
+      "Custom Shopify Hydrogen build with editorial PDP and bundle logic.",
+      "Subscription flow rewritten to feel like membership, not auto-renew.",
+    ],
+    outcome:
+      "AOV climbed 47% in the first 60 days, repeat purchase rate jumped, and the brand was picked up by two flagship department stores within the quarter.",
+    stats: [
+      { value: "+47%", label: "Average order value" },
+      { value: "+62%", label: "Repeat purchase rate" },
+      { value: "2", label: "Flagship retail pickups" },
+    ],
+    gallery: [
+      { src: yeon.url, caption: "Storefront — ritual sequence" },
+      { src: yeon.url, caption: "Editorial PDP" },
+      { src: yeon.url, caption: "Membership flow" },
+    ],
   },
   {
     client: "Northwind Capital",
@@ -44,6 +96,28 @@ const works: Work[] = [
     metricLabel: "Qualified inbound",
     period: "12 months",
     url: "northwind.capital",
+    overview:
+      "Northwind manages $1.8B across lower middle-market industrials. Their site looked like a 2014 boutique advisor — not a fund founders pitch to first.",
+    challenge:
+      "Reposition the firm to match its actual AUM and operator network, while staying conservative enough for LP scrutiny.",
+    approach: [
+      "Re-wrote the firm narrative around operator-led value creation.",
+      "Built a portfolio system that surfaces case studies, not just logos.",
+      "Designed an LP-only data room behind a quiet, secure auth flow.",
+      "Established a content cadence to compound search authority.",
+    ],
+    outcome:
+      "Over twelve months, the site sourced $84M in qualified inbound deal flow and became the firm's #1 origination channel.",
+    stats: [
+      { value: "$84M", label: "Qualified inbound" },
+      { value: "#1", label: "Origination channel" },
+      { value: "12mo", label: "Window" },
+    ],
+    gallery: [
+      { caption: "Firm narrative — hero" },
+      { caption: "Portfolio case studies" },
+      { caption: "LP data room — gated" },
+    ],
   },
 ];
 
