@@ -124,13 +124,6 @@ export function Services() {
           <ActiveMeta activeIndex={activeIndex} />
         </motion.div>
 
-        {/* Progress rail */}
-        <motion.div
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-8 md:pb-10"
-          style={{ color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`) }}
-        >
-          <Progress activeIndex={activeIndex} services={services} />
-        </motion.div>
       </div>
     </motion.section>
   );
@@ -325,42 +318,3 @@ function ActiveMeta({ activeIndex }: { activeIndex: MotionValue<number> }) {
   );
 }
 
-function Progress({
-  activeIndex,
-  services,
-}: {
-  activeIndex: MotionValue<number>;
-  services: { italic: string; sans: string }[];
-}) {
-  return (
-    <div className="flex items-center justify-center gap-6">
-      {services.map((s, i) => (
-        <RailItem key={i} index={i} activeIndex={activeIndex} label={`${s.italic} ${s.sans}`} />
-      ))}
-    </div>
-  );
-}
-
-function RailItem({
-  index,
-  activeIndex,
-  label,
-}: {
-  index: number;
-  activeIndex: MotionValue<number>;
-  label: string;
-}) {
-  const opacity = useTransform(activeIndex, (v) => {
-    const d = Math.abs(index - v);
-    return Math.max(0.25, 1 - d * 0.5);
-  });
-  const lineWidth = useTransform(activeIndex, (v) => (Math.abs(index - v) < 0.5 ? 40 : 18));
-  return (
-    <motion.div style={{ opacity }} className="flex items-center gap-3" transition={{ ease: EASE, duration: 0.6 }}>
-      <motion.span style={{ width: lineWidth }} className="h-[1px] bg-current" />
-      <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] md:inline">
-        {label}
-      </span>
-    </motion.div>
-  );
-}
