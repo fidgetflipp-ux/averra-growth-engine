@@ -13,7 +13,6 @@ const services = [
     sans: "Design",
     img: svcDesign.url,
     discipline: "Art Direction",
-    altitude: "Ground Floor",
     tags: ["Systems", "Prototyping", "Interface"],
   },
   {
@@ -22,7 +21,6 @@ const services = [
     sans: "Development",
     img: svcDev,
     discipline: "Engineering",
-    altitude: "Mezzanine",
     tags: ["Next.js", "Headless", "Performance"],
   },
   {
@@ -31,7 +29,6 @@ const services = [
     sans: "Optimization",
     img: svcCro,
     discipline: "Growth Systems",
-    altitude: "Upper Gallery",
     tags: ["CRO", "Experiments", "Analytics"],
   },
   {
@@ -40,10 +37,11 @@ const services = [
     sans: "Positioning",
     img: svcBrand,
     discipline: "Strategy",
-    altitude: "The Spire",
     tags: ["Messaging", "Identity", "Voice"],
   },
 ];
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -56,13 +54,12 @@ export function Services() {
     offset: ["start start", "end end"],
   });
 
-  // Continuous "altitude" — the camera ascends through the atrium
-  const ascent = useTransform(innerProgress, [0.04, 0.96], [0, services.length - 1]);
+  const activeIndex = useTransform(innerProgress, [0.05, 0.95], [0, services.length - 1]);
 
-  // Reality shift — site dissolves into a darker, cathedral environment on entry
-  const envLightness = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [1.0, 0.09, 0.09, 1.0]);
-  const envChroma = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [0.003, 0.014, 0.014, 0.003]);
-  const bg = useMotionTemplate`oklch(${envLightness} ${envChroma} 262)`;
+  // Cinematic transition — site dissolves into a darker, theatrical reality on entry
+  const envLightness = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [1.0, 0.11, 0.11, 1.0]);
+  const envChroma = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [0.003, 0.012, 0.012, 0.003]);
+  const bg = useMotionTemplate`oklch(${envLightness} ${envChroma} 260)`;
   const textInvert = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [0, 1, 1, 0]);
 
   return (
@@ -70,15 +67,15 @@ export function Services() {
       ref={sectionRef}
       id="services"
       className="relative"
-      style={{ height: `${services.length * 120}vh`, backgroundColor: bg }}
+      style={{ height: `${services.length * 110}vh`, backgroundColor: bg }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        {/* Atrium environment — vertical cathedral void */}
-        <AtriumBackdrop progress={scrollYProgress} ascent={ascent} />
+        {/* Architectural environment — dynamic ambient light tied to entry */}
+        <EnvironmentBackdrop progress={scrollYProgress} />
 
         {/* Eyebrow + headline */}
         <motion.div
-          className="relative z-20 mx-auto w-full max-w-7xl px-6 pt-8 md:pt-10"
+          className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-8 md:pt-10"
           style={{
             color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
           }}
@@ -102,296 +99,222 @@ export function Services() {
           </Reveal>
         </motion.div>
 
-        {/* The atrium stage — vertical shaft with floating platforms */}
+        {/* Orbital stage */}
         <motion.div
           className="relative flex flex-1 min-h-0 items-center justify-center pt-2 md:pt-4"
           style={{
-            perspective: "2400px",
-            perspectiveOrigin: "50% 50%",
+            perspective: "2800px",
+            perspectiveOrigin: "50% 45%",
             color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
           }}
         >
-          {/* Left ascent rail */}
-          <AscentRail ascent={ascent} textInvert={textInvert} />
+          {/* Ground plane — engineered horizon line */}
+          <GroundPlane />
 
-          {/* The shaft — platforms float at staggered altitudes */}
           <div
-            className="relative h-full w-[clamp(280px,28vw,400px)]"
+            className="relative shrink-0 h-[clamp(380px,56vh,540px)] w-[clamp(280px,28vw,400px)]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {services.map((s, i) => (
-              <Platform key={s.italic + s.sans} index={i} ascent={ascent} service={s} total={services.length} />
+              <Card key={s.italic + s.sans} index={i} activeIndex={activeIndex} service={s} total={services.length} />
             ))}
           </div>
 
-          {/* Right altitude meta */}
-          <AltitudeMeta ascent={ascent} textInvert={textInvert} />
+          {/* Active index meta (mono) */}
+          <ActiveMeta activeIndex={activeIndex} />
         </motion.div>
+
       </div>
     </motion.section>
   );
 }
 
-function AtriumBackdrop({ progress, ascent }: { progress: MotionValue<number>; ascent: MotionValue<number> }) {
-  const enter = useTransform(progress, [0, 0.18, 0.85, 1], [0, 1, 1, 0]);
-
-  // The light shaft from above — volumetric beam pouring into the atrium
-  const beamOpacity = useTransform(enter, [0, 1], [0, 0.55]);
-  // Vertical structural columns drift as we ascend
-  const columnsY = useTransform(ascent, [0, 3], ["0%", "-18%"]);
-  // Floor recedes as altitude increases
-  const floorOpacity = useTransform(ascent, [0, 1.5, 3], [0.7, 0.35, 0.12]);
-
+function EnvironmentBackdrop({ progress }: { progress: MotionValue<number> }) {
+  const ceilingOpacity = useTransform(progress, [0, 0.18, 0.85, 1], [1, 0.35, 0.35, 1]);
+  const floorOpacity = useTransform(progress, [0, 0.18, 0.85, 1], [1, 0.6, 0.6, 1]);
+  const spotOpacity = useTransform(progress, [0, 0.18, 0.85, 1], [0, 0.55, 0.55, 0]);
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden">
-      {/* Deep void wash on entry */}
       <motion.div
         className="absolute inset-0"
         style={{
-          opacity: enter,
+          opacity: ceilingOpacity,
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 0%, oklch(0.18 0.018 262) 0%, oklch(0.08 0.012 262) 55%, oklch(0.05 0.008 262) 100%)",
+            "radial-gradient(ellipse 70% 50% at 50% 0%, oklch(0.985 0.003 260) 0%, transparent 60%)",
         }}
       />
-
-      {/* Vertical structural columns — cathedral ribs */}
+      {/* Theatrical spotlight that emerges during transition */}
       <motion.div
-        className="absolute inset-x-0 -top-[20%] h-[140%]"
-        style={{
-          y: columnsY,
-          opacity: useTransform(enter, [0, 1], [0, 0.08]),
-          backgroundImage:
-            "linear-gradient(to right, oklch(1 0 0) 1px, transparent 1px)",
-          backgroundSize: "9% 100%",
-          maskImage:
-            "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
-        }}
-      />
-
-      {/* Volumetric light beam pouring from above the atrium */}
-      <motion.div
-        aria-hidden
         className="absolute inset-0"
         style={{
-          opacity: beamOpacity,
+          opacity: spotOpacity,
           background:
-            "conic-gradient(from 180deg at 50% -8%, transparent 0deg, oklch(0.95 0.02 95 / 0.18) 174deg, oklch(0.98 0.025 95 / 0.32) 180deg, oklch(0.95 0.02 95 / 0.18) 186deg, transparent 360deg)",
-          maskImage:
-            "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
+            "radial-gradient(ellipse 45% 60% at 50% 50%, oklch(0.32 0.015 260) 0%, transparent 70%)",
         }}
       />
-
-      {/* Soft warm wash at the ceiling — the source */}
       <motion.div
-        className="absolute inset-x-0 top-0 h-[40%]"
-        style={{
-          opacity: useTransform(enter, [0, 1], [0, 0.7]),
-          background:
-            "radial-gradient(ellipse 50% 70% at 50% 0%, oklch(0.92 0.04 90 / 0.22) 0%, transparent 70%)",
-        }}
-      />
-
-      {/* Floor — pool of light at the base */}
-      <motion.div
-        className="absolute inset-x-0 bottom-0 h-1/2"
+        className="absolute inset-x-0 bottom-0 h-2/3"
         style={{
           opacity: floorOpacity,
           background:
-            "radial-gradient(ellipse 45% 35% at 50% 100%, oklch(0.25 0.015 262 / 0.6) 0%, transparent 65%)",
+            "radial-gradient(ellipse 55% 38% at 50% 100%, oklch(0.14 0.005 260 / 0.06) 0%, transparent 65%)",
         }}
       />
-
-      {/* Faint dust particles — single static layer, no JS */}
-      <motion.div
-        className="absolute inset-0"
+      <div
+        className="absolute inset-0 opacity-[0.035]"
         style={{
-          opacity: useTransform(enter, [0, 1], [0, 0.12]),
           backgroundImage:
-            "radial-gradient(1px 1px at 23% 18%, white, transparent), radial-gradient(1px 1px at 67% 32%, white, transparent), radial-gradient(1px 1px at 42% 71%, white, transparent), radial-gradient(1px 1px at 81% 58%, white, transparent), radial-gradient(1px 1px at 12% 88%, white, transparent), radial-gradient(1px 1px at 55% 12%, white, transparent), radial-gradient(1px 1px at 88% 84%, white, transparent)",
-          backgroundSize: "100% 100%",
+            "linear-gradient(to right, oklch(0.985 0.003 260) 1px, transparent 1px)",
+          backgroundSize: "12.5% 100%",
         }}
       />
     </div>
   );
 }
 
-function AscentRail({ ascent, textInvert }: { ascent: MotionValue<number>; textInvert: MotionValue<number> }) {
-  const fillHeight = useTransform(ascent, [0, services.length - 1], ["0%", "100%"]);
+function GroundPlane() {
   return (
-    <motion.div
+    <div
       aria-hidden
-      className="pointer-events-none absolute left-6 md:left-10 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-3"
-      style={{ height: "60vh", opacity: useTransform(textInvert, [0, 1], [0, 0.85]) }}
-    >
-      <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/40">Ascent</span>
-      <div className="relative w-px flex-1 bg-white/10">
-        <motion.div
-          className="absolute inset-x-0 top-0 bg-gradient-to-b from-white/80 via-white/40 to-transparent"
-          style={{ height: fillHeight }}
-        />
-      </div>
-      <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/40">Spire</span>
-    </motion.div>
+      className="pointer-events-none absolute left-1/2 top-[58%] h-[1px] w-[70vw] -translate-x-1/2"
+      style={{
+        background:
+          "linear-gradient(to right, transparent, oklch(0.14 0.005 260 / 0.08), transparent)",
+      }}
+    />
   );
 }
 
-function AltitudeMeta({ ascent, textInvert }: { ascent: MotionValue<number>; textInvert: MotionValue<number> }) {
-  const label = useTransform(ascent, (v) => {
-    const i = Math.max(0, Math.min(services.length - 1, Math.round(v)));
-    return services[i].altitude;
-  });
-  const num = useTransform(ascent, (v) => {
-    const i = Math.max(0, Math.min(services.length - 1, Math.round(v)));
-    return services[i].code;
-  });
-  return (
-    <motion.div
-      className="pointer-events-none absolute right-6 md:right-10 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-end gap-2"
-      style={{ opacity: useTransform(textInvert, [0, 1], [0, 0.9]) }}
-    >
-      <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/40">Altitude</span>
-      <motion.span className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/85">
-        {label as unknown as string}
-      </motion.span>
-      <div className="text-display text-white/90 text-[22px] leading-none">
-        <motion.span>{num as unknown as string}</motion.span>
-        <span className="text-white/40 text-[13px]"> / 04</span>
-      </div>
-    </motion.div>
-  );
-}
-
-function Platform({
+function Card({
   index,
-  ascent,
+  activeIndex,
   service,
   total,
 }: {
   index: number;
-  ascent: MotionValue<number>;
+  activeIndex: MotionValue<number>;
   service: (typeof services)[number];
   total: number;
 }) {
-  // Distance from the current "floor" we're looking at. Negative = below us (already passed), positive = above us (yet to reach)
-  const delta = useTransform(ascent, (v) => index - v);
-
-  // Vertical travel — each platform sits ~70vh apart in the shaft, scroll lifts the camera so they drift downward through frame
-  const FLOOR_GAP = 560; // px between platforms in 3D
-  const y = useTransform(delta, (d) => d * FLOOR_GAP);
-  // Slight Z recession — distant platforms sit slightly back
-  const z = useTransform(delta, (d) => -Math.abs(d) * 180);
-  // Tilt — platforms above tilt forward, below tilt away (cathedral perspective)
-  const rotateX = useTransform(delta, (d) => Math.max(-18, Math.min(18, -d * 6)));
-  const scale = useTransform(delta, (d) => {
-    const a = Math.abs(d);
-    if (a < 0.5) return 1;
-    return Math.max(0.74, 1 - (a - 0.5) * 0.16);
+  // Shortest signed distance — continuous orbit
+  const delta = useTransform(activeIndex, (v) => {
+    let d = index - v;
+    if (d > total / 2) d -= total;
+    if (d < -total / 2) d += total;
+    return d;
   });
+
+  const RADIUS = 520;
+  const ANGLE_STEP = 48;
+
+  const rotateY = useTransform(delta, (d) => d * ANGLE_STEP);
+  const translateX = useTransform(delta, (d) => Math.sin((d * ANGLE_STEP * Math.PI) / 180) * RADIUS);
+  const translateZ = useTransform(delta, (d) => (Math.cos((d * ANGLE_STEP * Math.PI) / 180) - 1) * RADIUS);
+
   const opacity = useTransform(delta, (d) => {
     const a = Math.abs(d);
-    if (a >= 2) return 0;
-    if (a >= 1) return 0.5 * (2 - a);
+    if (a >= 2.2) return 0;
+    if (a >= 1) return 0.45 * (2.2 - a);
     return 1;
   });
-  const filter = useTransform(delta, (d) => {
+  const scale = useTransform(delta, (d) => {
     const a = Math.abs(d);
-    if (a < 0.4) return "blur(0px)";
-    return `blur(${Math.min(6, (a - 0.4) * 3.5)}px)`;
+    if (a <= 1) return 1 - a * 0.16;
+    return Math.max(0.66, 0.8 - (a - 1) * 0.1);
   });
   const zIndex = useTransform(delta, (d) => 100 - Math.round(Math.abs(d) * 10));
-
-  // Spotlight on the active platform — soft warm beam from above
-  const spotOpacity = useTransform(delta, (d) => {
+  const filter = useTransform(delta, (d) => {
     const a = Math.abs(d);
-    return a < 0.5 ? 1 - a * 1.4 : 0;
+    if (a < 0.4) return "blur(0px) saturate(1)";
+    const blur = Math.min(6, (a - 0.4) * 4);
+    const sat = Math.max(0.6, 1 - (a - 0.4) * 0.25);
+    return `blur(${blur}px) saturate(${sat})`;
+  });
+  // Atmospheric fade — distant cards wash slightly into the room light
+  const atmosphere = useTransform(delta, (d) => {
+    const a = Math.abs(d);
+    return Math.min(0.35, a * 0.18);
   });
 
   return (
     <motion.article
-      className="absolute left-1/2 top-1/2"
+      className="absolute inset-0 overflow-hidden rounded-[24px] bg-ink"
       style={{
-        x: "-50%",
-        y,
-        z,
-        rotateX,
+        rotateY,
+        x: translateX,
+        z: translateZ,
         scale,
         opacity,
         zIndex,
         filter,
         transformStyle: "preserve-3d",
         transformOrigin: "center center",
-        width: "100%",
-        height: "clamp(380px, 56vh, 540px)",
-        marginTop: "calc(clamp(380px, 56vh, 540px) / -2)",
+        boxShadow:
+          "0 40px 80px -40px oklch(0.14 0.005 260 / 0.35), 0 1px 0 0 oklch(1 0 0 / 0.06) inset",
+        willChange: "transform, opacity, filter",
       }}
       aria-label={`${service.italic} ${service.sans} — ${index + 1} of ${total}`}
     >
-      {/* Volumetric spotlight isolating the active platform */}
+      <img
+        src={service.img}
+        alt={`${service.italic} ${service.sans}`}
+        loading="lazy"
+        className="absolute inset-0 size-full object-cover"
+      />
+      {/* Tonal grade */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-black/10 to-black/75" />
+      {/* Atmospheric haze on distant cards */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute -inset-x-[60%] -top-[40%] h-[60%]"
-        style={{
-          opacity: spotOpacity,
-          background:
-            "radial-gradient(ellipse 35% 100% at 50% 0%, oklch(0.95 0.025 90 / 0.45) 0%, oklch(0.9 0.03 90 / 0.12) 40%, transparent 75%)",
-        }}
+        className="pointer-events-none absolute inset-0 bg-white"
+        style={{ opacity: atmosphere }}
       />
 
-      {/* The platform itself — a glass slab suspended in the void */}
-      <div className="relative size-full overflow-hidden rounded-[20px] bg-ink">
-        <img
-          src={service.img}
-          alt={`${service.italic} ${service.sans}`}
-          loading="lazy"
-          className="absolute inset-0 size-full object-cover"
-        />
-        {/* Tonal grade */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-black/10 to-black/80" />
-        {/* Inner glass edge */}
-        <div className="pointer-events-none absolute inset-0 rounded-[20px] ring-1 ring-inset ring-white/10" />
-
-        {/* Top meta */}
-        <div className="absolute inset-x-0 top-0 flex items-start justify-between px-6 pt-6">
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/70">
-            {service.code} / {service.discipline}
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/55">
-            {service.altitude}
-          </span>
-        </div>
-
-        {/* Title */}
-        <div className="absolute inset-x-0 bottom-0 px-6 pb-6">
-          <h3 className="text-display text-white text-[clamp(1.5rem,2.2vw,2.2rem)] leading-[1.02]">
-            <span className="text-serif-italic">{service.italic}</span>{" "}
-            <span className="font-medium">{service.sans}</span>
-          </h3>
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {service.tags.map((t) => (
-              <span
-                key={t}
-                className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/80"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
+      {/* Top meta — mono */}
+      <div className="absolute inset-x-0 top-0 flex items-start justify-between px-6 pt-6">
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/70">
+          {service.code} / {service.discipline}
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/50">
+          Layer
+        </span>
       </div>
 
-      {/* Reflection slab beneath — the platform floats above a polished floor */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-full h-[40%] w-[90%] -translate-x-1/2 opacity-30"
-        style={{
-          transform: "translateX(-50%) rotateX(180deg)",
-          transformOrigin: "top center",
-          background:
-            "linear-gradient(to bottom, oklch(0.3 0.012 262 / 0.5), transparent 80%)",
-          maskImage: "linear-gradient(to bottom, black, transparent 60%)",
-          filter: "blur(2px)",
-        }}
-      />
+      {/* Title */}
+      <div className="absolute inset-x-0 bottom-0 px-6 pb-6">
+        <h3 className="text-display text-white text-[clamp(1.5rem,2.2vw,2.2rem)] leading-[1.02]">
+          <span className="text-serif-italic">{service.italic}</span>{" "}
+          <span className="font-medium">{service.sans}</span>
+        </h3>
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {service.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/80"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
     </motion.article>
   );
 }
+
+function ActiveMeta({ activeIndex }: { activeIndex: MotionValue<number> }) {
+  const current = useTransform(activeIndex, (v) => {
+    const i = Math.round(v) % services.length;
+    return services[(i + services.length) % services.length].code;
+  });
+  const total = String(services.length).padStart(2, "0");
+  return (
+    <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2">
+      <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] opacity-60">
+        <motion.span>{current}</motion.span>
+        <span className="h-px w-8 bg-current opacity-30" />
+        <span>{total}</span>
+      </div>
+    </div>
+  );
+}
+
