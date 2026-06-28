@@ -75,7 +75,7 @@ export function Services() {
 
         {/* Eyebrow + headline */}
         <motion.div
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-12 md:pt-16"
+          className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-8 md:pt-10"
           style={{
             color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
           }}
@@ -88,14 +88,12 @@ export function Services() {
             </div>
           </Reveal>
           <Reveal delay={0.06}>
-            <h2 className="text-display mx-auto mt-6 max-w-5xl text-center text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.02] tracking-[-0.02em]">
-              Everything Your Company
-              <br />
-              Needs To <span className="text-serif-italic">Dominate.</span>
+            <h2 className="text-display mx-auto mt-4 max-w-4xl text-center text-[clamp(1.75rem,3.4vw,3rem)] leading-[1.05] tracking-[-0.02em]">
+              Everything Your Company Needs To <span className="text-serif-italic">Dominate.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mx-auto mt-6 max-w-xl text-center font-sans text-[13px] leading-[1.7] opacity-70">
+            <p className="mx-auto mt-4 max-w-xl text-center font-sans text-[13px] leading-[1.6] opacity-70">
               Four capability layers. One operating environment. Engineered to compound authority across every surface a market leader is judged on.
             </p>
           </Reveal>
@@ -103,7 +101,7 @@ export function Services() {
 
         {/* Orbital stage */}
         <motion.div
-          className="relative flex flex-1 min-h-0 items-center justify-center pt-6 md:pt-10"
+          className="relative flex flex-1 min-h-0 items-center justify-center pt-2 md:pt-4"
           style={{
             perspective: "2800px",
             perspectiveOrigin: "50% 45%",
@@ -114,7 +112,7 @@ export function Services() {
           <GroundPlane />
 
           <div
-            className="relative h-[clamp(280px,38vh,440px)] w-[clamp(260px,28vw,360px)]"
+            className="relative h-[clamp(260px,34vh,380px)] w-[clamp(240px,24vw,320px)]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {services.map((s, i) => (
@@ -128,7 +126,7 @@ export function Services() {
 
         {/* Progress rail */}
         <motion.div
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-10 md:pb-14"
+          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-8 md:pb-10"
           style={{ color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`) }}
         >
           <Progress activeIndex={activeIndex} services={services} />
