@@ -128,7 +128,7 @@ export function Services() {
 
         {/* Progress rail */}
         <motion.div
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-24 md:pb-28"
+          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-10 md:pb-14"
           style={{ color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`) }}
         >
           <Progress activeIndex={activeIndex} services={services} />
