@@ -326,6 +326,58 @@ export function FeaturedWork() {
           ))}
         </div>
       </div>
+
+      {/* Expanded lightbox */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            key="lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-6 backdrop-blur-xl md:p-12"
+            onClick={() => setExpanded(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.94, y: 24, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.96, y: 16, opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-[#0d0f12] shadow-[0_60px_180px_-30px_rgba(0,0,0,0.95)]"
+            >
+              <div className="flex items-center gap-1.5 border-b border-white/8 bg-white/[0.03] px-4 py-3">
+                <span className="size-2.5 rounded-full bg-white/15" />
+                <span className="size-2.5 rounded-full bg-white/15" />
+                <span className="size-2.5 rounded-full bg-white/15" />
+                <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
+                  {active.url ?? active.client.toLowerCase()}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setExpanded(false)}
+                  aria-label="Close"
+                  className="ml-auto text-xs uppercase tracking-[0.18em] text-white/50 transition hover:text-white"
+                >
+                  Close ✕
+                </button>
+              </div>
+              {active.cover ? (
+                <img
+                  src={active.cover}
+                  alt={`${active.client} — full preview`}
+                  className="max-h-[78vh] w-full object-cover object-top"
+                />
+              ) : (
+                <div className="flex h-[60vh] items-center justify-center text-white/50">
+                  Preview coming soon
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
