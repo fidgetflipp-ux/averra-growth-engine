@@ -141,6 +141,7 @@ function GalleryCard({
 
 export function FeaturedWork() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [expanded, setExpanded] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
 
   // Cursor parallax — extremely subtle so the gallery feels alive, not gimmicky.
