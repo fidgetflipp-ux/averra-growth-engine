@@ -341,11 +341,30 @@ export function FeaturedWork() {
             Click to expand
           </div>
 
+          {/* Prev / Next gallery controls */}
+          <button
+            type="button"
+            onClick={() => setActiveIdx((i) => (i - 1 + works.length) % works.length)}
+            aria-label="Previous project"
+            className="absolute left-2 top-1/2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-md transition hover:scale-105 hover:border-white/60 hover:bg-white/20 md:left-6"
+          >
+            <ChevronLeft className="size-5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveIdx((i) => (i + 1) % works.length)}
+            aria-label="Next project"
+            className="absolute right-2 top-1/2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-md transition hover:scale-105 hover:border-white/60 hover:bg-white/20 md:right-6"
+          >
+            <ChevronRight className="size-5" />
+          </button>
+
           {/* Reflective floor — anchors the cards in space without a literal shadow box. */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-[-4%] mx-auto h-16 w-[70%] rounded-[50%] bg-black/70 blur-3xl"
           />
+
         </div>
 
         {/* Active work caption — swaps with each rotation */}
