@@ -92,7 +92,8 @@ export function Services() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mx-auto mt-5 max-w-xl text-center font-sans text-[13px] leading-[1.6] opacity-70">
-              Four capability layers. One operating environment. Engineered to compound authority across every surface a market leader is judged on.
+              Four capability layers. One operating environment. Engineered to compound authority across every surface a
+              market leader is judged on.
             </p>
           </Reveal>
         </motion.div>
@@ -101,7 +102,7 @@ export function Services() {
         <motion.div
           className="relative flex flex-1 min-h-0 items-start justify-center pt-2"
           style={{
-            perspective: "2800px",
+            perspective: "100px",
             perspectiveOrigin: "50% 45%",
             color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
           }}
@@ -121,7 +122,6 @@ export function Services() {
           {/* Active index meta (mono) */}
           <ActiveMeta activeIndex={activeIndex} />
         </motion.div>
-
       </div>
     </motion.section>
   );
@@ -138,23 +138,20 @@ function EnvironmentBackdrop({ progress }: { progress: MotionValue<number> }) {
         className="absolute inset-0"
         style={{
           opacity: spotOpacity,
-          background:
-            "radial-gradient(ellipse 45% 60% at 50% 50%, oklch(0.32 0.015 260) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 45% 60% at 50% 50%, oklch(0.32 0.015 260) 0%, transparent 70%)",
         }}
       />
       <motion.div
         className="absolute inset-x-0 bottom-0 h-2/3"
         style={{
           opacity: floorOpacity,
-          background:
-            "radial-gradient(ellipse 55% 38% at 50% 100%, oklch(0.14 0.005 260 / 0.06) 0%, transparent 65%)",
+          background: "radial-gradient(ellipse 55% 38% at 50% 100%, oklch(0.14 0.005 260 / 0.06) 0%, transparent 65%)",
         }}
       />
       <div
         className="absolute inset-0 opacity-[0.035]"
         style={{
-          backgroundImage:
-            "linear-gradient(to right, oklch(0.985 0.003 260) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(to right, oklch(0.985 0.003 260) 1px, transparent 1px)",
           backgroundSize: "12.5% 100%",
         }}
       />
@@ -168,8 +165,7 @@ function GroundPlane() {
       aria-hidden
       className="pointer-events-none absolute left-1/2 top-[58%] h-[1px] w-[70vw] -translate-x-1/2"
       style={{
-        background:
-          "linear-gradient(to right, transparent, oklch(0.14 0.005 260 / 0.08), transparent)",
+        background: "linear-gradient(to right, transparent, oklch(0.14 0.005 260 / 0.08), transparent)",
       }}
     />
   );
@@ -239,8 +235,7 @@ function Card({
         filter,
         transformStyle: "preserve-3d",
         transformOrigin: "center center",
-        boxShadow:
-          "0 40px 80px -40px oklch(0.14 0.005 260 / 0.35), 0 1px 0 0 oklch(1 0 0 / 0.06) inset",
+        boxShadow: "0 40px 80px -40px oklch(0.14 0.005 260 / 0.35), 0 1px 0 0 oklch(1 0 0 / 0.06) inset",
         willChange: "transform, opacity, filter",
       }}
       aria-label={`${service.italic} ${service.sans} — ${index + 1} of ${total}`}
@@ -265,9 +260,7 @@ function Card({
         <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/70">
           {service.code} / {service.discipline}
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/50">
-          Layer
-        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/50">Layer</span>
       </div>
 
       {/* Title */}
@@ -307,4 +300,3 @@ function ActiveMeta({ activeIndex }: { activeIndex: MotionValue<number> }) {
     </div>
   );
 }
-
