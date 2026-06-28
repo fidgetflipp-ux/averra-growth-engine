@@ -124,13 +124,6 @@ export function Services() {
           <ActiveMeta activeIndex={activeIndex} />
         </motion.div>
 
-        {/* Progress rail */}
-        <motion.div
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-8 md:pb-10"
-          style={{ color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`) }}
-        >
-          <Progress activeIndex={activeIndex} services={services} />
-        </motion.div>
       </div>
     </motion.section>
   );
