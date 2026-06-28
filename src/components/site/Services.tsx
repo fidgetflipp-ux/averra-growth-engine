@@ -224,11 +224,7 @@ function Card({
     if (a >= 1) return 0.45 * (2.2 - a);
     return 1;
   });
-  const scale = useTransform(delta, (d) => {
-    const a = Math.abs(d);
-    if (a <= 1) return 1 - a * 0.16;
-    return Math.max(0.66, 0.8 - (a - 1) * 0.1);
-  });
+  const scale = 1;
   const zIndex = useTransform(delta, (d) => 100 - Math.round(Math.abs(d) * 10));
   const filter = useTransform(delta, (d) => {
     const a = Math.abs(d);
