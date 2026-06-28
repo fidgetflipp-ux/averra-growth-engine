@@ -251,11 +251,12 @@ function AltitudeMeta({ ascent, textInvert }: { ascent: MotionValue<number>; tex
     >
       <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/40">Altitude</span>
       <motion.span className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/85">
-        {label}
+        {label as unknown as string}
       </motion.span>
-      <motion.span className="text-display text-white/90 text-[22px] leading-none">
-        {num}<span className="text-white/40 text-[13px]"> / 04</span>
-      </motion.span>
+      <div className="text-display text-white/90 text-[22px] leading-none">
+        <motion.span>{num as unknown as string}</motion.span>
+        <span className="text-white/40 text-[13px]"> / 04</span>
+      </div>
     </motion.div>
   );
 }
