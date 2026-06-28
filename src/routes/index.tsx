@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Nav } from "@/components/site/Nav";
 import { PortalStage } from "@/components/site/Portal";
 import { FutureState } from "@/components/site/FutureState";
@@ -32,10 +33,35 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const el = document.getElementById("services");
+        if (!el) return;
+        const top = el.getBoundingClientRect().top;
+        // Enter dark when Services top has scrolled past 55% of viewport height.
+        // Reverse symmetrically on scroll up.
+        setIsDark(top < window.innerHeight * 0.55);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <div className="relative">
+      <div className={`dark-canvas-bg${isDark ? " is-dark" : ""}`} aria-hidden />
       <Nav />
-      <main>
+      <main className={isDark ? "is-dark" : ""}>
         <PortalStage />
         <FutureState />
         <Showcase />
