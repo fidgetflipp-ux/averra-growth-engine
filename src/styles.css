@@ -193,6 +193,33 @@
   to { background-position: 0 0; }
 }
 
+/* Dark canvas mode — page background turns black from "Services" onward */
+.dark-canvas-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: oklch(1 0 0);
+  transition: background-color 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.dark-canvas-bg.is-dark {
+  background-color: oklch(0.08 0.004 260);
+}
+main.is-dark > section { background-color: transparent !important; transition: color 600ms ease; }
+main.is-dark > section h1,
+main.is-dark > section h2,
+main.is-dark > section h3,
+main.is-dark > section h4,
+main.is-dark > section p,
+main.is-dark > section span,
+main.is-dark > section li,
+main.is-dark > section a:not(.preserve-color) { color: inherit; }
+main.is-dark > section { color: oklch(0.97 0.003 260); }
+main.is-dark > section .text-ink { color: oklch(0.97 0.003 260) !important; }
+main.is-dark > section .text-ink-soft { color: oklch(0.85 0.003 260) !important; }
+main.is-dark > section .text-ink-muted { color: oklch(0.72 0.003 260) !important; }
+
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
