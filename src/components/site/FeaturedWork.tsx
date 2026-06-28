@@ -177,10 +177,22 @@ export function FeaturedWork() {
   // Slow auto-rotation through the gallery; pauses on hover.
   const [paused, setPaused] = useState(false);
   useEffect(() => {
-    if (paused) return;
+    if (paused || expanded) return;
     const id = setInterval(() => setActiveIdx((i) => (i + 1) % works.length), 5200);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, expanded]);
+
+  // Close lightbox on Escape
+  useEffect(() => {
+    if (!expanded) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [expanded]);
 
   // Section-level scroll: gently rotate the entire stage as the section passes.
   const sectionRef = useRef<HTMLElement>(null);
