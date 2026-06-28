@@ -83,7 +83,7 @@ export function Services() {
           <Reveal>
             <div className="flex items-center justify-center gap-3">
               <motion.span className="h-px w-10" style={{ backgroundColor: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260 / 0.3)`) }} />
-              <span className="text-eyebrow">The System</span>
+              <span className="text-eyebrow opacity-0">The System</span>
               <motion.span className="h-px w-10" style={{ backgroundColor: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260 / 0.3)`) }} />
             </div>
           </Reveal>
