@@ -259,7 +259,11 @@ export function FeaturedWork() {
   // Close lightbox on Escape
   useEffect(() => {
     if (!expanded) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpanded(false);
+      if (e.key === "ArrowRight") setActiveIdx((i) => (i + 1) % works.length);
+      if (e.key === "ArrowLeft") setActiveIdx((i) => (i - 1 + works.length) % works.length);
+    };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
@@ -429,14 +433,35 @@ export function FeaturedWork() {
                 <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
                   {active.url ?? active.client.toLowerCase()}
                 </span>
-                <button
-                  type="button"
-                  onClick={() => setExpanded(false)}
-                  aria-label="Close"
-                  className="ml-auto text-xs uppercase tracking-[0.18em] text-white/50 transition hover:text-white"
-                >
-                  Close ✕
-                </button>
+                <div className="ml-auto flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveIdx((i) => (i - 1 + works.length) % works.length)}
+                    aria-label="Previous case study"
+                    className="flex size-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+                  >
+                    ←
+                  </button>
+                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">
+                    {String(activeIdx + 1).padStart(2, "0")} / {String(works.length).padStart(2, "0")}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setActiveIdx((i) => (i + 1) % works.length)}
+                    aria-label="Next case study"
+                    className="flex size-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+                  >
+                    →
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setExpanded(false)}
+                    aria-label="Close"
+                    className="ml-2 text-xs uppercase tracking-[0.18em] text-white/50 transition hover:text-white"
+                  >
+                    Close ✕
+                  </button>
+                </div>
               </div>
 
               {/* Hero cover */}
