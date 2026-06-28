@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { Eyebrow, Reveal } from "./primitives";
 import scartec from "@/assets/scartec-hero.png.asset.json";
 import yeon from "@/assets/yeon-ritual-hero.png.asset.json";
@@ -141,6 +141,7 @@ function GalleryCard({
 
 export function FeaturedWork() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [expanded, setExpanded] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
 
   // Cursor parallax — extremely subtle so the gallery feels alive, not gimmicky.
@@ -176,10 +177,22 @@ export function FeaturedWork() {
   // Slow auto-rotation through the gallery; pauses on hover.
   const [paused, setPaused] = useState(false);
   useEffect(() => {
-    if (paused) return;
+    if (paused || expanded) return;
     const id = setInterval(() => setActiveIdx((i) => (i + 1) % works.length), 5200);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, expanded]);
+
+  // Close lightbox on Escape
+  useEffect(() => {
+    if (!expanded) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [expanded]);
 
   // Section-level scroll: gently rotate the entire stage as the section passes.
   const sectionRef = useRef<HTMLElement>(null);
@@ -234,12 +247,20 @@ export function FeaturedWork() {
                   work={w}
                   offset={offset}
                   active={offset === 0}
-                  onSelect={() => setActiveIdx(i)}
+                  onSelect={() => {
+                    if (offset === 0) setExpanded(true);
+                    else setActiveIdx(i);
+                  }}
                   parallax={{ x: translateX, y: rotateX }}
                 />
               );
             })}
           </motion.div>
+
+          {/* Hint shown when hovering active card */}
+          <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
+            Click to expand
+          </div>
 
           {/* Reflective floor — anchors the cards in space without a literal shadow box. */}
           <div
@@ -305,6 +326,58 @@ export function FeaturedWork() {
           ))}
         </div>
       </div>
+
+      {/* Expanded lightbox */}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            key="lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-6 backdrop-blur-xl md:p-12"
+            onClick={() => setExpanded(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.94, y: 24, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.96, y: 16, opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-[#0d0f12] shadow-[0_60px_180px_-30px_rgba(0,0,0,0.95)]"
+            >
+              <div className="flex items-center gap-1.5 border-b border-white/8 bg-white/[0.03] px-4 py-3">
+                <span className="size-2.5 rounded-full bg-white/15" />
+                <span className="size-2.5 rounded-full bg-white/15" />
+                <span className="size-2.5 rounded-full bg-white/15" />
+                <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
+                  {active.url ?? active.client.toLowerCase()}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setExpanded(false)}
+                  aria-label="Close"
+                  className="ml-auto text-xs uppercase tracking-[0.18em] text-white/50 transition hover:text-white"
+                >
+                  Close ✕
+                </button>
+              </div>
+              {active.cover ? (
+                <img
+                  src={active.cover}
+                  alt={`${active.client} — full preview`}
+                  className="max-h-[78vh] w-full object-cover object-top"
+                />
+              ) : (
+                <div className="flex h-[60vh] items-center justify-center text-white/50">
+                  Preview coming soon
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
