@@ -102,9 +102,13 @@ export function Services() {
         </motion.div>
 
         {/* Orbital stage */}
-        <div
+        <motion.div
           className="relative flex flex-1 items-center justify-center pt-20 md:pt-28"
-          style={{ perspective: "2800px", perspectiveOrigin: "50% 45%" }}
+          style={{
+            perspective: "2800px",
+            perspectiveOrigin: "50% 45%",
+            color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
+          }}
         >
           {/* Ground plane — engineered horizon line */}
           <GroundPlane />
