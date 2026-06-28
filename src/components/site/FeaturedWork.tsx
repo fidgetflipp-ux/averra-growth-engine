@@ -458,18 +458,18 @@ export function FeaturedWork() {
                     type="button"
                     onClick={() => setActiveIdx((i) => (i - 1 + works.length) % works.length)}
                     aria-label="Previous case study"
-                    className="flex h-9 items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 text-xs font-medium uppercase tracking-[0.16em] text-white/80 transition hover:border-white/50 hover:bg-white/10 hover:text-white"
+                    className="flex h-9 items-center gap-1.5 rounded-full bg-white px-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-white/85"
                   >
                     <ChevronLeft className="size-4" /> Prev
                   </button>
-                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/60">
                     {String(activeIdx + 1).padStart(2, "0")} / {String(works.length).padStart(2, "0")}
                   </span>
                   <button
                     type="button"
                     onClick={() => setActiveIdx((i) => (i + 1) % works.length)}
                     aria-label="Next case study"
-                    className="flex h-9 items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 text-xs font-medium uppercase tracking-[0.16em] text-white/80 transition hover:border-white/50 hover:bg-white/10 hover:text-white"
+                    className="flex h-9 items-center gap-1.5 rounded-full bg-white px-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-white/85"
                   >
                     Next <ChevronRight className="size-4" />
                   </button>
@@ -477,11 +477,12 @@ export function FeaturedWork() {
                     type="button"
                     onClick={() => setExpanded(false)}
                     aria-label="Close"
-                    className="ml-1 flex h-9 items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 text-xs font-medium uppercase tracking-[0.16em] text-white/80 transition hover:border-white/50 hover:bg-white/10 hover:text-white"
+                    className="ml-1 flex h-9 items-center gap-1.5 rounded-full bg-white px-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-white/85"
                   >
                     <X className="size-4" /> Close
                   </button>
                 </div>
+
 
               </div>
 
