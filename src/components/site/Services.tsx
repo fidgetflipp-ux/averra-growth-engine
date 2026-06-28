@@ -89,7 +89,7 @@ export function Services() {
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mx-auto mt-6 max-w-xl text-center font-sans text-[14px] leading-[1.7] text-ink-soft">
+            <p className="mx-auto mt-10 max-w-xl text-center font-sans text-[14px] leading-[1.7] text-ink-soft">
               Six capability layers. One operating environment. Engineered to compound authority across every surface a market leader is judged on.
             </p>
           </Reveal>
