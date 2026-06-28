@@ -259,7 +259,11 @@ export function FeaturedWork() {
   // Close lightbox on Escape
   useEffect(() => {
     if (!expanded) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpanded(false);
+      if (e.key === "ArrowRight") setActiveIdx((i) => (i + 1) % works.length);
+      if (e.key === "ArrowLeft") setActiveIdx((i) => (i - 1 + works.length) % works.length);
+    };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
