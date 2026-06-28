@@ -410,18 +410,19 @@ export function FeaturedWork() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-6 backdrop-blur-xl md:p-12"
+            className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 backdrop-blur-xl"
             onClick={() => setExpanded(false)}
           >
             <motion.div
-              initial={{ scale: 0.94, y: 24, opacity: 0 }}
+              initial={{ scale: 0.96, y: 30, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.96, y: 16, opacity: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ scale: 0.97, y: 20, opacity: 0 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-[#0d0f12] shadow-[0_60px_180px_-30px_rgba(0,0,0,0.95)]"
+              className="relative mx-auto my-6 w-[min(96vw,1280px)] overflow-hidden rounded-2xl border border-white/10 bg-[#0b0d10] shadow-[0_60px_180px_-30px_rgba(0,0,0,0.95)] md:my-12"
             >
-              <div className="flex items-center gap-1.5 border-b border-white/8 bg-white/[0.03] px-4 py-3">
+              {/* Window chrome */}
+              <div className="sticky top-0 z-10 flex items-center gap-1.5 border-b border-white/8 bg-[#0b0d10]/95 px-5 py-3 backdrop-blur">
                 <span className="size-2.5 rounded-full bg-white/15" />
                 <span className="size-2.5 rounded-full bg-white/15" />
                 <span className="size-2.5 rounded-full bg-white/15" />
@@ -437,17 +438,117 @@ export function FeaturedWork() {
                   Close ✕
                 </button>
               </div>
+
+              {/* Hero cover */}
               {active.cover ? (
                 <img
                   src={active.cover}
-                  alt={`${active.client} — full preview`}
-                  className="max-h-[78vh] w-full object-cover object-top"
+                  alt={`${active.client} — hero`}
+                  className="max-h-[70vh] w-full object-cover object-top"
                 />
               ) : (
-                <div className="flex h-[60vh] items-center justify-center text-white/50">
-                  Preview coming soon
+                <div className="flex h-[44vh] items-center justify-center bg-gradient-to-br from-[#11141a] to-[#0a0d11] text-white/40">
+                  {active.client}
                 </div>
               )}
+
+              {/* Header block */}
+              <div className="border-b border-white/8 px-8 py-10 md:px-14 md:py-14">
+                <div className="flex flex-wrap items-center gap-3 text-eyebrow text-white/55">
+                  <span>{active.sector}</span>
+                  <span className="h-px w-6 bg-white/20" />
+                  <span>{active.client}</span>
+                  <span className="h-px w-6 bg-white/20" />
+                  <span>{active.period}</span>
+                </div>
+                <h3 className="text-display mt-5 max-w-3xl text-[clamp(1.8rem,3.2vw,2.8rem)] text-white/95">
+                  {active.headline}
+                </h3>
+                <p className="mt-6 max-w-3xl text-base leading-relaxed text-white/65 md:text-lg">
+                  {active.overview}
+                </p>
+
+                {/* Stats strip */}
+                <div className="mt-10 grid grid-cols-1 gap-6 border-t border-white/10 pt-8 sm:grid-cols-3">
+                  {active.stats.map((s) => (
+                    <div key={s.label}>
+                      <div className="text-display text-4xl text-white/95">{s.value}</div>
+                      <div className="mt-1.5 text-sm text-white/55">{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Body: challenge / approach / outcome */}
+              <div className="grid gap-12 px-8 py-12 md:grid-cols-12 md:px-14 md:py-16">
+                <div className="md:col-span-4">
+                  <div className="text-eyebrow text-white/45">The challenge</div>
+                  <p className="mt-4 text-white/75 leading-relaxed">{active.challenge}</p>
+                </div>
+                <div className="md:col-span-4">
+                  <div className="text-eyebrow text-white/45">Our approach</div>
+                  <ul className="mt-4 space-y-3 text-white/75 leading-relaxed">
+                    {active.approach.map((a) => (
+                      <li key={a} className="flex gap-3">
+                        <span className="mt-2 size-1 shrink-0 rounded-full bg-[var(--sage,#9bb39b)]" />
+                        <span>{a}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="md:col-span-4">
+                  <div className="text-eyebrow text-white/45">Outcome</div>
+                  <p className="mt-4 text-white/75 leading-relaxed">{active.outcome}</p>
+                </div>
+              </div>
+
+              {/* Gallery */}
+              <div className="border-t border-white/8 bg-white/[0.015] px-8 py-12 md:px-14 md:py-16">
+                <div className="text-eyebrow text-white/45">Selected screens</div>
+                <div className="mt-8 grid gap-6 md:grid-cols-2">
+                  {active.gallery.map((g, idx) => (
+                    <figure
+                      key={idx}
+                      className={`overflow-hidden rounded-xl border border-white/10 bg-[#0d0f12] ${
+                        idx === 0 ? "md:col-span-2" : ""
+                      }`}
+                    >
+                      {g.src ? (
+                        <img
+                          src={g.src}
+                          alt={g.caption}
+                          className="w-full object-cover object-top"
+                          style={{ aspectRatio: idx === 0 ? "16 / 9" : "4 / 3" }}
+                        />
+                      ) : (
+                        <div
+                          className="flex w-full items-center justify-center bg-gradient-to-br from-[#11141a] to-[#0a0d11] text-sm text-white/40"
+                          style={{ aspectRatio: idx === 0 ? "16 / 9" : "4 / 3" }}
+                        >
+                          {g.caption}
+                        </div>
+                      )}
+                      <figcaption className="px-5 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">
+                        {String(idx + 1).padStart(2, "0")} — {g.caption}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer CTA */}
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/8 px-8 py-8 md:px-14">
+                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/45">
+                  {active.client} · {active.sector}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setExpanded(false)}
+                  className="rounded-full border border-white/15 px-5 py-2.5 text-sm text-white/80 transition hover:border-white/40 hover:text-white"
+                >
+                  Close case study
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
