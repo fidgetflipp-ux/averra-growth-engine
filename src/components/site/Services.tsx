@@ -40,14 +40,6 @@ const services = [
     discipline: "Strategy",
     tags: ["Messaging", "Identity", "Voice"],
   },
-  {
-    code: "05",
-    italic: "Ongoing",
-    sans: "Management",
-    img: svcManage,
-    discipline: "Operations",
-    tags: ["Retainer", "Iteration", "Support"],
-  },
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
