@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Eyebrow, Reveal } from "./primitives";
 import scartec from "@/assets/scartec-hero.png.asset.json";
 import yeon from "@/assets/yeon-ritual-hero.png.asset.json";
