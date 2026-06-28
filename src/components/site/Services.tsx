@@ -82,9 +82,7 @@ export function Services() {
         >
           <Reveal>
             <div className="flex items-center justify-center gap-3">
-              <motion.span className="h-px w-10" style={{ backgroundColor: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260 / 0.3)`) }} />
               <span className="text-eyebrow opacity-0">The System</span>
-              <motion.span className="h-px w-10" style={{ backgroundColor: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260 / 0.3)`) }} />
             </div>
           </Reveal>
           <Reveal delay={0.06}>
@@ -93,7 +91,7 @@ export function Services() {
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mx-auto mt-10 max-w-xl text-center font-sans text-[13px] leading-[1.6] opacity-70">
+            <p className="mx-auto mt-5 max-w-xl text-center font-sans text-[13px] leading-[1.6] opacity-70">
               Four capability layers. One operating environment. Engineered to compound authority across every surface a market leader is judged on.
             </p>
           </Reveal>
@@ -101,7 +99,7 @@ export function Services() {
 
         {/* Orbital stage */}
         <motion.div
-          className="relative flex flex-1 min-h-0 items-center justify-center"
+          className="relative flex flex-1 min-h-0 items-start justify-center pt-2"
           style={{
             perspective: "2800px",
             perspectiveOrigin: "50% 45%",
