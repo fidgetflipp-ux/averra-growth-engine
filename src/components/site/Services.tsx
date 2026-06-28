@@ -318,9 +318,9 @@ function ActiveMeta({ activeIndex }: { activeIndex: MotionValue<number> }) {
   const total = String(services.length).padStart(2, "0");
   return (
     <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2">
-      <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-ink-muted">
+      <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] opacity-60">
         <motion.span>{current}</motion.span>
-        <span className="h-px w-8 bg-foreground/20" />
+        <span className="h-px w-8 bg-current opacity-30" />
         <span>{total}</span>
       </div>
     </div>
