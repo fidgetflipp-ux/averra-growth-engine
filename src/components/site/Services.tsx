@@ -359,8 +359,8 @@ function RailItem({
   const lineWidth = useTransform(activeIndex, (v) => (Math.abs(index - v) < 0.5 ? 40 : 18));
   return (
     <motion.div style={{ opacity }} className="flex items-center gap-3" transition={{ ease: EASE, duration: 0.6 }}>
-      <motion.span style={{ width: lineWidth }} className="h-[1px] bg-ink" />
-      <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-ink md:inline">
+      <motion.span style={{ width: lineWidth }} className="h-[1px] bg-current" />
+      <span className="hidden font-mono text-[10px] uppercase tracking-[0.22em] md:inline">
         {label}
       </span>
     </motion.div>
