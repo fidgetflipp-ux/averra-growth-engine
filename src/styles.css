@@ -196,8 +196,10 @@
 /* Dark canvas mode — body background turns black from "Services" onward */
 html, body { background-color: transparent; }
 body.dark-canvas { background-color: oklch(0.08 0.004 260); }
+body.lime-canvas { background-color: #D8DF6D; }
 body { transition: background-color 900ms cubic-bezier(0.22, 1, 0.36, 1); }
 body.dark-canvas { color: oklch(0.97 0.003 260); }
+body.lime-canvas { color: oklch(0.16 0.02 120); }
 
 main.is-dark > section { background-color: transparent !important; transition: color 600ms ease; color: oklch(0.97 0.003 260); }
 main.is-dark > section .text-ink { color: oklch(0.97 0.003 260) !important; }
@@ -212,6 +214,18 @@ main.is-dark > section [class*="bg-white"] .text-ink-soft,
 main.is-dark > section [class*="bg-surface"] .text-ink-soft { color: oklch(0.38 0.008 260) !important; }
 main.is-dark > section [class*="bg-white"] .text-ink-muted,
 main.is-dark > section [class*="bg-surface"] .text-ink-muted { color: oklch(0.55 0.008 260) !important; }
+
+/* Lime canvas mode — body bg becomes chartreuse from Packages onward */
+main.is-lime > section { background-color: transparent !important; transition: color 600ms ease; color: oklch(0.16 0.02 120); }
+main.is-lime > section .text-ink { color: oklch(0.14 0.02 120) !important; }
+main.is-lime > section .text-ink-soft { color: oklch(0.28 0.03 120) !important; }
+main.is-lime > section .text-ink-muted { color: oklch(0.38 0.03 120) !important; }
+/* Cards: dark ink panels stay dark; white cards stay white */
+main.is-lime > section [class*="bg-ink"] { color: #D8DF6D; }
+main.is-lime > section [class*="bg-ink"] .text-ink { color: #D8DF6D !important; }
+/* Hairline borders against lime */
+main.is-lime > section .hairline { border-color: oklch(0.16 0.02 120 / 0.18) !important; }
+
 
 
 
