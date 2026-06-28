@@ -112,7 +112,7 @@ export function Services() {
           <GroundPlane />
 
           <div
-            className="relative h-[clamp(360px,50vh,500px)] w-[clamp(280px,32vw,400px)]"
+            className="relative h-[clamp(380px,56vh,540px)] w-[clamp(240px,22vw,320px)]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {services.map((s, i) => (
