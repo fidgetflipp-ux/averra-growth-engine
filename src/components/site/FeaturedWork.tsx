@@ -346,7 +346,7 @@ export function FeaturedWork() {
             type="button"
             onClick={() => setActiveIdx((i) => (i - 1 + works.length) % works.length)}
             aria-label="Previous project"
-            className="absolute left-2 top-1/2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-md transition hover:scale-105 hover:border-white/60 hover:bg-white/20 md:left-6"
+            className="absolute left-2 top-1/2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg transition hover:scale-105 hover:bg-white/90 md:left-6"
           >
             <ChevronLeft className="size-5" />
           </button>
@@ -354,7 +354,7 @@ export function FeaturedWork() {
             type="button"
             onClick={() => setActiveIdx((i) => (i + 1) % works.length)}
             aria-label="Next project"
-            className="absolute right-2 top-1/2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-md transition hover:scale-105 hover:border-white/60 hover:bg-white/20 md:right-6"
+            className="absolute right-2 top-1/2 z-20 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white text-black shadow-lg transition hover:scale-105 hover:bg-white/90 md:right-6"
           >
             <ChevronRight className="size-5" />
           </button>
