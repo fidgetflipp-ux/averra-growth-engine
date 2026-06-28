@@ -88,14 +88,14 @@ export function Services() {
             </div>
           </Reveal>
           <Reveal delay={0.06}>
-            <h2 className="text-display mx-auto mt-8 max-w-5xl text-center text-[clamp(2.25rem,5.5vw,4.5rem)] leading-[1.02] tracking-[-0.02em]">
+            <h2 className="text-display mx-auto mt-6 max-w-5xl text-center text-[clamp(2rem,4.5vw,3.75rem)] leading-[1.02] tracking-[-0.02em]">
               Everything Your Company
               <br />
               Needs To <span className="text-serif-italic">Dominate.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mx-auto mt-10 max-w-xl text-center font-sans text-[14px] leading-[1.7] opacity-70">
+            <p className="mx-auto mt-6 max-w-xl text-center font-sans text-[13px] leading-[1.7] opacity-70">
               Four capability layers. One operating environment. Engineered to compound authority across every surface a market leader is judged on.
             </p>
           </Reveal>
@@ -103,7 +103,7 @@ export function Services() {
 
         {/* Orbital stage */}
         <motion.div
-          className="relative flex flex-1 items-center justify-center pt-20 md:pt-28"
+          className="relative flex flex-1 min-h-0 items-center justify-center pt-6 md:pt-10"
           style={{
             perspective: "2800px",
             perspectiveOrigin: "50% 45%",
@@ -114,7 +114,7 @@ export function Services() {
           <GroundPlane />
 
           <div
-            className="relative h-[clamp(360px,50vh,500px)] w-[clamp(280px,32vw,400px)]"
+            className="relative h-[clamp(280px,38vh,440px)] w-[clamp(260px,28vw,360px)]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {services.map((s, i) => (
