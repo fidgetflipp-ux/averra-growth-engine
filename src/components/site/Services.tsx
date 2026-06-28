@@ -100,7 +100,7 @@ export function Services() {
 
         {/* Orbital stage */}
         <motion.div
-          className="relative flex flex-1 min-h-0 items-start justify-center pt-120"
+          className="relative flex flex-1 min-h-0 items-start justify-center pt-12"
           style={{
             perspective: "2800px",
             perspectiveOrigin: "50% 45%",
