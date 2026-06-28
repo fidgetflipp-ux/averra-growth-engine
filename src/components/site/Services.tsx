@@ -124,7 +124,7 @@ export function Services() {
 
           {/* Active index meta (mono) */}
           <ActiveMeta activeIndex={activeIndex} />
-        </div>
+        </motion.div>
 
         {/* Progress rail */}
         <motion.div
