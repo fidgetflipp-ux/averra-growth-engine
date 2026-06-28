@@ -88,8 +88,8 @@ export function Services() {
             </div>
           </Reveal>
           <Reveal delay={0.06}>
-            <h2 className="mx-auto mt-4 max-w-4xl text-center font-sans text-[clamp(1.75rem,3.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">
-              Everything Your Company Needs To <span className="italic">Dominate.</span>
+            <h2 className="text-display mx-auto mt-4 max-w-4xl text-center text-[clamp(1.75rem,3.4vw,3rem)] leading-[1.05] tracking-[-0.02em]">
+              Everything Your Company Needs To <span className="text-serif-italic">Dominate.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
