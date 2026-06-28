@@ -89,7 +89,7 @@ export function Services() {
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mx-auto mt-6 max-w-xl text-center font-sans text-[14px] leading-[1.7] text-ink-soft">
+            <p className="mx-auto mt-10 max-w-xl text-center font-sans text-[14px] leading-[1.7] text-ink-soft">
               Six capability layers. One operating environment. Engineered to compound authority across every surface a market leader is judged on.
             </p>
           </Reveal>
@@ -104,7 +104,7 @@ export function Services() {
           <GroundPlane />
 
           <div
-            className="relative h-[clamp(420px,62vh,620px)] w-[clamp(280px,32vw,400px)]"
+            className="relative h-[clamp(380px,54vh,520px)] w-[clamp(280px,32vw,400px)]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {services.map((s, i) => (
