@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Eyebrow, Reveal } from "./primitives";
 import scartec from "@/assets/scartec-hero.png.asset.json";
 import yeon from "@/assets/yeon-ritual-hero.png.asset.json";
@@ -433,35 +434,36 @@ export function FeaturedWork() {
                 <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
                   {active.url ?? active.client.toLowerCase()}
                 </span>
-                <div className="ml-auto flex items-center gap-2">
+                <div className="ml-auto flex items-center gap-3">
                   <button
                     type="button"
                     onClick={() => setActiveIdx((i) => (i - 1 + works.length) % works.length)}
                     aria-label="Previous case study"
-                    className="flex size-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+                    className="flex h-9 items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 text-xs font-medium uppercase tracking-[0.16em] text-white/80 transition hover:border-white/50 hover:bg-white/10 hover:text-white"
                   >
-                    ←
+                    <ChevronLeft className="size-4" /> Prev
                   </button>
-                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
                     {String(activeIdx + 1).padStart(2, "0")} / {String(works.length).padStart(2, "0")}
                   </span>
                   <button
                     type="button"
                     onClick={() => setActiveIdx((i) => (i + 1) % works.length)}
                     aria-label="Next case study"
-                    className="flex size-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+                    className="flex h-9 items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 text-xs font-medium uppercase tracking-[0.16em] text-white/80 transition hover:border-white/50 hover:bg-white/10 hover:text-white"
                   >
-                    →
+                    Next <ChevronRight className="size-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setExpanded(false)}
                     aria-label="Close"
-                    className="ml-2 text-xs uppercase tracking-[0.18em] text-white/50 transition hover:text-white"
+                    className="ml-1 flex h-9 items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 text-xs font-medium uppercase tracking-[0.16em] text-white/80 transition hover:border-white/50 hover:bg-white/10 hover:text-white"
                   >
-                    Close ✕
+                    <X className="size-4" /> Close
                   </button>
                 </div>
+
               </div>
 
               {/* Hero cover */}
