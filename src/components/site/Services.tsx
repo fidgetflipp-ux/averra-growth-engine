@@ -93,7 +93,7 @@ export function Services() {
             </h2>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="mx-auto mt-4 max-w-xl text-center font-sans text-[13px] leading-[1.6] opacity-70">
+            <p className="mx-auto mt-10 max-w-xl text-center font-sans text-[13px] leading-[1.6] opacity-70">
               Four capability layers. One operating environment. Engineered to compound authority across every surface a market leader is judged on.
             </p>
           </Reveal>
@@ -101,7 +101,7 @@ export function Services() {
 
         {/* Orbital stage */}
         <motion.div
-          className="relative flex flex-1 min-h-0 items-center justify-center pt-2 md:pt-4"
+          className="relative flex flex-1 min-h-0 items-center justify-center"
           style={{
             perspective: "2800px",
             perspectiveOrigin: "50% 45%",
