@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [isDark, setIsDark] = useState(false);
+  const [mode, setMode] = useState<"light" | "dark" | "lime">("light");
 
   useEffect(() => {
     let raf = 0;
@@ -41,15 +41,20 @@ function Index() {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         raf = 0;
-        const el = document.getElementById("services");
+        const services = document.getElementById("services");
+        const packages = document.getElementById("packages");
         const footer = document.querySelector("footer");
-        if (!el) return;
-        const top = el.getBoundingClientRect().top;
+        if (!services) return;
+        const servicesTop = services.getBoundingClientRect().top;
+        const packagesTop = packages ? packages.getBoundingClientRect().top : Infinity;
         const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
-        // Dark from when Services hits the top, until Footer enters viewport
-        const enteredServices = top <= 0;
         const reachedFooter = footerTop <= window.innerHeight * 0.15;
-        setIsDark(enteredServices && !reachedFooter);
+        const enteredPackages = packagesTop <= window.innerHeight * 0.5;
+        const enteredServices = servicesTop <= 0;
+        if (reachedFooter) setMode("light");
+        else if (enteredPackages) setMode("lime");
+        else if (enteredServices) setMode("dark");
+        else setMode("light");
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -61,14 +66,18 @@ function Index() {
   }, []);
 
   useEffect(() => {
-    document.body.classList.toggle("dark-canvas", isDark);
-    return () => document.body.classList.remove("dark-canvas");
-  }, [isDark]);
+    document.body.classList.toggle("dark-canvas", mode === "dark");
+    document.body.classList.toggle("lime-canvas", mode === "lime");
+    return () => {
+      document.body.classList.remove("dark-canvas");
+      document.body.classList.remove("lime-canvas");
+    };
+  }, [mode]);
 
   return (
     <div className="relative">
       <Nav />
-      <main className={isDark ? "is-dark" : ""}>
+      <main className={mode === "dark" ? "is-dark" : mode === "lime" ? "is-lime" : ""}>
         <PortalStage />
         <FutureState />
         <Showcase />
@@ -84,4 +93,5 @@ function Index() {
     </div>
   );
 }
+
 
