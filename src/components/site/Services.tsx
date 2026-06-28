@@ -135,14 +135,6 @@ function EnvironmentBackdrop({ progress }: { progress: MotionValue<number> }) {
   const spotOpacity = useTransform(progress, [0, 0.18, 0.85, 1], [0, 0.55, 0.55, 0]);
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden">
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          opacity: ceilingOpacity,
-          background:
-            "radial-gradient(ellipse 70% 50% at 50% 0%, oklch(0.985 0.003 260) 0%, transparent 60%)",
-        }}
-      />
       {/* Theatrical spotlight that emerges during transition */}
       <motion.div
         className="absolute inset-0"
