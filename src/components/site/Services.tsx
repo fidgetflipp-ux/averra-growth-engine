@@ -75,7 +75,7 @@ export function Services() {
 
         {/* Eyebrow + headline */}
         <motion.div
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-20 md:pt-24"
+          className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-12 md:pt-16"
           style={{
             color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
           }}
