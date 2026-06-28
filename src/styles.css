@@ -203,6 +203,15 @@ main.is-dark > section { background-color: transparent !important; transition: c
 main.is-dark > section .text-ink { color: oklch(0.97 0.003 260) !important; }
 main.is-dark > section .text-ink-soft { color: oklch(0.85 0.003 260) !important; }
 main.is-dark > section .text-ink-muted { color: oklch(0.72 0.003 260) !important; }
+/* Restore dark text inside light card containers so they stay legible */
+main.is-dark > section [class*="bg-white"],
+main.is-dark > section [class*="bg-surface"] { color: oklch(0.14 0.005 260); }
+main.is-dark > section [class*="bg-white"] .text-ink,
+main.is-dark > section [class*="bg-surface"] .text-ink { color: oklch(0.14 0.005 260) !important; }
+main.is-dark > section [class*="bg-white"] .text-ink-soft,
+main.is-dark > section [class*="bg-surface"] .text-ink-soft { color: oklch(0.38 0.008 260) !important; }
+main.is-dark > section [class*="bg-white"] .text-ink-muted,
+main.is-dark > section [class*="bg-surface"] .text-ink-muted { color: oklch(0.55 0.008 260) !important; }
 
 
 
