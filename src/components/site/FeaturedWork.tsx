@@ -247,12 +247,20 @@ export function FeaturedWork() {
                   work={w}
                   offset={offset}
                   active={offset === 0}
-                  onSelect={() => setActiveIdx(i)}
+                  onSelect={() => {
+                    if (offset === 0) setExpanded(true);
+                    else setActiveIdx(i);
+                  }}
                   parallax={{ x: translateX, y: rotateX }}
                 />
               );
             })}
           </motion.div>
+
+          {/* Hint shown when hovering active card */}
+          <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
+            Click to expand
+          </div>
 
           {/* Reflective floor — anchors the cards in space without a literal shadow box. */}
           <div
