@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Hero } from "./Hero";
 
