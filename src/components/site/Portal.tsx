@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Hero } from "./Hero";
 
@@ -62,6 +62,22 @@ function AmbientBackground({ progress }: { progress: import("framer-motion").Mot
   // keeping the monolith legible without ever washing the video out.
   const washOpacity = useTransform(progress, [0, 1], [0.35, 0.55]);
 
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    const onVis = () => { if (!document.hidden) tryPlay(); };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pointerdown", tryPlay, { once: true });
+    window.addEventListener("touchstart", tryPlay, { once: true });
+    return () => {
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
+
   return (
     <div aria-hidden className="absolute inset-0 bg-background">
       <motion.div
@@ -69,13 +85,16 @@ function AmbientBackground({ progress }: { progress: import("framer-motion").Mot
         className="absolute inset-0 will-change-transform"
       >
         <video
+          ref={videoRef}
           src={heroVideo.url}
           autoPlay
           muted
           loop
           playsInline
+          disablePictureInPicture
+          controls={false}
           preload="auto"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         />
       </motion.div>
 
