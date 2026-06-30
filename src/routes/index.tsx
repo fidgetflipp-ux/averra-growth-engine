@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import darkBgVideo from "@/assets/dark-canvas-bg.mp4.asset.json";
 import { Nav } from "@/components/site/Nav";
 import { PortalStage } from "@/components/site/Portal";
 import { FutureState } from "@/components/site/FutureState";
