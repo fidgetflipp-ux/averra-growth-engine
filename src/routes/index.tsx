@@ -81,7 +81,7 @@ function Index() {
       {/* Fixed looping video backdrop — visible only while dark canvas is active */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-700"
+        className="pointer-events-none fixed inset-0 z-0 bg-black transition-opacity duration-700"
         style={{ opacity: mode === "dark" ? 1 : 0 }}
       >
         <video
