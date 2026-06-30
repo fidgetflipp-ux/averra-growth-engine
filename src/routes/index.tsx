@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import darkBgVideo from "@/assets/dark-canvas-bg.mp4.asset.json";
 import { Nav } from "@/components/site/Nav";
 import { PortalStage } from "@/components/site/Portal";
 import { FutureState } from "@/components/site/FutureState";
@@ -77,7 +78,27 @@ function Index() {
   return (
     <div className="relative">
       <Nav />
-      <main className={mode === "dark" ? "is-dark" : mode === "lime" ? "is-lime" : ""}>
+      {/* Fixed looping video backdrop — visible only while dark canvas is active */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-700"
+        style={{ opacity: mode === "dark" ? 1 : 0 }}
+      >
+        <video
+          src={darkBgVideo.url}
+          autoPlay
+          muted
+          loop
+          playsInline
+          disablePictureInPicture
+          controls={false}
+          preload="auto"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* subtle darkening wash for legibility */}
+        <div className="absolute inset-0 bg-black/45" />
+      </div>
+      <main className={`relative z-10 ${mode === "dark" ? "is-dark" : mode === "lime" ? "is-lime" : ""}`}>
         <PortalStage />
         <FutureState />
         <Showcase />
