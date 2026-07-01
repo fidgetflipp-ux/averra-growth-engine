@@ -81,8 +81,9 @@ export function Collage() {
           Row 2: left continues | analytics (spans center+right = 59).
         */}
         <div
-          className="mt-16 grid md:mt-20"
+          className="mx-auto mt-16 grid md:mt-20"
           style={{
+            maxWidth: 1000,
             gridTemplateColumns: "38fr 35fr 22fr",
             gridTemplateRows: "auto auto",
             gap: 24,
