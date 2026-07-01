@@ -21,7 +21,7 @@ function Panel({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10% 0px" }}
       transition={{ duration: 0.9, ease }}
-      whileHover={{ y: -4, scale: 1.02 }}
+      whileHover={{}}
       className={`group relative overflow-hidden bg-[#EFEDE6] ${className}`}
       style={{
         aspectRatio: ratio,
