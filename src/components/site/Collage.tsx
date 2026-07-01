@@ -13,18 +13,20 @@ function Tile({
   alt,
   className = "",
   position = "center",
+  delay = 0,
 }: {
   src: string;
   alt: string;
   className?: string;
   position?: string;
+  delay?: number;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ duration: 0.9, ease }}
+      initial={{ opacity: 0, y: 40, scale: 0.96, filter: "brightness(0.88)" }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "brightness(1)" }}
+      viewport={{ once: true, margin: "-5% 0px" }}
+      transition={{ duration: 1.1, delay, ease }}
       whileHover={{ scale: 1.02 }}
       style={{
         borderRadius: 32,
