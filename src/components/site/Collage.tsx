@@ -99,12 +99,12 @@ export function Collage() {
             />
           </div>
 
-          {/* Top center */}
+          {/* Top center — analytics tablet (landscape) */}
           <div style={{ gridColumn: "2 / 3", gridRow: "1 / 2" }}>
             <Tile
-              src={glassImg.url}
-              alt="Aurea process interface — glassmorphic strategy, design and launch modules on textured plaster"
-              className="aspect-[4/3]"
+              src={analyticsImg.url}
+              alt="Aurelia analytics dashboard on a tablet in an architectural travertine interior"
+              className="aspect-[3/2]"
               position="center"
             />
           </div>
@@ -119,15 +119,16 @@ export function Collage() {
             />
           </div>
 
-          {/* Bottom analytics — spans center + right */}
+          {/* Bottom wide — Aurea process interface (spans center + right) */}
           <div style={{ gridColumn: "2 / 4", gridRow: "2 / 3" }}>
             <Tile
-              src={analyticsImg.url}
-              alt="Aurelia analytics dashboard on a tablet in an architectural travertine interior"
-              className="aspect-[16/8]"
+              src={glassImg.url}
+              alt="Aurea process interface — glassmorphic strategy, design and launch modules on textured plaster"
+              className="aspect-[16/9]"
               position="center"
             />
           </div>
+
         </div>
       </div>
     </section>
