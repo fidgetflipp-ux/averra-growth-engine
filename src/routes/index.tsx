@@ -101,10 +101,10 @@ function Index() {
       </div>
       <main className={`relative z-10 ${mode === "dark" ? "is-dark" : mode === "lime" ? "is-lime" : ""}`}>
         <PortalStage />
+        <Collage />
         <FutureState />
         <Showcase />
         <SocialProof />
-        <Collage />
         <Services />
         <FeaturedWork />
         <Process />
