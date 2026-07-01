@@ -62,7 +62,10 @@ export function Collage() {
           </div>
         </Reveal>
         <Reveal delay={0.06}>
-          <h2 className="text-display mx-auto mt-8 max-w-[22ch] text-center text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[#1a1a1a]">
+          <h2
+            className="text-display mx-auto mt-8 max-w-[22ch] text-center text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[#1a1a1a]"
+            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+          >
             An art-directed system, photographed{" "}
             <span className="text-serif-italic">as one.</span>
           </h2>
