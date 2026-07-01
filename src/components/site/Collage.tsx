@@ -112,6 +112,7 @@ export function Collage() {
               alt="Aurelia analytics dashboard on a tablet in an architectural travertine interior"
               className="aspect-[3/2]"
               position="center"
+              delay={0.14}
             />
           </div>
 
@@ -122,6 +123,7 @@ export function Collage() {
               alt="Embossed monogram mark on ivory paper"
               className="aspect-square"
               position="center"
+              delay={0.28}
             />
           </div>
 
@@ -132,6 +134,7 @@ export function Collage() {
               alt="Aurea process interface — glassmorphic strategy, design and launch modules on textured plaster"
               className="aspect-[16/9]"
               position="center"
+              delay={0.42}
             />
           </div>
 
