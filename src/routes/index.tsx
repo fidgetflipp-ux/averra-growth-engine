@@ -104,6 +104,7 @@ function Index() {
         <FutureState />
         <Showcase />
         <SocialProof />
+        <Collage />
         <Services />
         <FeaturedWork />
         <Process />
