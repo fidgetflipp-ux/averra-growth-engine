@@ -22,7 +22,7 @@ function Panel({
       viewport={{ once: true, margin: "-10% 0px" }}
       transition={{ duration: 0.9, ease }}
       whileHover={{ y: -4, scale: 1.02 }}
-      className={`group relative overflow-hidden rounded-[28px] bg-[#EFEDE6] ${className}`}
+      className={`group relative overflow-hidden bg-[#EFEDE6] ${className}`}
       style={{
         aspectRatio: ratio,
         transition: "box-shadow 500ms cubic-bezier(0.22,1,0.36,1)",
