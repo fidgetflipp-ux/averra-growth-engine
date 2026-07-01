@@ -6,6 +6,7 @@ import { PortalStage } from "@/components/site/Portal";
 import { FutureState } from "@/components/site/FutureState";
 import { Showcase } from "@/components/site/Showcase";
 import { SocialProof } from "@/components/site/SocialProof";
+import { Collage } from "@/components/site/Collage";
 import { Services } from "@/components/site/Services";
 import { FeaturedWork } from "@/components/site/FeaturedWork";
 import { Process } from "@/components/site/Process";
