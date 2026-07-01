@@ -110,8 +110,8 @@ function AmbientBackground({ progress }: { progress: import("framer-motion").Mot
             "radial-gradient(ellipse 55% 45% at 50% 70%, rgba(127,185,138,0.10), transparent 70%)",
         }}
       />
-      {/* Bottom blend into the next section */}
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
+      {/* Bottom blend — dissolve directly into the collage's warm ivory */}
+      <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-transparent to-[#F7F6F2]" />
     </div>
   );
 }

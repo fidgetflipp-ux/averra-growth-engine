@@ -13,18 +13,20 @@ function Tile({
   alt,
   className = "",
   position = "center",
+  delay = 0,
 }: {
   src: string;
   alt: string;
   className?: string;
   position?: string;
+  delay?: number;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ duration: 0.9, ease }}
+      initial={{ opacity: 0, y: 40, scale: 0.96, filter: "brightness(0.88)" }}
+      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "brightness(1)" }}
+      viewport={{ once: true, margin: "-5% 0px" }}
+      transition={{ duration: 1.1, delay, ease }}
       whileHover={{ scale: 1.02 }}
       style={{
         borderRadius: 32,
@@ -99,6 +101,7 @@ export function Collage() {
               alt="Aurelian brand identity — embossed stationery, business cards and wax seal on travertine in warm sunlight"
               className="h-full"
               position="center"
+              delay={0}
             />
           </div>
 
@@ -109,6 +112,7 @@ export function Collage() {
               alt="Aurelia analytics dashboard on a tablet in an architectural travertine interior"
               className="aspect-[3/2]"
               position="center"
+              delay={0.14}
             />
           </div>
 
@@ -119,6 +123,7 @@ export function Collage() {
               alt="Embossed monogram mark on ivory paper"
               className="aspect-square"
               position="center"
+              delay={0.28}
             />
           </div>
 
@@ -129,6 +134,7 @@ export function Collage() {
               alt="Aurea process interface — glassmorphic strategy, design and launch modules on textured plaster"
               className="aspect-[16/9]"
               position="center"
+              delay={0.42}
             />
           </div>
 
