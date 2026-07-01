@@ -21,8 +21,8 @@ function Panel({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10% 0px" }}
       transition={{ duration: 0.9, ease }}
-      whileHover={{ y: -4, scale: 1.02 }}
-      className={`group relative overflow-hidden rounded-[28px] bg-[#EFEDE6] ${className}`}
+      whileHover={{}}
+      className={`group relative overflow-hidden bg-[#EFEDE6] ${className}`}
       style={{
         aspectRatio: ratio,
         transition: "box-shadow 500ms cubic-bezier(0.22,1,0.36,1)",
@@ -203,7 +203,7 @@ export function Collage() {
         </Reveal>
 
         {/* Grid */}
-        <div className="mt-16 grid grid-cols-12 gap-6 md:mt-20 md:gap-8">
+        <div className="mt-16 grid grid-cols-12 gap-[2px] md:mt-20">
           {/* Left — Website Design 4:5 */}
           <div className="col-span-12 md:col-span-6 md:row-span-2">
             <ImagePanel
