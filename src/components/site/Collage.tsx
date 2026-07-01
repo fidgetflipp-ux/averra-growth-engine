@@ -101,6 +101,7 @@ export function Collage() {
               alt="Aurelian brand identity — embossed stationery, business cards and wax seal on travertine in warm sunlight"
               className="h-full"
               position="center"
+              delay={0}
             />
           </div>
 
