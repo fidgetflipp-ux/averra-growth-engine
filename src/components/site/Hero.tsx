@@ -33,7 +33,7 @@ export function Hero({ progress }: Props) {
         </div>
       </Reveal>
 
-      <h1 style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }} className="text-display mx-auto max-w-[14ch] text-[clamp(2.75rem,7.6vw,6.5rem)] leading-[0.98] tracking-[-0.025em]">
+      <h1 className="text-display mx-auto max-w-[14ch] text-[clamp(2.75rem,7.6vw,6.5rem)] leading-[0.98] tracking-[-0.025em]">
         <Reveal>
           <span className="block">Become the</span>
         </Reveal>
