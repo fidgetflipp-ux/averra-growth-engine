@@ -25,6 +25,7 @@ function Tile({
   style,
   motionProps,
   shadow,
+  opacity,
 }: {
   src: string;
   alt: string;
@@ -33,6 +34,7 @@ function Tile({
   style?: React.CSSProperties;
   motionProps: TileMotion;
   shadow: MotionValue<string>;
+  opacity: MotionValue<number>;
 }) {
   return (
     <motion.div
@@ -43,6 +45,7 @@ function Tile({
         rotateX: motionProps.rX,
         z: motionProps.z,
         boxShadow: shadow,
+        opacity,
         borderRadius: 32,
         transformStyle: "preserve-3d",
         willChange: "transform",
@@ -105,10 +108,13 @@ export function Collage() {
   const mgZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 50, 140]);
 
   const glX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
-  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${95 * k}vh`]);
+  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-90 * k}vh`]);
   const glRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
-  const glRX = useTransform(scrollYProgress, [A0, A2], [0, 8 * rotK]);
+  const glRX = useTransform(scrollYProgress, [A0, A2], [0, -8 * rotK]);
   const glZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
+
+  // Fade all tiles as they clear so nothing lingers into the next section.
+  const tileOpacity = useTransform(scrollYProgress, [A1, A2 - 0.08, A2], [1, 1, 0]);
 
   return (
     <section
@@ -167,7 +173,7 @@ export function Collage() {
                 alt="Aurelian brand identity — embossed stationery and wax seal on travertine in warm sunlight"
                 className="h-full"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: stX, y: stY, rY: stRY, rX: stRX, z: stZ }}
               />
             </div>
@@ -178,7 +184,7 @@ export function Collage() {
                 alt="Aurelia analytics dashboard on a tablet"
                 className="aspect-[3/2]"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: anX, y: anY, rY: anRY, rX: anRX, z: anZ }}
               />
             </div>
@@ -189,7 +195,7 @@ export function Collage() {
                 alt="Embossed monogram mark on ivory paper"
                 className="aspect-square"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: mgX, y: mgY, rY: mgRY, rX: mgRX, z: mgZ }}
               />
             </div>
@@ -200,7 +206,7 @@ export function Collage() {
                 alt="Aurea process interface — glassmorphic strategy, design and launch modules on textured plaster"
                 className="aspect-[16/9]"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: glX, y: glY, rY: glRY, rX: glRX, z: glZ }}
               />
             </div>
@@ -208,7 +214,7 @@ export function Collage() {
         </motion.div>
         {/* Scroll runway — gives the tile animation real dwell time without
             adding visible whitespace above the collage. */}
-        <div aria-hidden style={{ height: "90vh" }} />
+        <div aria-hidden style={{ height: "30vh" }} />
       </div>
     </section>
   );
