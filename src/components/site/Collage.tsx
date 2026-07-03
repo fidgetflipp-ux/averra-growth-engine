@@ -173,7 +173,7 @@ export function Collage() {
                 alt="Aurelian brand identity — embossed stationery and wax seal on travertine in warm sunlight"
                 className="h-full"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: stX, y: stY, rY: stRY, rX: stRX, z: stZ }}
               />
             </div>
@@ -184,7 +184,7 @@ export function Collage() {
                 alt="Aurelia analytics dashboard on a tablet"
                 className="aspect-[3/2]"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: anX, y: anY, rY: anRY, rX: anRX, z: anZ }}
               />
             </div>
@@ -195,7 +195,7 @@ export function Collage() {
                 alt="Embossed monogram mark on ivory paper"
                 className="aspect-square"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: mgX, y: mgY, rY: mgRY, rX: mgRX, z: mgZ }}
               />
             </div>
@@ -206,7 +206,7 @@ export function Collage() {
                 alt="Aurea process interface — glassmorphic strategy, design and launch modules on textured plaster"
                 className="aspect-[16/9]"
                 position="center"
-                shadow={shadow}
+                shadow={shadow} opacity={tileOpacity}
                 motionProps={{ x: glX, y: glY, rY: glRY, rX: glRX, z: glZ }}
               />
             </div>
