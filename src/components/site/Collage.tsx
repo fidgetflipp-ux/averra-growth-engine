@@ -114,10 +114,10 @@ export function Collage() {
     <section
       ref={wrapperRef}
       aria-label="Editorial collage"
-      className="relative"
-      style={{ backgroundColor: "#F7F6F2" }}
+      className="relative overflow-visible"
+      style={{ backgroundColor: "#F7F6F2", zIndex: 20 }}
     >
-      <div className="mx-auto max-w-[1400px] px-6 py-32 md:py-40">
+      <div className="mx-auto max-w-[1400px] overflow-visible px-6 py-32 md:py-40">
         <Reveal>
           <div className="flex items-center justify-center gap-3">
             <span className="h-px w-10 bg-[#1a1a1a]/15" />
