@@ -74,11 +74,11 @@ export function Collage() {
     offset: ["start start", "end end"],
   });
 
-  // Animation window: nothing happens until the collage is fully in view
-  // and the user starts scrolling further. Range 0.55 → 1.0.
-  const A0 = 0.55;
-  const A1 = 0.65;
-  const A2 = 1.0;
+  // Animation window: user views the collage at rest, then scrolling opens it.
+  // A0 = activation, A1 = perspective/shadow settled, A2 = fully separated.
+  const A0 = 0.35;
+  const A1 = 0.50;
+  const A2 = 0.95;
 
   const perspective = useTransform(scrollYProgress, [A0, A1], [1400, 2100], { clamp: true });
   const shadow = useTransform(scrollYProgress, [A0, A1], [shadowRest, shadowDeep]);
