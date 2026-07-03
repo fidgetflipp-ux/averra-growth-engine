@@ -206,6 +206,9 @@ export function Collage() {
             </div>
           </div>
         </motion.div>
+        {/* Scroll runway — gives the tile animation real dwell time without
+            adding visible whitespace above the collage. */}
+        <div aria-hidden style={{ height: "90vh" }} />
       </div>
     </section>
   );
