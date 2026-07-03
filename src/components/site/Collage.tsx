@@ -25,6 +25,7 @@ function Tile({
   style,
   motionProps,
   shadow,
+  opacity,
 }: {
   src: string;
   alt: string;
@@ -33,6 +34,7 @@ function Tile({
   style?: React.CSSProperties;
   motionProps: TileMotion;
   shadow: MotionValue<string>;
+  opacity: MotionValue<number>;
 }) {
   return (
     <motion.div
