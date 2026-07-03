@@ -1,47 +1,59 @@
 ## Goal
-Elevate the existing Services section ("The System") from a 3D card carousel into an immersive architectural experience that makes visitors feel like they have entered an exclusive world — appropriate for an agency that builds million-dollar websites.
 
-The section must keep its 4 capabilities (Website Design, Website Development, Conversion Optimization, Brand Positioning) and its scroll-driven mechanics. Everything else is open to transformation.
+Transform the existing Collage section into a scroll-driven 3D unfold. The four collage tiles physically separate like architectural panels as the user scrolls past the "An art-directed system, photographed as one." headline, revealing a dark observatory environment already living underneath. Nothing fades out — the collage becomes the doorway.
 
----
+## Behavior
 
-## Three Concepts
+Single sticky section (`~250vh` tall). One `useScroll` progress value (`0 → 1`) drives everything. Three stages mapped to progress ranges:
 
-### Concept A — The Observatory
-The visitor enters a private universe where Averra's four capabilities are celestial bodies orbiting a luminous central core.
+- **0 – 0.15 · Rest**: Collage sits exactly as today. Headline + eyebrow visible above.
+- **0.15 – 0.30 · Activation**: `perspective: 2000px` engages on the grid. Each tile gets a tiny `translateZ` + `rotateY` lift. Shadows deepen from `0 10px 40px rgba(0,0,0,0.05)` → `0 30px 80px rgba(0,0,0,0.18)`. Gap grows 24 → 40px.
+- **0.30 – 0.60 · Separation**: Tiles drift apart along authored vectors (no scale > 1.05, no spin). Gap continues 40 → 120px. Background of the section transitions from `#F7F6F2` → transparent so the observatory layer underneath starts to bleed through the widening gaps.
+- **0.60 – 1.0 · Reveal**: Tiles continue outward past the viewport edges (`translate` up to ±60vw / ±60vh, `rotateY ±14°`, `rotateX ±10°`). Observatory layer becomes fully visible. At `~0.95` the section releases stickiness and the next section (`FutureState`) enters naturally.
 
-- The cards become translucent glass spheres / orbs floating in a deep void.
-- Scroll moves the "camera" through the solar system; each capability dramatically fills the viewport as the visitor approaches.
-- Subtle starfield and sage-green nebula washes in the background.
-- Each orb has an internal glow that pulses softly.
-- Audio-visual feeling: cosmic, vast, elite — like stepping into a billionaire's private planetarium.
+Per-tile motion vectors (matches the brief):
 
-### Concept B — The Vault
-The visitor descends into a secure, minimal chamber where Averra's capabilities are stored as monumental monoliths.
+| Tile | Translate (at p=1) | Rotate |
+|---|---|---|
+| Stationery (left large) | `x: -55vw, y: -8vh` | `rotateY: +12°` (outward) |
+| Analytics (top center) | `y: -55vh` | `rotateX: -10°` |
+| Monogram (top right) | `x: +38vw, y: -30vh` | `rotateY: -14°` |
+| Glass / Process (bottom wide) | `y: +55vh` | `rotateX: +10°` |
 
-- A single polished obsidian floor stretches to infinity. Four massive black-glass slabs rise from it as you scroll.
-- Only one slab is fully illuminated at a time; the others recede into shadow.
-- Dramatic light sweeps (CSS gradients animated by scroll) hit each monolith sequentially.
-- Typography is monumental — the service name fills half the screen.
-- Feeling: secret, powerful, institutional — like accessing a classified design facility.
+All eased with `cubic-bezier(0.22, 1, 0.36, 1)` via `useTransform` (no springs — direct scroll binding).
 
-### Concept C — The Atrium
-The visitor ascends through a vertical architectural space — a cathedral of design where each capability lives on its own floating platform.
+## Reveal Environment: Dark Observatory
 
-- A vertical journey: scroll moves the visitor upward past four suspended glass platforms.
-- Volumetric light beams (CSS-conic gradients with blur) shine down from an unseen ceiling.
-- Each platform rotates slightly toward the viewer as it becomes active.
-- Distant structural grid lines suggest an infinite building stretching above and below.
-- Feeling: prestigious, sacred, aspirational — like touring the private atrium of the world's best design studio.
+Rendered as an absolutely-positioned layer *behind* the collage grid inside the same sticky container, so it's already there — the tiles are literally walls in front of it.
 
----
+- Base: near-black `#0A0B0F` with a soft radial from `#141826` at center.
+- Slow-drifting starfield: two stacked `radial-gradient` layers (`background-size: 3px 3px` and `2px 2px`) with subtle `background-position` animation.
+- One conic/radial "core" glow in sage (`oklch(...)` from the existing palette) at center, opacity tied to progress (0 at p<0.3 → 0.9 at p=1).
+- Faint structural horizon line (1px, 8% white) at 62% height.
+- Small caption that fades in at p>0.7: `Enter the standard.` in Fraunces italic — bridges thematically to the FutureState section that follows.
 
-## Technical constraints (all concepts)
-- No WebGL/Three.js — everything is CSS 3D transforms, Framer Motion, and scroll-driven motion values.
-- No external video assets.
-- Stays within existing OKLCH color system (sage accent, deep ink backgrounds).
-- Preserves the sticky-scroll section height and mobile accessibility.
+Opacity of the observatory layer: `0` until `p=0.25`, ramps to `1` by `p=0.65`. Collage `background-color` interpolates ivory → transparent across the same range so the observatory reads through.
 
----
+## Structural Changes
 
-Which concept should I build?
+- `src/components/site/Collage.tsx`: rewrite as a sticky scroll stage.
+  - Outer wrapper: `relative` with `height: 250vh`.
+  - Inner sticky: `sticky top-0 h-screen overflow-hidden`.
+  - Layers (back → front): `Observatory` → headline block (also drifts up and dims slightly after p>0.4) → `CollageGrid` with per-tile `motion.div` transforms.
+  - Uses `useScroll({ target: wrapperRef, offset: ["start start", "end end"] })` + `useTransform` per tile.
+  - Keep existing images and grid proportions at rest (100-col grid, 24px base gap, 32px radii, 1000px maxWidth) — motion is applied on top via transforms so the resting composition is identical to today.
+- New sub-component `Observatory` inside the same file (no new file — keeps scope tight).
+- No changes to `src/routes/index.tsx` ordering; the section still sits between `PortalStage` and `FutureState`.
+- No new deps.
+
+## Technical Notes
+
+- Transforms only (`translate`, `rotate`, `opacity`) — no layout thrash. `will-change: transform` on tiles during the sticky range.
+- `preserve-3d` on the grid; `perspective` on its parent (interpolated 1200 → 2100px so activation feels like the room deepening).
+- Respect `prefers-reduced-motion`: skip transforms, keep tiles static, still show observatory at bottom of the section so the reveal is legible.
+- Mobile (`<768px`): reduce translate distances by ~50% and drop `rotateX/Y` to ±4° to avoid disorientation; keep the same 3-stage timing.
+- The FutureState section that follows already has a dark aesthetic, so the observatory doubles as a visual bridge — no color clash on exit.
+
+## Out of Scope
+
+- No new copy on other sections. No changes to FutureState, Portal, or Services. No new assets — reuses the four existing collage PNGs.
