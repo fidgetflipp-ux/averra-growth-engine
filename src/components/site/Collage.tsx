@@ -81,29 +81,29 @@ export function Collage() {
 
   // Tiles begin drifting at ~0.56 (section well into viewport) and continue outward
   // as the user scrolls past — FutureState below rises up naturally.
-  const stX = useTransform(scrollYProgress, [0.56, 1.0], ["0vw", `${-45 * k}vw`]);
-  const stY = useTransform(scrollYProgress, [0.56, 1.0], ["0vh", `${-6 * k}vh`]);
-  const stRY = useTransform(scrollYProgress, [0.56, 0.66, 1.0], [0, -3 * rotK, 10 * rotK]);
-  const stRX = useTransform(scrollYProgress, [0.56, 1.0], [0, 0]);
-  const stZ = useTransform(scrollYProgress, [0.56, 0.66, 1.0], [0, 40, 120]);
+  const stX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", `${-22 * k}vw`]);
+  const stY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-4 * k}vh`]);
+  const stRY = useTransform(scrollYProgress, [0.45, 0.72, 1.0], [0, -2 * rotK, 5 * rotK]);
+  const stRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const stZ = useTransform(scrollYProgress, [0.45, 0.72, 1.0], [0, 20, 60]);
 
-  const anX = useTransform(scrollYProgress, [0.56, 1.0], ["0vw", "0vw"]);
-  const anY = useTransform(scrollYProgress, [0.56, 1.0], ["0vh", `${-45 * k}vh`]);
-  const anRY = useTransform(scrollYProgress, [0.56, 1.0], [0, 0]);
-  const anRX = useTransform(scrollYProgress, [0.56, 1.0], [0, -8 * rotK]);
-  const anZ = useTransform(scrollYProgress, [0.56, 0.66, 1.0], [0, 30, 80]);
+  const anX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", "0vw"]);
+  const anY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-22 * k}vh`]);
+  const anRY = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const anRX = useTransform(scrollYProgress, [0.45, 1.0], [0, -4 * rotK]);
+  const anZ = useTransform(scrollYProgress, [0.45, 0.72, 1.0], [0, 15, 40]);
 
-  const mgX = useTransform(scrollYProgress, [0.56, 1.0], ["0vw", `${38 * k}vw`]);
-  const mgY = useTransform(scrollYProgress, [0.56, 1.0], ["0vh", `${-28 * k}vh`]);
-  const mgRY = useTransform(scrollYProgress, [0.56, 0.66, 1.0], [0, 3 * rotK, -12 * rotK]);
-  const mgRX = useTransform(scrollYProgress, [0.56, 1.0], [0, 0]);
-  const mgZ = useTransform(scrollYProgress, [0.56, 0.66, 1.0], [0, 50, 140]);
+  const mgX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", `${19 * k}vw`]);
+  const mgY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-14 * k}vh`]);
+  const mgRY = useTransform(scrollYProgress, [0.45, 0.72, 1.0], [0, 2 * rotK, -6 * rotK]);
+  const mgRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const mgZ = useTransform(scrollYProgress, [0.45, 0.72, 1.0], [0, 25, 70]);
 
-  const glX = useTransform(scrollYProgress, [0.56, 1.0], ["0vw", "0vw"]);
-  const glY = useTransform(scrollYProgress, [0.56, 1.0], ["0vh", `${45 * k}vh`]);
-  const glRY = useTransform(scrollYProgress, [0.56, 1.0], [0, 0]);
-  const glRX = useTransform(scrollYProgress, [0.56, 1.0], [0, 8 * rotK]);
-  const glZ = useTransform(scrollYProgress, [0.56, 0.66, 1.0], [0, 30, 80]);
+  const glX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", "0vw"]);
+  const glY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${22 * k}vh`]);
+  const glRY = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const glRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 4 * rotK]);
+  const glZ = useTransform(scrollYProgress, [0.45, 0.72, 1.0], [0, 15, 40]);
 
   return (
     <section
