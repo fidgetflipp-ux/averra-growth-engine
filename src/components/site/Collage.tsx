@@ -45,6 +45,7 @@ function Tile({
         rotateX: motionProps.rX,
         z: motionProps.z,
         boxShadow: shadow,
+        opacity,
         borderRadius: 32,
         transformStyle: "preserve-3d",
         willChange: "transform",
