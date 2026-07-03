@@ -25,7 +25,6 @@ function Tile({
   style,
   motionProps,
   shadow,
-  opacity,
 }: {
   src: string;
   alt: string;
@@ -34,7 +33,6 @@ function Tile({
   style?: React.CSSProperties;
   motionProps: TileMotion;
   shadow: MotionValue<string>;
-  opacity: MotionValue<number>;
 }) {
   return (
     <motion.div
@@ -45,7 +43,6 @@ function Tile({
         rotateX: motionProps.rX,
         z: motionProps.z,
         boxShadow: shadow,
-        opacity,
         borderRadius: 32,
         transformStyle: "preserve-3d",
         willChange: "transform",
@@ -69,61 +66,53 @@ export function Collage() {
   const reduce = useReducedMotion();
 
   // Progress 0 -> 1 as the section moves through the viewport.
-  // "end end" so the animation completes only when the section's bottom
-  // reaches the viewport bottom — giving the user dwell time to view the
-  // collage before it opens up.
+  // No stickiness: the next section naturally scrolls up beneath as tiles part.
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   });
 
-  // Animation window: user views the collage at rest, then scrolling opens it.
-  // A0 = activation, A1 = perspective/shadow settled, A2 = fully separated.
-  const A0 = 0.35;
-  const A1 = 0.50;
-  const A2 = 0.95;
-
-  const perspective = useTransform(scrollYProgress, [A0, A1], [1400, 2100], { clamp: true });
-  const shadow = useTransform(scrollYProgress, [A0, A1], [shadowRest, shadowDeep]);
+  // Perspective + shadow ramp during activation
+  const perspective = useTransform(scrollYProgress, [0.30, 0.55], [1400, 2100], { clamp: true });
+  const shadow = useTransform(scrollYProgress, [0.30, 0.55], [shadowRest, shadowDeep]);
 
   const k = reduce ? 0 : 1;
   const rotK = reduce ? 0 : 1;
 
-  const stX = useTransform(scrollYProgress, [A0, A2], ["0vw", `${-55 * k}vw`]);
-  const stY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-8 * k}vh`]);
-  const stRY = useTransform(scrollYProgress, [A0, A1, A2], [0, -3 * rotK, 10 * rotK]);
-  const stRX = useTransform(scrollYProgress, [A0, A2], [0, 0]);
-  const stZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 40, 120]);
+  // Tiles begin drifting at ~0.45 (section mid-viewport) and continue outward
+  // as the user scrolls past — FutureState below rises up naturally.
+  const stX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", `${-45 * k}vw`]);
+  const stY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-6 * k}vh`]);
+  const stRY = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, -3 * rotK, 10 * rotK]);
+  const stRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const stZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 40, 120]);
 
-  const anX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
-  const anY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-95 * k}vh`]);
-  const anRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
-  const anRX = useTransform(scrollYProgress, [A0, A2], [0, -8 * rotK]);
-  const anZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
+  const anX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", "0vw"]);
+  const anY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-45 * k}vh`]);
+  const anRY = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const anRX = useTransform(scrollYProgress, [0.45, 1.0], [0, -8 * rotK]);
+  const anZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 30, 80]);
 
-  const mgX = useTransform(scrollYProgress, [A0, A2], ["0vw", `${65 * k}vw`]);
-  const mgY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-55 * k}vh`]);
-  const mgRY = useTransform(scrollYProgress, [A0, A1, A2], [0, 3 * rotK, -12 * rotK]);
-  const mgRX = useTransform(scrollYProgress, [A0, A2], [0, 0]);
-  const mgZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 50, 140]);
+  const mgX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", `${38 * k}vw`]);
+  const mgY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-28 * k}vh`]);
+  const mgRY = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 3 * rotK, -12 * rotK]);
+  const mgRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const mgZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 50, 140]);
 
-  const glX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
-  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-90 * k}vh`]);
-  const glRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
-  const glRX = useTransform(scrollYProgress, [A0, A2], [0, -8 * rotK]);
-  const glZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
-
-  // Fade all tiles as they clear so nothing lingers into the next section.
-  const tileOpacity = useTransform(scrollYProgress, [A1, A2 - 0.08, A2], [1, 1, 0]);
+  const glX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", "0vw"]);
+  const glY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${45 * k}vh`]);
+  const glRY = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
+  const glRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 8 * rotK]);
+  const glZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 30, 80]);
 
   return (
     <section
       ref={wrapperRef}
       aria-label="Editorial collage"
-      className="relative overflow-visible"
-      style={{ backgroundColor: "#F7F6F2", zIndex: 20 }}
+      className="relative"
+      style={{ backgroundColor: "#F7F6F2" }}
     >
-      <div className="mx-auto max-w-[1400px] overflow-visible px-6 py-32 md:py-40">
+      <div className="mx-auto max-w-[1400px] px-6 py-32 md:py-40">
         <Reveal>
           <div className="flex items-center justify-center gap-3">
             <span className="h-px w-10 bg-[#1a1a1a]/15" />
@@ -173,7 +162,7 @@ export function Collage() {
                 alt="Aurelian brand identity — embossed stationery and wax seal on travertine in warm sunlight"
                 className="h-full"
                 position="center"
-                shadow={shadow} opacity={tileOpacity}
+                shadow={shadow}
                 motionProps={{ x: stX, y: stY, rY: stRY, rX: stRX, z: stZ }}
               />
             </div>
@@ -184,7 +173,7 @@ export function Collage() {
                 alt="Aurelia analytics dashboard on a tablet"
                 className="aspect-[3/2]"
                 position="center"
-                shadow={shadow} opacity={tileOpacity}
+                shadow={shadow}
                 motionProps={{ x: anX, y: anY, rY: anRY, rX: anRX, z: anZ }}
               />
             </div>
@@ -195,7 +184,7 @@ export function Collage() {
                 alt="Embossed monogram mark on ivory paper"
                 className="aspect-square"
                 position="center"
-                shadow={shadow} opacity={tileOpacity}
+                shadow={shadow}
                 motionProps={{ x: mgX, y: mgY, rY: mgRY, rX: mgRX, z: mgZ }}
               />
             </div>
@@ -206,15 +195,12 @@ export function Collage() {
                 alt="Aurea process interface — glassmorphic strategy, design and launch modules on textured plaster"
                 className="aspect-[16/9]"
                 position="center"
-                shadow={shadow} opacity={tileOpacity}
+                shadow={shadow}
                 motionProps={{ x: glX, y: glY, rY: glRY, rX: glRX, z: glZ }}
               />
             </div>
           </div>
         </motion.div>
-        {/* Scroll runway — gives the tile animation real dwell time without
-            adding visible whitespace above the collage. */}
-        <div aria-hidden style={{ height: "30vh" }} />
       </div>
     </section>
   );
