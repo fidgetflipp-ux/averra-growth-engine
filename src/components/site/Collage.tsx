@@ -93,19 +93,19 @@ export function Collage() {
   const stZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 40, 120]);
 
   const anX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
-  const anY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-60 * k}vh`]);
+  const anY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-95 * k}vh`]);
   const anRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
   const anRX = useTransform(scrollYProgress, [A0, A2], [0, -8 * rotK]);
   const anZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
 
-  const mgX = useTransform(scrollYProgress, [A0, A2], ["0vw", `${48 * k}vw`]);
-  const mgY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-32 * k}vh`]);
+  const mgX = useTransform(scrollYProgress, [A0, A2], ["0vw", `${65 * k}vw`]);
+  const mgY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-55 * k}vh`]);
   const mgRY = useTransform(scrollYProgress, [A0, A1, A2], [0, 3 * rotK, -12 * rotK]);
   const mgRX = useTransform(scrollYProgress, [A0, A2], [0, 0]);
   const mgZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 50, 140]);
 
   const glX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
-  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${60 * k}vh`]);
+  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${95 * k}vh`]);
   const glRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
   const glRX = useTransform(scrollYProgress, [A0, A2], [0, 8 * rotK]);
   const glZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
