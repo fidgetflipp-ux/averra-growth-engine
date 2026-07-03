@@ -105,10 +105,13 @@ export function Collage() {
   const mgZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 50, 140]);
 
   const glX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
-  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${95 * k}vh`]);
+  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-90 * k}vh`]);
   const glRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
-  const glRX = useTransform(scrollYProgress, [A0, A2], [0, 8 * rotK]);
+  const glRX = useTransform(scrollYProgress, [A0, A2], [0, -8 * rotK]);
   const glZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
+
+  // Fade all tiles as they clear so nothing lingers into the next section.
+  const tileOpacity = useTransform(scrollYProgress, [A1, A2 - 0.08, A2], [1, 1, 0]);
 
   return (
     <section
