@@ -66,53 +66,58 @@ export function Collage() {
   const reduce = useReducedMotion();
 
   // Progress 0 -> 1 as the section moves through the viewport.
-  // No stickiness: the next section naturally scrolls up beneath as tiles part.
+  // "end end" so the animation completes only when the section's bottom
+  // reaches the viewport bottom — giving the user dwell time to view the
+  // collage before it opens up.
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
 
-  // Perspective + shadow ramp during activation
-  const perspective = useTransform(scrollYProgress, [0.30, 0.55], [1400, 2100], { clamp: true });
-  const shadow = useTransform(scrollYProgress, [0.30, 0.55], [shadowRest, shadowDeep]);
+  // Animation window: nothing happens until the collage is fully in view
+  // and the user starts scrolling further. Range 0.55 → 1.0.
+  const A0 = 0.55;
+  const A1 = 0.65;
+  const A2 = 1.0;
+
+  const perspective = useTransform(scrollYProgress, [A0, A1], [1400, 2100], { clamp: true });
+  const shadow = useTransform(scrollYProgress, [A0, A1], [shadowRest, shadowDeep]);
 
   const k = reduce ? 0 : 1;
   const rotK = reduce ? 0 : 1;
 
-  // Tiles begin drifting at ~0.45 (section mid-viewport) and continue outward
-  // as the user scrolls past — FutureState below rises up naturally.
-  const stX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", `${-45 * k}vw`]);
-  const stY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-6 * k}vh`]);
-  const stRY = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, -3 * rotK, 10 * rotK]);
-  const stRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
-  const stZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 40, 120]);
+  const stX = useTransform(scrollYProgress, [A0, A2], ["0vw", `${-55 * k}vw`]);
+  const stY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-8 * k}vh`]);
+  const stRY = useTransform(scrollYProgress, [A0, A1, A2], [0, -3 * rotK, 10 * rotK]);
+  const stRX = useTransform(scrollYProgress, [A0, A2], [0, 0]);
+  const stZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 40, 120]);
 
-  const anX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", "0vw"]);
-  const anY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-45 * k}vh`]);
-  const anRY = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
-  const anRX = useTransform(scrollYProgress, [0.45, 1.0], [0, -8 * rotK]);
-  const anZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 30, 80]);
+  const anX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
+  const anY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-60 * k}vh`]);
+  const anRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
+  const anRX = useTransform(scrollYProgress, [A0, A2], [0, -8 * rotK]);
+  const anZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
 
-  const mgX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", `${38 * k}vw`]);
-  const mgY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${-28 * k}vh`]);
-  const mgRY = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 3 * rotK, -12 * rotK]);
-  const mgRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
-  const mgZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 50, 140]);
+  const mgX = useTransform(scrollYProgress, [A0, A2], ["0vw", `${48 * k}vw`]);
+  const mgY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${-32 * k}vh`]);
+  const mgRY = useTransform(scrollYProgress, [A0, A1, A2], [0, 3 * rotK, -12 * rotK]);
+  const mgRX = useTransform(scrollYProgress, [A0, A2], [0, 0]);
+  const mgZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 50, 140]);
 
-  const glX = useTransform(scrollYProgress, [0.45, 1.0], ["0vw", "0vw"]);
-  const glY = useTransform(scrollYProgress, [0.45, 1.0], ["0vh", `${45 * k}vh`]);
-  const glRY = useTransform(scrollYProgress, [0.45, 1.0], [0, 0]);
-  const glRX = useTransform(scrollYProgress, [0.45, 1.0], [0, 8 * rotK]);
-  const glZ = useTransform(scrollYProgress, [0.45, 0.55, 1.0], [0, 30, 80]);
+  const glX = useTransform(scrollYProgress, [A0, A2], ["0vw", "0vw"]);
+  const glY = useTransform(scrollYProgress, [A0, A2], ["0vh", `${60 * k}vh`]);
+  const glRY = useTransform(scrollYProgress, [A0, A2], [0, 0]);
+  const glRX = useTransform(scrollYProgress, [A0, A2], [0, 8 * rotK]);
+  const glZ = useTransform(scrollYProgress, [A0, A1, A2], [0, 30, 80]);
 
   return (
     <section
       ref={wrapperRef}
       aria-label="Editorial collage"
-      className="relative"
-      style={{ backgroundColor: "#F7F6F2" }}
+      className="relative overflow-visible"
+      style={{ backgroundColor: "#F7F6F2", zIndex: 20 }}
     >
-      <div className="mx-auto max-w-[1400px] px-6 py-32 md:py-40">
+      <div className="mx-auto max-w-[1400px] overflow-visible px-6 py-32 md:py-40">
         <Reveal>
           <div className="flex items-center justify-center gap-3">
             <span className="h-px w-10 bg-[#1a1a1a]/15" />
