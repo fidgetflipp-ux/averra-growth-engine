@@ -285,15 +285,6 @@ export function FeaturedWork() {
 
   return (
     <section id="work" ref={sectionRef} className="relative overflow-hidden py-32">
-      {/* Ambient sage glow — sits behind the gallery, matches the dark canvas. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(60% 50% at 50% 40%, color-mix(in oklab, var(--sage, #9bb39b) 14%, transparent), transparent 70%)",
-        }}
-      />
 
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal><Eyebrow>Selected work</Eyebrow></Reveal>
