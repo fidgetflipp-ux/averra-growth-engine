@@ -328,7 +328,7 @@ export function FeaturedWork() {
           </motion.div>
 
           {/* Hint shown when hovering active card */}
-          <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
+          <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted">
             Click to expand
           </div>
 
