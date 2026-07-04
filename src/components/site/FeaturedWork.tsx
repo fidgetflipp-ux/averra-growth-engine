@@ -403,13 +403,13 @@ export function FeaturedWork() {
               type="button"
               onClick={() => setActiveIdx(i)}
               aria-label={`Show ${w.client}`}
-              className="group relative h-[2px] w-14 overflow-hidden rounded-full bg-white/12"
+              className="group relative h-[2px] w-14 overflow-hidden rounded-full bg-foreground/12"
             >
               <motion.span
                 initial={false}
                 animate={{ scaleX: i === activeIdx ? 1 : 0 }}
                 transition={{ duration: i === activeIdx && !paused ? 5.2 : 0.4, ease: "linear" }}
-                className="absolute inset-0 origin-left bg-white/70"
+                className="absolute inset-0 origin-left bg-ink/70"
               />
             </button>
           ))}
