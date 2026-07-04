@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useMotionTemplate, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import svcDesign from "@/assets/website-design-figma.png.asset.json";
 import svcDev from "@/assets/svc-dev.jpg";
 import svcCro from "@/assets/svc-cro.jpg";
