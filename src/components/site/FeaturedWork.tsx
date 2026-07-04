@@ -367,12 +367,12 @@ export function FeaturedWork() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="flex items-center gap-3 text-eyebrow text-white/55">
+              <div className="flex items-center gap-3 text-eyebrow text-ink-muted">
                 <span>{active.sector}</span>
-                <span className="h-px w-6 bg-white/20" />
+                <span className="h-px w-6 bg-foreground/20" />
                 <span>{active.client}</span>
               </div>
-              <h3 className="text-display mt-5 max-w-2xl text-[clamp(1.5rem,2.4vw,2.1rem)] text-white/92">
+              <h3 className="text-display mt-5 max-w-2xl text-[clamp(1.5rem,2.4vw,2.1rem)] text-ink">
                 {active.headline}
               </h3>
             </motion.div>
