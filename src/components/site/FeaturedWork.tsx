@@ -350,10 +350,10 @@ export function FeaturedWork() {
             <ChevronRight className="size-5" />
           </button>
 
-          {/* Reflective floor — anchors the cards in space without a literal shadow box. */}
+          {/* Subtle floor shadow for light background */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-[-4%] mx-auto h-16 w-[70%] rounded-[50%] bg-black/70 blur-3xl"
+            className="pointer-events-none absolute inset-x-0 bottom-[-4%] mx-auto h-16 w-[70%] rounded-[50%] bg-ink/10 blur-3xl"
           />
 
         </div>
