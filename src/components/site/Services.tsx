@@ -104,9 +104,9 @@ export function Services() {
 
           {/* Active index meta (mono) */}
           <ActiveMeta activeIndex={activeIndex} />
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
 
