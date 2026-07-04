@@ -385,11 +385,11 @@ export function FeaturedWork() {
             transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             className="md:col-span-5 md:justify-self-end"
           >
-            <div className="flex items-end gap-8 border-t border-white/10 pt-6">
+            <div className="flex items-end gap-8 border-t border-foreground/10 pt-6">
               <div>
-                <div className="text-display text-5xl text-white/95">{active.metric}</div>
-                <div className="mt-1.5 text-sm text-white/60">{active.metricLabel}</div>
-                <div className="mt-0.5 text-xs text-white/40">{active.period}</div>
+                <div className="text-display text-5xl text-ink">{active.metric}</div>
+                <div className="mt-1.5 text-sm text-ink-soft">{active.metricLabel}</div>
+                <div className="mt-0.5 text-xs text-ink-muted">{active.period}</div>
               </div>
             </div>
           </motion.div>
