@@ -124,7 +124,7 @@ export function Collage() {
         </Reveal>
         <Reveal delay={0.06}>
           <h2
-            className="font-['Inter'] font-medium mx-auto mt-8 max-w-[22ch] text-center text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[#1a1a1a]"
+            className="font-['Inter'] font-medium mx-auto mt-8 max-w-[22ch] text-center text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] tracking-[-0.02em] text-[#1a1a1a]"
           >
             An art-directed system, photographed{" "}
             <span className="text-serif-italic">as one.</span>
