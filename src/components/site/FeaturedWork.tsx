@@ -285,15 +285,6 @@ export function FeaturedWork() {
 
   return (
     <section id="work" ref={sectionRef} className="relative overflow-hidden py-32">
-      {/* Ambient sage glow — sits behind the gallery, matches the dark canvas. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(60% 50% at 50% 40%, color-mix(in oklab, var(--sage, #9bb39b) 14%, transparent), transparent 70%)",
-        }}
-      />
 
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal><Eyebrow>Selected work</Eyebrow></Reveal>
@@ -337,7 +328,7 @@ export function FeaturedWork() {
           </motion.div>
 
           {/* Hint shown when hovering active card */}
-          <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
+          <div className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-muted">
             Click to expand
           </div>
 
@@ -359,10 +350,10 @@ export function FeaturedWork() {
             <ChevronRight className="size-5" />
           </button>
 
-          {/* Reflective floor — anchors the cards in space without a literal shadow box. */}
+          {/* Subtle floor shadow for light background */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-[-4%] mx-auto h-16 w-[70%] rounded-[50%] bg-black/70 blur-3xl"
+            className="pointer-events-none absolute inset-x-0 bottom-[-4%] mx-auto h-16 w-[70%] rounded-[50%] bg-ink/10 blur-3xl"
           />
 
         </div>
@@ -376,12 +367,12 @@ export function FeaturedWork() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="flex items-center gap-3 text-eyebrow text-white/55">
+              <div className="flex items-center gap-3 text-eyebrow text-ink-muted">
                 <span>{active.sector}</span>
-                <span className="h-px w-6 bg-white/20" />
+                <span className="h-px w-6 bg-foreground/20" />
                 <span>{active.client}</span>
               </div>
-              <h3 className="text-display mt-5 max-w-2xl text-[clamp(1.5rem,2.4vw,2.1rem)] text-white/92">
+              <h3 className="text-display mt-5 max-w-2xl text-[clamp(1.5rem,2.4vw,2.1rem)] text-ink">
                 {active.headline}
               </h3>
             </motion.div>
@@ -394,11 +385,11 @@ export function FeaturedWork() {
             transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             className="md:col-span-5 md:justify-self-end"
           >
-            <div className="flex items-end gap-8 border-t border-white/10 pt-6">
+            <div className="flex items-end gap-8 border-t border-foreground/10 pt-6">
               <div>
-                <div className="text-display text-5xl text-white/95">{active.metric}</div>
-                <div className="mt-1.5 text-sm text-white/60">{active.metricLabel}</div>
-                <div className="mt-0.5 text-xs text-white/40">{active.period}</div>
+                <div className="text-display text-5xl text-ink">{active.metric}</div>
+                <div className="mt-1.5 text-sm text-ink-soft">{active.metricLabel}</div>
+                <div className="mt-0.5 text-xs text-ink-muted">{active.period}</div>
               </div>
             </div>
           </motion.div>
@@ -412,13 +403,13 @@ export function FeaturedWork() {
               type="button"
               onClick={() => setActiveIdx(i)}
               aria-label={`Show ${w.client}`}
-              className="group relative h-[2px] w-14 overflow-hidden rounded-full bg-white/12"
+              className="group relative h-[2px] w-14 overflow-hidden rounded-full bg-foreground/12"
             >
               <motion.span
                 initial={false}
                 animate={{ scaleX: i === activeIdx ? 1 : 0 }}
                 transition={{ duration: i === activeIdx && !paused ? 5.2 : 0.4, ease: "linear" }}
-                className="absolute inset-0 origin-left bg-white/70"
+                className="absolute inset-0 origin-left bg-ink/70"
               />
             </button>
           ))}
