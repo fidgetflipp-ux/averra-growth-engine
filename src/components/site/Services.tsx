@@ -56,30 +56,16 @@ export function Services() {
 
   const activeIndex = useTransform(innerProgress, [0.05, 0.95], [0, services.length - 1]);
 
-  // Cinematic transition — site dissolves into a darker, theatrical reality on entry
-  const envLightness = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [1.0, 0.11, 0.11, 1.0]);
-  const envChroma = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [0.003, 0.012, 0.012, 0.003]);
-  const bg = useMotionTemplate`oklch(${envLightness} ${envChroma} 260)`;
-  const textInvert = useTransform(scrollYProgress, [0.0, 0.18, 0.85, 1], [0, 1, 1, 0]);
-
   return (
-    <motion.section
+    <section
       ref={sectionRef}
       id="services"
-      className="relative"
-      style={{ height: `${services.length * 110}vh`, backgroundColor: bg }}
+      className="relative bg-white"
+      style={{ height: `${services.length * 110}vh` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        {/* Architectural environment — dynamic ambient light tied to entry */}
-        <EnvironmentBackdrop progress={scrollYProgress} />
-
         {/* Eyebrow + headline */}
-        <motion.div
-          className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-8 md:pt-10"
-          style={{
-            color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
-          }}
-        >
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-8 md:pt-10 text-ink">
           <Reveal>
             <div className="flex items-center justify-center gap-3">
               <span className="text-eyebrow opacity-0">The System</span>
@@ -96,19 +82,16 @@ export function Services() {
               market leader is judged on.
             </p>
           </Reveal>
-        </motion.div>
+        </div>
 
         {/* Orbital stage */}
-        <motion.div
-          className="relative flex flex-1 min-h-0 items-start justify-center pt-18"
+        <div
+          className="relative flex flex-1 min-h-0 items-start justify-center pt-18 text-ink"
           style={{
             perspective: "2800px",
             perspectiveOrigin: "50% 45%",
-            color: useTransform(textInvert, (v) => `oklch(${0.14 + v * 0.85} 0.005 260)`),
           }}
         >
-          {/* Ground plane — engineered horizon line */}
-          <GroundPlane />
 
           <div
             className="relative shrink-0 h-[clamp(380px,56vh,540px)] w-[clamp(280px,28vw,400px)]"
