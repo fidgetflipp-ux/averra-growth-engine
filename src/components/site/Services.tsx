@@ -201,7 +201,7 @@ function WordReveal({
         whileInView={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
         viewport={{ once: true, margin: "-15% 0px" }}
         transition={{ duration: 1.0, delay, ease: EASE }}
-        className={`inline-block ${italic ? "italic" : ""}`}
+        className={`inline-block ${italic ? "text-serif-italic" : ""}`}
       >
         {children}
       </motion.span>
