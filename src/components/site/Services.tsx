@@ -135,7 +135,7 @@ export function Services() {
 
           <h2
             className="mt-6 text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[#1a1a1a]"
-            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing: "-0.045em" }}
+            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing: "-0.02em" }}
           >
             {headingWords.map((w, i) => (
               <WordReveal key={i} delay={i * 0.09} italic={w.italic}>
@@ -195,7 +195,7 @@ function WordReveal({
   italic?: boolean;
 }) {
   return (
-    <span className="inline-block overflow-hidden pb-[0.08em] pr-[0.08em] align-baseline">
+    <span className="inline-block overflow-hidden pb-[0.08em] pr-[0.28em] align-baseline">
       <motion.span
         initial={{ y: "60%", opacity: 0, filter: "blur(14px)" }}
         whileInView={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
