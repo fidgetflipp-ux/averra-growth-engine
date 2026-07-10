@@ -1,12 +1,5 @@
 import { useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import svcDesign from "@/assets/website-design-figma.png.asset.json";
 import svcDev from "@/assets/svc-dev.jpg";
 import svcCro from "@/assets/svc-cro.jpg";
@@ -62,27 +55,21 @@ const headingWords: { text: string; italic?: boolean }[] = [
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
-
-  // Total scroll length gives each card its own beat
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress: innerProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
-
-  // Continuous active index (float). Cards blend around this value.
-  const rawIndex = useTransform(scrollYProgress, [0.05, 0.95], [0, services.length - 1]);
-  const activeIndex = useSpring(rawIndex, { stiffness: 90, damping: 22, mass: 0.6 });
+  const activeIndex = useTransform(innerProgress, [0.05, 0.95], [0, services.length - 1]);
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      aria-label="Services"
       className="relative"
       style={{ height: `${services.length * 110}vh` }}
     >
       <div
-        className="sticky top-0 h-screen w-full overflow-hidden"
+        className="sticky top-0 flex h-screen flex-col overflow-hidden"
         style={{
           background: "linear-gradient(180deg,#FAF8F5 0%,#F3F0EA 55%,#ECE7DE 100%)",
         }}
@@ -96,7 +83,7 @@ export function Services() {
               "radial-gradient(ellipse 55% 45% at 50% 62%, rgba(255,244,220,0.55) 0%, rgba(255,244,220,0) 65%)",
           }}
         />
-        {/* Ambient light rays */}
+        {/* Ambient rays */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -130,7 +117,7 @@ export function Services() {
         <Particles />
 
         {/* Header */}
-        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-16 md:pt-20 text-center">
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pt-14 md:pt-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -147,7 +134,7 @@ export function Services() {
           </motion.div>
 
           <h2
-            className="mt-8 text-[clamp(2.25rem,5.5vw,4.25rem)] text-[#1a1a1a]"
+            className="mt-6 text-[clamp(2rem,4.6vw,3.75rem)] text-[#1a1a1a]"
             style={{ ...playfair, letterSpacing: "-0.04em", lineHeight: 0.95 }}
           >
             {headingWords.map((w, i) => (
@@ -162,7 +149,7 @@ export function Services() {
             whileInView={{ opacity: 0.65, y: 0 }}
             viewport={{ once: true, margin: "-15% 0px" }}
             transition={{ duration: 0.9, delay: 0.6, ease: EASE }}
-            className="mx-auto mt-6 max-w-xl text-[15px] leading-[1.65] text-[#1a1a1a]"
+            className="mx-auto mt-5 max-w-xl text-[14px] leading-[1.65] text-[#1a1a1a]"
             style={sans}
           >
             Four capability layers. One operating environment. Engineered to compound authority
@@ -170,26 +157,28 @@ export function Services() {
           </motion.p>
         </div>
 
-        {/* Stage */}
+        {/* Orbital stage */}
         <div
-          className="relative z-10 mt-6 flex items-center justify-center"
-          style={{ perspective: "2400px", height: "clamp(420px, 55vh, 560px)" }}
+          className="relative z-10 flex flex-1 min-h-0 items-start justify-center pt-14"
+          style={{ perspective: "2800px", perspectiveOrigin: "50% 45%" }}
         >
-          <div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
+          <div
+            className="relative shrink-0 h-[clamp(380px,56vh,540px)] w-[clamp(280px,28vw,400px)]"
+            style={{ transformStyle: "preserve-3d" }}
+          >
             {services.map((s, i) => (
-              <ScrollCard
+              <Card
                 key={s.italic + s.sans}
                 index={i}
-                total={services.length}
                 activeIndex={activeIndex}
                 service={s}
+                total={services.length}
               />
             ))}
           </div>
-        </div>
 
-        {/* Progress meta */}
-        <ProgressMeta activeIndex={activeIndex} />
+          <ActiveMeta activeIndex={activeIndex} />
+        </div>
       </div>
     </section>
   );
@@ -219,18 +208,18 @@ function WordReveal({
   );
 }
 
-function ScrollCard({
+function Card({
   index,
-  total,
   activeIndex,
   service,
+  total,
 }: {
   index: number;
-  total: number;
   activeIndex: MotionValue<number>;
   service: (typeof services)[number];
+  total: number;
 }) {
-  // Shortest signed distance from center — continuous orbit
+  // Shortest signed distance — continuous orbit (original)
   const delta = useTransform(activeIndex, (v) => {
     let d = index - v;
     if (d > total / 2) d -= total;
@@ -238,185 +227,159 @@ function ScrollCard({
     return d;
   });
 
-  // Card positions: center (d=0), left (d=-1), right (d=1), further out fades
-  const ANGLE = 26; // degrees per step
-  const X_STEP = 380; // px per step
-  const Z_STEP = 240; // depth per step
+  const RADIUS = 520;
+  const ANGLE_STEP = 48;
 
-  const rotateY = useTransform(delta, (d) => d * ANGLE);
-  const x = useTransform(delta, (d) => d * X_STEP);
-  const z = useTransform(delta, (d) => -Math.abs(d) * Z_STEP);
-  const scale = useTransform(delta, (d) => {
-    const a = Math.abs(d);
-    if (a <= 1) return 1 - a * 0.15;
-    return Math.max(0.6, 0.85 - (a - 1) * 0.15);
-  });
+  const rotateY = useTransform(delta, (d) => d * ANGLE_STEP);
+  const translateX = useTransform(delta, (d) => Math.sin((d * ANGLE_STEP * Math.PI) / 180) * RADIUS);
+  const translateZ = useTransform(delta, (d) => (Math.cos((d * ANGLE_STEP * Math.PI) / 180) - 1) * RADIUS);
+
   const opacity = useTransform(delta, (d) => {
     const a = Math.abs(d);
-    if (a >= 2.3) return 0;
-    if (a >= 1) return 0.75 - (a - 1) * 0.55;
+    if (a >= 2.2) return 0;
+    if (a >= 1) return 0.45 * (2.2 - a);
     return 1;
   });
-  const filter = useTransform(delta, (d) => {
+  const scale = useTransform(delta, (d) => {
     const a = Math.abs(d);
-    if (a < 0.35) return "blur(0px)";
-    return `blur(${Math.min(6, (a - 0.35) * 4)}px)`;
+    if (a <= 1) return 1 - a * 0.16;
+    return Math.max(0.66, 0.8 - (a - 1) * 0.1);
   });
   const zIndex = useTransform(delta, (d) => 100 - Math.round(Math.abs(d) * 10));
-  const isCenter = useTransform(delta, (d) => (Math.abs(d) < 0.5 ? 1 : 0));
+  const filter = useTransform(delta, (d) => {
+    const a = Math.abs(d);
+    if (a < 0.4) return "blur(0px) saturate(1)";
+    const blur = Math.min(6, (a - 0.4) * 4);
+    const sat = Math.max(0.6, 1 - (a - 0.4) * 0.25);
+    return `blur(${blur}px) saturate(${sat})`;
+  });
   const glowOpacity = useTransform(delta, (d) => {
     const a = Math.abs(d);
-    return a < 0.6 ? 0.45 * (1 - a / 0.6) : 0;
+    return a < 0.6 ? 0.5 * (1 - a / 0.6) : 0;
   });
-  const imgBrightness = useTransform(delta, (d) =>
-    Math.abs(d) < 0.5 ? "saturate(1) brightness(1)" : "saturate(0.85) brightness(0.92)",
-  );
 
-  // Subtle continuous float
-  const floatY = useMotionValue(0);
   return (
     <motion.article
-      className="absolute left-1/2 top-1/2"
+      className="absolute inset-0"
       style={{
-        x,
-        z,
         rotateY,
+        x: translateX,
+        z: translateZ,
         scale,
         opacity,
-        filter,
         zIndex,
-        translateX: "-50%",
-        translateY: "-50%",
+        filter,
         transformStyle: "preserve-3d",
         transformOrigin: "center center",
-        width: "clamp(300px, 30vw, 420px)",
-        height: "clamp(420px, 55vh, 560px)",
         willChange: "transform, opacity, filter",
       }}
-      aria-label={`${service.italic} ${service.sans}`}
+      aria-label={`${service.italic} ${service.sans} — ${index + 1} of ${total}`}
     >
+      {/* Ambient golden glow when centered */}
       <motion.div
-        style={{ y: floatY, transformStyle: "preserve-3d" }}
-        animate={{ y: [0, -4, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="relative h-full w-full"
+        aria-hidden
+        className="pointer-events-none absolute -inset-8 rounded-[44px]"
+        style={{
+          opacity: glowOpacity,
+          background:
+            "radial-gradient(ellipse at center, rgba(201,168,76,0.35) 0%, rgba(201,168,76,0) 65%)",
+          filter: "blur(30px)",
+        }}
+      />
+
+      {/* Card body */}
+      <div
+        className="relative h-full w-full overflow-hidden rounded-[30px]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%)",
+          backdropFilter: "blur(14px) saturate(140%)",
+          border: "1px solid rgba(255,255,255,0.55)",
+          boxShadow:
+            "0 60px 120px -40px rgba(60,45,25,0.45), 0 30px 60px -30px rgba(60,45,25,0.35), inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(60,45,25,0.05)",
+        }}
       >
-        {/* Ambient golden glow when centered */}
+        <img
+          src={service.img}
+          alt={`${service.italic} ${service.sans}`}
+          loading="lazy"
+          className="absolute inset-0 size-full object-cover"
+        />
+        {/* Tonal grade */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-black/5 to-black/70" />
+
+        {/* Slow reflection sheen */}
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute -inset-10 rounded-[44px]"
+          className="pointer-events-none absolute inset-0"
+          initial={{ x: "-120%" }}
+          animate={{ x: "120%" }}
+          transition={{ duration: 9, repeat: Infinity, ease: "linear", delay: index * 1.4 }}
           style={{
-            opacity: glowOpacity,
             background:
-              "radial-gradient(ellipse at center, rgba(201,168,76,0.35) 0%, rgba(201,168,76,0) 65%)",
-            filter: "blur(30px)",
+              "linear-gradient(75deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%)",
           }}
         />
 
-        {/* Card body */}
+        {/* Top meta */}
         <div
-          className="relative h-full w-full overflow-hidden rounded-[30px]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%)",
-            backdropFilter: "blur(14px) saturate(140%)",
-            border: "1px solid rgba(255,255,255,0.55)",
-            boxShadow:
-              "0 60px 120px -40px rgba(60,45,25,0.45), 0 30px 60px -30px rgba(60,45,25,0.35), inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(60,45,25,0.05)",
-          }}
+          className="absolute inset-x-0 top-0 flex items-start justify-between px-6 pt-6"
+          style={sans}
         >
-          <motion.img
-            src={service.img}
-            alt={`${service.italic} ${service.sans}`}
-            loading="lazy"
-            className="absolute inset-0 size-full object-cover"
-            style={{ filter: imgBrightness }}
-          />
-          {/* Tonal grade */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-black/5 to-black/70" />
-
-          {/* Slow reflection sheen */}
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            initial={{ x: "-120%" }}
-            animate={{ x: "120%" }}
-            transition={{
-              duration: 9,
-              repeat: Infinity,
-              ease: "linear",
-              delay: index * 1.4,
-            }}
-            style={{
-              background:
-                "linear-gradient(75deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%)",
-            }}
-          />
-
-          {/* Top meta */}
-          <div
-            className="absolute inset-x-0 top-0 flex items-start justify-between px-6 pt-6"
-            style={sans}
-          >
-            <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-white/85 backdrop-blur-md">
-              {service.code} — {service.discipline}
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/60">
-              Layer
-            </span>
-          </div>
-
-          {/* Title */}
-          <div className="absolute inset-x-0 bottom-0 px-6 pb-7">
-            <h3
-              className="text-white text-[clamp(1.65rem,2.2vw,2.3rem)] leading-[1.0]"
-              style={{ ...playfair, letterSpacing: "-0.02em" }}
-            >
-              <span className="italic font-normal">{service.italic}</span>{" "}
-              <span className="font-medium">{service.sans}</span>
-            </h3>
-            <div className="mt-4 flex flex-wrap gap-1.5" style={sans}>
-              {service.tags.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-white/20 bg-white/5 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/85 backdrop-blur-md"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Edge lighting */}
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[30px]"
-            style={{
-              boxShadow:
-                "inset 0 0 0 1px rgba(255,255,255,0.18), inset 0 40px 60px -40px rgba(255,255,255,0.35)",
-              opacity: isCenter,
-            }}
-          />
+          <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-white/85 backdrop-blur-md">
+            {service.code} — {service.discipline}
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/60">
+            Layer
+          </span>
         </div>
-      </motion.div>
+
+        {/* Title */}
+        <div className="absolute inset-x-0 bottom-0 px-6 pb-7">
+          <h3
+            className="text-white text-[clamp(1.5rem,2.2vw,2.2rem)] leading-[1.02]"
+            style={{ ...playfair, letterSpacing: "-0.02em" }}
+          >
+            <span className="italic font-normal">{service.italic}</span>{" "}
+            <span className="font-medium">{service.sans}</span>
+          </h3>
+          <div className="mt-4 flex flex-wrap gap-1.5" style={sans}>
+            {service.tags.map((t) => (
+              <span
+                key={t}
+                className="rounded-full border border-white/20 bg-white/5 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/85 backdrop-blur-md"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Edge lighting */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[30px]"
+          style={{
+            boxShadow:
+              "inset 0 0 0 1px rgba(255,255,255,0.18), inset 0 40px 60px -40px rgba(255,255,255,0.35)",
+          }}
+        />
+      </div>
     </motion.article>
   );
 }
 
-function ProgressMeta({ activeIndex }: { activeIndex: MotionValue<number> }) {
-  const label = useTransform(activeIndex, (v) => {
+function ActiveMeta({ activeIndex }: { activeIndex: MotionValue<number> }) {
+  const current = useTransform(activeIndex, (v) => {
     const i = Math.round(v) % services.length;
     return services[(i + services.length) % services.length].code;
   });
   const total = String(services.length).padStart(2, "0");
   return (
-    <div
-      className="pointer-events-none absolute bottom-10 left-1/2 -translate-x-1/2"
-      style={sans}
-    >
+    <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2" style={sans}>
       <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#1a1a1a]/55">
-        <motion.span>{label}</motion.span>
-        <span className="h-px w-10 bg-[#1a1a1a]/25" />
+        <motion.span>{current}</motion.span>
+        <span className="h-px w-8 bg-[#1a1a1a]/25" />
         <span>{total}</span>
       </div>
     </div>
