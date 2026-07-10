@@ -401,26 +401,29 @@ function ShowcaseCard({
   };
 
   return (
-    <motion.div
-      className="absolute left-1/2 top-1/2"
+    <div
+      className="absolute"
       style={{
-        translateX: cap.x,
-        translateY: `calc(-50% + ${cap.y}px)`,
-        x: parallaxX,
-        y: parallaxY,
+        left: `calc(50% + ${cap.x}px)`,
+        top: `calc(50% + ${cap.y}px)`,
+        transform: "translate(-50%, -50%)",
         zIndex: 20 + Math.round(cap.z / 10),
       }}
-      initial={{ opacity: 0, y: 60, scale: 0.85 }}
-      whileInView={{ opacity: 1, y: cap.y, scale: cap.size }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{
-        type: "spring",
-        stiffness: 90,
-        damping: 20,
-        mass: 0.9,
-        delay: 1.9 + index * 0.12,
-      }}
     >
+      <motion.div
+        style={{ x: parallaxX, y: parallaxY }}
+        initial={{ opacity: 0, y: 60, scale: 0.85 }}
+        whileInView={{ opacity: 1, y: 0, scale: cap.size }}
+        viewport={{ once: true, margin: "-10% 0px" }}
+        transition={{
+          type: "spring",
+          stiffness: 90,
+          damping: 20,
+          mass: 0.9,
+          delay: 1.9 + index * 0.12,
+        }}
+      >
+
       <motion.div
         ref={ref}
         onMouseMove={handleMove}
