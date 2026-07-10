@@ -135,7 +135,7 @@ export function Services() {
 
           <h2
             className="mt-6 text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[#1a1a1a]"
-            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing: "-0.02em" }}
+            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing: "-0.045em" }}
           >
             {headingWords.map((w, i) => (
               <WordReveal key={i} delay={i * 0.09} italic={w.italic}>
