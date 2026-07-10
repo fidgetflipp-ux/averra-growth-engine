@@ -262,6 +262,11 @@ function StageCard({
   const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), { stiffness: 120, damping: 18 });
   const glareX = useTransform(mx, [-0.5, 0.5], ["20%", "80%"]);
   const glareY = useTransform(my, [-0.5, 0.5], ["20%", "80%"]);
+  const glareBg = useTransform(
+    [glareX, glareY] as unknown as import("framer-motion").MotionValue<string>[],
+    ([x, y]: string[]) =>
+      `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.35), rgba(255,255,255,0) 45%)`,
+  );
 
   const handleMove = (e: React.MouseEvent) => {
     const el = ref.current;
