@@ -134,8 +134,8 @@ export function Services() {
           </motion.div>
 
           <h2
-            className="mt-6 text-[clamp(2rem,4.6vw,3.75rem)] text-[#1a1a1a]"
-            style={{ ...playfair, letterSpacing: "-0.04em", lineHeight: 0.95 }}
+            className="mt-6 text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[#1a1a1a]"
+            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing: "-0.02em" }}
           >
             {headingWords.map((w, i) => (
               <WordReveal key={i} delay={i * 0.09} italic={w.italic}>
@@ -143,6 +143,7 @@ export function Services() {
               </WordReveal>
             ))}
           </h2>
+
 
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -200,7 +201,7 @@ function WordReveal({
         whileInView={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
         viewport={{ once: true, margin: "-15% 0px" }}
         transition={{ duration: 1.0, delay, ease: EASE }}
-        className={`inline-block ${italic ? "italic" : ""}`}
+        className={`inline-block ${italic ? "text-serif-italic" : ""}`}
       >
         {children}
       </motion.span>
