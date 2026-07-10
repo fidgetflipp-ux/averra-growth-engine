@@ -195,7 +195,7 @@ function WordReveal({
   italic?: boolean;
 }) {
   return (
-    <span className="inline-block overflow-hidden pb-[0.08em] pr-[0.28em] align-baseline">
+    <span className="inline-block overflow-hidden pb-[0.08em] pr-[0.08em] align-baseline">
       <motion.span
         initial={{ y: "60%", opacity: 0, filter: "blur(14px)" }}
         whileInView={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
