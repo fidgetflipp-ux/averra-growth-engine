@@ -837,8 +837,8 @@ function FloatingMonogram({
         style={{
           rotateX: tiltX,
           rotateY: useTransform(
-            [tiltY, scrollRotate] as unknown as MotionValue<number>[],
-            (arr) => (arr as unknown as number[])[0] + (arr as unknown as number[])[1]
+            [tiltY, scrollRotate],
+            ([a, b]) => (a as number) + (b as number)
           ),
           transformStyle: "preserve-3d",
         }}
