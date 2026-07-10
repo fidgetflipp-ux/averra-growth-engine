@@ -58,8 +58,8 @@ export function FutureState() {
           </div>
 
           {/* Supporting copy — warm offset block */}
-          <Reveal delay={0.18}>
-            <div className="relative md:col-span-6 md:col-start-5">
+          <div className="relative md:col-span-6 md:col-start-5">
+            <Reveal delay={0.18}>
               {/* Warm offset block */}
               <div
                 aria-hidden
@@ -107,8 +107,9 @@ export function FutureState() {
                   </span>
                 </div>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
+
         </div>
 
         {/* Faint right-edge rule */}
