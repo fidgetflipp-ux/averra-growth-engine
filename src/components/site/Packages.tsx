@@ -52,22 +52,22 @@ const packages = [
 
 export function Packages() {
   return (
-    <section id="packages" className="bg-white py-20 lg:py-24">
+    <section id="packages" className="bg-white py-32">
       <div className="mx-auto max-w-7xl px-6">
         <Reveal><Eyebrow>Reserve your project</Eyebrow></Reveal>
         <Reveal delay={0.06}>
-          <h2 className="text-display mx-auto mt-5 max-w-3xl text-center text-[clamp(2rem,5vw,4rem)]">
+          <h2 className="text-display mx-auto mt-6 max-w-3xl text-center text-[clamp(2rem,5vw,4rem)]">
             Fixed price. Fixed timeline. <span className="text-serif-italic">No surprises.</span>
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="mx-auto mt-4 max-w-xl text-center text-[17px] leading-relaxed text-ink-soft">
+          <p className="mx-auto mt-6 max-w-xl text-center text-[17px] leading-relaxed text-ink-soft">
             Choose a package, secure a slot with a deposit, and we begin within
             48 hours. No sales calls required.
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-20 grid gap-6 md:grid-cols-3">
           {packages.map((p, i) => (
             <Reveal key={p.name} delay={i * 0.06}>
               <article
