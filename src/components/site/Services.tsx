@@ -33,19 +33,19 @@ type Capability = {
   italic?: string;
   copy: string;
   discipline: string;
-  x: string; // horizontal % offset from center
-  y: number; // vertical px offset within field
-  z: number; // depth px
+  x: number; // horizontal px offset from container center
+  y: number; // vertical px offset from container middle
+  z: number; // depth px (visual only)
   rot: number; // idle rotation deg
-  size: number; // 0..1 relative
+  size: number; // scale multiplier
 };
 
 const capabilities: Capability[] = [
-  { code: "01", name: "Website", italic: "Design", copy: "Interfaces engineered for conversion.", discipline: "Digital Craft", x: "-38%", y: 20, z: -80, rot: -5, size: 0.94 },
-  { code: "02", name: "Brand", italic: "Identity", copy: "Systems that compound recognition.", discipline: "Positioning", x: "-14%", y: -30, z: 40, rot: 2, size: 1.02 },
-  { code: "03", name: "AI", italic: "Systems", copy: "Intelligence embedded across every surface.", discipline: "Applied Intelligence", x: "10%", y: 40, z: 0, rot: -2, size: 1 },
-  { code: "04", name: "Automation", copy: "Operations that scale without friction.", discipline: "Runtime", x: "30%", y: -10, z: -60, rot: 4, size: 0.96 },
-  { code: "05", name: "Growth", copy: "Compounding demand, quarter over quarter.", discipline: "Revenue Engineering", x: "52%", y: 55, z: -140, rot: -6, size: 0.9 },
+  { code: "01", name: "Website", italic: "Design", copy: "Interfaces engineered for conversion.", discipline: "Digital Craft", x: -440, y: 20, z: -80, rot: -5, size: 0.94 },
+  { code: "02", name: "Brand", italic: "Identity", copy: "Systems that compound recognition.", discipline: "Positioning", x: -180, y: -40, z: 40, rot: 2, size: 1.02 },
+  { code: "03", name: "AI", italic: "Systems", copy: "Intelligence embedded across every surface.", discipline: "Applied Intelligence", x: 90, y: 30, z: 0, rot: -2, size: 1 },
+  { code: "04", name: "Automation", copy: "Operations that scale without friction.", discipline: "Runtime", x: 340, y: -20, z: -60, rot: 4, size: 0.96 },
+  { code: "05", name: "Growth", copy: "Compounding demand, quarter over quarter.", discipline: "Revenue Engineering", x: 560, y: 50, z: -140, rot: -6, size: 0.9 },
 ];
 
 export function Services() {
