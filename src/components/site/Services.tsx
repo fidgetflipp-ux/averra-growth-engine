@@ -386,11 +386,7 @@ function StageCard({
                 aria-hidden
                 className="pointer-events-none absolute inset-0"
                 style={{
-                  background: useTransform(
-                    [glareX, glareY],
-                    ([x, y]) =>
-                      `radial-gradient(circle at ${x} ${y}, rgba(255,255,255,0.35), rgba(255,255,255,0) 45%)`,
-                  ) as unknown as string,
+                  background: glareBg as unknown as string,
                   mixBlendMode: "overlay",
                 }}
               />
