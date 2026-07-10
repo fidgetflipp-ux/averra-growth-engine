@@ -1,25 +1,38 @@
 import { useRef } from "react";
-import {
-  motion,
-  useInView,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Reveal } from "./primitives";
-import futureStateImage from "@/assets/future-state.png.asset.json";
+import corridor from "@/assets/future-corridor.jpg.asset.json";
+import sitePreview from "@/assets/scartec-hero.png.asset.json";
 
 /**
- * FutureState — a single editorial moment.
- * Eyebrow → headline → body → monumental architectural image.
+ * FutureState — an environment, not a mockup.
+ *
+ * A cathedral-ivory corridor recedes into a warm vanishing point. A single
+ * glass frame floats at its center, holding a live preview of the site.
+ * The environment tells the story: this is where the work belongs.
  */
 export function FutureState() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 80, damping: 24, mass: 0.6 });
+
+  // Camera dolly: corridor drifts back, frame lifts and clarifies.
+  const bgY = useTransform(p, [0, 1], ["-4%", "6%"]);
+  const bgScale = useTransform(p, [0, 1], [1.06, 1.14]);
+  const frameY = useTransform(p, [0, 0.5, 1], ["6%", "0%", "-4%"]);
+  const frameScale = useTransform(p, [0, 0.5, 1], [0.96, 1, 1.02]);
+  const glowOpacity = useTransform(p, [0, 0.5, 1], [0.25, 0.5, 0.35]);
+
   return (
     <section
+      ref={ref}
       aria-label="Future State"
-      className="relative bg-surface hairline-t hairline-b"
+      className="relative bg-[#F7F6F2] hairline-t hairline-b"
     >
-      <div className="mx-auto max-w-[1480px] px-6 py-40 md:py-56">
+      <div className="mx-auto max-w-[1480px] px-6 pt-40 md:pt-56">
         {/* Eyebrow */}
         <Reveal>
           <div className="flex items-center justify-center gap-3">
@@ -51,61 +64,125 @@ export function FutureState() {
             </p>
           </div>
         </Reveal>
+      </div>
 
-        {/* Image */}
-        <div className="mt-24 flex justify-center">
-          <FutureStateImage />
+      {/* Environment stage */}
+      <div className="relative mt-24 md:mt-32">
+        <div className="relative mx-auto h-[92vh] max-h-[900px] min-h-[620px] w-full overflow-hidden">
+          {/* Corridor backdrop */}
+          <motion.div
+            aria-hidden
+            style={{ y: bgY, scale: bgScale }}
+            className="absolute inset-0 will-change-transform"
+          >
+            <img
+              src={corridor.url}
+              alt=""
+              loading="lazy"
+              width={1920}
+              height={1088}
+              className="h-full w-full object-cover"
+            />
+            {/* Warm ivory blends into the page above and below */}
+            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#F7F6F2] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#F7F6F2] to-transparent" />
+            {/* Vignette to focus attention on the frame */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse 60% 55% at 50% 52%, transparent 40%, rgba(30,24,16,0.18) 100%)",
+              }}
+            />
+          </motion.div>
+
+          {/* Warm halo behind the frame — the corridor's light */}
+          <motion.div
+            aria-hidden
+            style={{ opacity: glowOpacity }}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[55%] -translate-x-1/2 -translate-y-1/2"
+          >
+            <div
+              className="h-full w-full"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, rgba(255,232,190,0.55), rgba(255,232,190,0) 65%)",
+                filter: "blur(20px)",
+              }}
+            />
+          </motion.div>
+
+          {/* Floating glass frame */}
+          <motion.div
+            style={{ y: frameY, scale: frameScale }}
+            className="absolute left-1/2 top-1/2 w-[min(78vw,1180px)] -translate-x-1/2 -translate-y-1/2 will-change-transform"
+          >
+            <FloatingFrame />
+          </motion.div>
         </div>
       </div>
     </section>
   );
 }
 
-function FutureStateImage() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
-
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 80, damping: 20, mass: 0.6 });
-  const sy = useSpring(my, { stiffness: 80, damping: 20, mass: 0.6 });
-  const tx = useTransform(sx, [-1, 1], [-5, 5]);
-  const ty = useTransform(sy, [-1, 1], [-5, 5]);
-
-  function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set(((e.clientX - r.left) / r.width) * 2 - 1);
-    my.set(((e.clientY - r.top) / r.height) * 2 - 1);
-  }
-  function onLeave() {
-    mx.set(0);
-    my.set(0);
-  }
-
+function FloatingFrame() {
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      className="group relative w-full max-w-[1400px] overflow-hidden rounded-[28px] border border-foreground/8 bg-foreground/3"
-      style={{
-        boxShadow:
-          "0 40px 120px -40px oklch(0.14 0.005 260 / 0.22), 0 8px 30px -16px oklch(0.14 0.005 260 / 0.12)",
-        clipPath: inView ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
-        transition: "clip-path 1.1s cubic-bezier(0.22, 1, 0.36, 1)",
-      }}
-    >
-      <motion.img
-        src={futureStateImage.url}
-        alt="An architectural interior — the future-state aesthetic of category-defining brands."
-        loading="lazy"
-        style={{ x: tx, y: ty }}
-        className="block aspect-[16/9] h-auto w-full object-cover transition-transform duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
-      />
+    <div className="relative">
+      {/* Cast shadow on the corridor floor */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-[28px] ring-1 ring-inset ring-white/15"
+        className="pointer-events-none absolute left-1/2 -bottom-10 h-16 w-[82%] -translate-x-1/2 rounded-[50%] bg-black/35 blur-3xl"
       />
-    </motion.div>
+
+      {/* Glass card */}
+      <div
+        className="relative overflow-hidden rounded-[22px] border border-white/40 bg-white/10 backdrop-blur-[2px]"
+        style={{
+          boxShadow:
+            "0 60px 140px -40px rgba(30,24,16,0.55), 0 20px 50px -20px rgba(30,24,16,0.35), inset 0 1px 0 rgba(255,255,255,0.6), inset 0 0 0 1px rgba(255,255,255,0.08)",
+        }}
+      >
+        {/* Browser chrome — restrained, editorial */}
+        <div className="flex items-center gap-2 border-b border-black/5 bg-white/70 px-4 py-3 backdrop-blur">
+          <span className="h-2.5 w-2.5 rounded-full bg-black/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-black/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-black/15" />
+          <div className="ml-4 h-5 flex-1 rounded-full bg-black/[0.04] px-3 text-[11px] leading-5 tracking-wide text-ink-muted">
+            averra.studio
+          </div>
+        </div>
+
+        {/* Site preview */}
+        <div className="relative">
+          <img
+            src={sitePreview.url}
+            alt="A live preview of the Averra website, framed inside an architectural corridor."
+            loading="lazy"
+            className="block aspect-[16/10] h-auto w-full object-cover"
+          />
+          {/* Glass sheen — one long diagonal highlight */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(115deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 28%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.08) 100%)",
+            }}
+          />
+          {/* Inner ring */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20"
+          />
+        </div>
+      </div>
+
+      {/* Caption — quiet, gallery-plaque tone */}
+      <div className="mt-8 flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.24em] text-ink-muted">
+        <span className="h-px w-6 bg-ink-muted/40" />
+        <span>The room your brand walks into</span>
+        <span className="h-px w-6 bg-ink-muted/40" />
+      </div>
+    </div>
   );
 }
