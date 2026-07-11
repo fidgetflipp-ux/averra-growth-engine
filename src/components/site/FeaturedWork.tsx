@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import scartec from "@/assets/scartec-hero.png.asset.json";
-import yeon from "@/assets/yeon-ritual-hero.png.asset.json";
+import silk from "@/assets/work-silk.jpg.asset.json";
+import arch from "@/assets/work-arch.jpg.asset.json";
+import bronze from "@/assets/work-bronze.jpg.asset.json";
 
 /* ────────────────────────────────────────────────────────────
    Data
@@ -28,7 +29,7 @@ const works: Work[] = [
     year: "MMXXVI",
     headline:
       "A clinical-stage homepage that earns credibility at first scroll.",
-    cover: scartec.url,
+    cover: silk.url,
     url: "https://scartec.com",
   },
   {
@@ -38,7 +39,7 @@ const works: Work[] = [
     kind: "Editorial Storefront",
     year: "MMXXVI",
     headline: "A ceremonial storefront that lifted AOV by nearly half.",
-    cover: yeon.url,
+    cover: arch.url,
     url: "https://yeonritual.com",
   },
   {
@@ -49,7 +50,7 @@ const works: Work[] = [
     year: "MMXXV",
     headline:
       "Repositioned to match the AUM, and the inbound followed.",
-    cover: scartec.url,
+    cover: bronze.url,
     url: "https://northwind.capital",
   },
 ];
