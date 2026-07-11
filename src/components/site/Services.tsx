@@ -148,7 +148,7 @@ function WordReveal({
   className?: string;
 }) {
   return (
-    <span className="inline-block overflow-hidden pb-[0.08em] pr-[0.28em] align-baseline">
+    <span className="inline-block overflow-hidden pb-[0.22em] pr-[0.28em] align-baseline">
       <motion.span
         initial={{ y: "70%", opacity: 0, filter: "blur(12px)" }}
         whileInView={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
