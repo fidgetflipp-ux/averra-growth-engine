@@ -1,207 +1,162 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import svcDesign from "@/assets/website-design-figma.png.asset.json";
+import { motion, useInView, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import svcDesign from "@/assets/svc-design.jpg";
 import svcDev from "@/assets/svc-dev.jpg";
-import svcCro from "@/assets/svc-cro.jpg";
 import svcBrand from "@/assets/svc-brand.jpg";
 
-const services = [
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const pillars = [
   {
     code: "01",
-    italic: "Website",
-    sans: "Design",
-    img: svcDesign.url,
-    discipline: "Art Direction",
-    tags: ["Systems", "Prototyping", "Interface"],
+    title: "Senior craft, only.",
+    caption: "Every pixel touched by principal-level designers and engineers — no juniors, no handoffs.",
+    img: svcDesign,
   },
   {
     code: "02",
-    italic: "Website",
-    sans: "Development",
+    title: "Shipped in 7–14 days.",
+    caption: "A calm, choreographed sprint. Scope is fixed, cadence is daily, delivery is on the calendar.",
     img: svcDev,
-    discipline: "Engineering",
-    tags: ["Next.js", "Headless", "Performance"],
   },
   {
     code: "03",
-    italic: "Conversion",
-    sans: "Optimization",
-    img: svcCro,
-    discipline: "Growth Systems",
-    tags: ["CRO", "Experiments", "Analytics"],
-  },
-  {
-    code: "04",
-    italic: "Brand",
-    sans: "Positioning",
+    title: "One flat rate. No surprises.",
+    caption: "Transparent packages, milestone billing, and a written guarantee — priced like a product.",
     img: svcBrand,
-    discipline: "Strategy",
-    tags: ["Messaging", "Identity", "Voice"],
   },
 ];
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-const playfair = { fontFamily: "'Playfair Display', serif" };
-const sans = { fontFamily: "'Inter', 'SF Pro Display', system-ui, sans-serif" };
-
-const headingWords: { text: string; italic?: boolean }[] = [
-  { text: "Everything" },
-  { text: "Your" },
-  { text: "Company" },
-  { text: "Needs" },
-  { text: "To" },
-  { text: "Dominate.", italic: true },
+const stats = [
+  { value: "$180M+", label: "Client revenue influenced", delta: "+" },
+  { value: "3.4×", label: "Average conversion uplift", delta: "×" },
+  { value: "120+", label: "Premium sites shipped worldwide", delta: "↑" },
 ];
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: innerProgress } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   });
-  const activeIndex = useTransform(innerProgress, [0.05, 0.95], [0, services.length - 1]);
+  const ambientY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      className="relative"
-      style={{ height: `${services.length * 110}vh` }}
+      className="relative px-4 sm:px-6 pt-24 md:pt-32 pb-28 md:pb-40"
     >
+      {/* Rounded container — the whole Convertt-style capsule */}
       <div
-        className="sticky top-0 flex h-screen flex-col overflow-hidden"
+        className="relative mx-auto max-w-[1360px] overflow-hidden rounded-[28px] md:rounded-[42px]"
         style={{
-          background: "linear-gradient(180deg,#FAF8F5 0%,#F3F0EA 55%,#ECE7DE 100%)",
+          background:
+            "radial-gradient(120% 90% at 50% 0%, rgba(28,58,32,0.75) 0%, rgba(10,20,12,0.98) 55%, #060b07 100%)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          boxShadow:
+            "0 60px 160px -40px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
       >
-        {/* Radial spotlight */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 55% 45% at 50% 62%, rgba(255,244,220,0.55) 0%, rgba(255,244,220,0) 65%)",
-          }}
-        />
-        {/* Ambient rays */}
+        {/* Ambient sage glow */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0"
-          animate={{ opacity: [0.28, 0.42, 0.28] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
           style={{
+            y: ambientY,
             background:
-              "conic-gradient(from 210deg at 50% 40%, transparent 0deg, rgba(201,168,76,0.06) 30deg, transparent 90deg, rgba(255,255,255,0.05) 180deg, transparent 260deg)",
-            filter: "blur(40px)",
+              "radial-gradient(60% 40% at 50% 10%, rgba(120,190,120,0.16) 0%, rgba(120,190,120,0) 60%), radial-gradient(50% 40% at 80% 80%, rgba(160,210,120,0.10) 0%, rgba(160,210,120,0) 65%)",
           }}
         />
-        {/* Vignette */}
+
+        {/* Grain */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 55%, rgba(60,45,25,0.14) 100%)",
-          }}
-        />
-        {/* Film grain */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-multiply"
+          className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
           style={{
             backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-            backgroundSize: "240px 240px",
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+            backgroundSize: "200px 200px",
           }}
         />
-        <Particles />
 
-        {/* Header */}
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pt-14 md:pt-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-15% 0px" }}
-            transition={{ duration: 0.8, ease: EASE }}
-            className="flex items-center justify-center gap-3"
-            style={sans}
-          >
-            <span className="h-px w-8 bg-[#1a1a1a]/25" />
-            <span className="text-[10px] uppercase tracking-[0.42em] text-[#1a1a1a]/60">
-              The System
-            </span>
-            <span className="h-px w-8 bg-[#1a1a1a]/25" />
-          </motion.div>
+        <div className="relative px-5 sm:px-8 md:px-14 pt-14 md:pt-20 pb-14 md:pb-20">
+          <Header />
 
-          <h2
-            className="mt-6 text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[#1a1a1a]"
-            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", letterSpacing: "-0.02em" }}
-          >
-            {headingWords.map((w, i) => (
-              <WordReveal key={i} delay={i * 0.09} italic={w.italic}>
-                {w.text}
-              </WordReveal>
-            ))}
-          </h2>
-
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 0.65, y: 0 }}
-            viewport={{ once: true, margin: "-15% 0px" }}
-            transition={{ duration: 0.9, delay: 0.6, ease: EASE }}
-            className="mx-auto mt-5 max-w-xl text-[14px] leading-[1.65] text-[#1a1a1a]"
-            style={sans}
-          >
-            Four capability layers. One operating environment. Engineered to compound authority
-            across every surface a market leader is judged on.
-          </motion.p>
-        </div>
-
-        {/* Orbital stage */}
-        <div
-          className="relative z-10 flex flex-1 min-h-0 items-start justify-center pt-14"
-          style={{ perspective: "2800px", perspectiveOrigin: "50% 45%" }}
-        >
-          <div
-            className="relative shrink-0 h-[clamp(380px,56vh,540px)] w-[clamp(280px,28vw,400px)]"
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {services.map((s, i) => (
-              <Card
-                key={s.italic + s.sans}
-                index={i}
-                activeIndex={activeIndex}
-                service={s}
-                total={services.length}
-              />
+          {/* Feature cards row */}
+          <div className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+            {pillars.map((p, i) => (
+              <FeatureCard key={p.code} pillar={p} index={i} />
             ))}
           </div>
 
-          <ActiveMeta activeIndex={activeIndex} />
+          {/* Numbers panel */}
+          <NumbersPanel />
         </div>
       </div>
     </section>
   );
 }
 
+/* ---------------- Header ---------------- */
+
+function Header() {
+  return (
+    <div className="mx-auto max-w-4xl text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-15%" }}
+        transition={{ duration: 0.7, ease: EASE }}
+        className="inline-flex items-center gap-3"
+      >
+        <span className="h-px w-8 bg-white/25" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-white/55">
+          The Operating System
+        </span>
+        <span className="h-px w-8 bg-white/25" />
+      </motion.div>
+
+      <h2 className="mt-6 text-[clamp(2.25rem,5.6vw,4.75rem)] leading-[1.02] tracking-[-0.03em] text-white">
+        {["Everything", "Your", "Company", "Needs", "To"].map((w, i) => (
+          <WordReveal key={i} delay={i * 0.06}>{w}</WordReveal>
+        ))}
+        <WordReveal delay={0.36} className="text-serif-italic text-white/85">
+          Dominate.
+        </WordReveal>
+      </h2>
+
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 0.75, y: 0 }}
+        viewport={{ once: true, margin: "-15%" }}
+        transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
+        className="mx-auto mt-6 max-w-xl text-[15px] leading-[1.65] text-white/70"
+      >
+        A senior studio disguised as a subscription. Design, engineering, and growth —
+        wired into one calm delivery system.
+      </motion.p>
+    </div>
+  );
+}
+
 function WordReveal({
   children,
   delay,
-  italic,
+  className = "",
 }: {
   children: string;
   delay: number;
-  italic?: boolean;
+  className?: string;
 }) {
   return (
     <span className="inline-block overflow-hidden pb-[0.08em] pr-[0.28em] align-baseline">
       <motion.span
-        initial={{ y: "60%", opacity: 0, filter: "blur(14px)" }}
+        initial={{ y: "70%", opacity: 0, filter: "blur(12px)" }}
         whileInView={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-        viewport={{ once: true, margin: "-15% 0px" }}
+        viewport={{ once: true, margin: "-15%" }}
         transition={{ duration: 1.0, delay, ease: EASE }}
-        className={`inline-block ${italic ? "text-serif-italic" : ""}`}
+        className={`inline-block ${className}`}
       >
         {children}
       </motion.span>
@@ -209,204 +164,287 @@ function WordReveal({
   );
 }
 
-function Card({
-  index,
-  activeIndex,
-  service,
-  total,
-}: {
-  index: number;
-  activeIndex: MotionValue<number>;
-  service: (typeof services)[number];
-  total: number;
-}) {
-  // Shortest signed distance — continuous orbit (original)
-  const delta = useTransform(activeIndex, (v) => {
-    let d = index - v;
-    if (d > total / 2) d -= total;
-    if (d < -total / 2) d += total;
-    return d;
-  });
+/* ---------------- Feature Cards ---------------- */
 
-  const RADIUS = 520;
-  const ANGLE_STEP = 48;
+function FeatureCard({ pillar, index }: { pillar: (typeof pillars)[number]; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rX = useSpring(useTransform(my, [-1, 1], [6, -6]), { stiffness: 120, damping: 14 });
+  const rY = useSpring(useTransform(mx, [-1, 1], [-6, 6]), { stiffness: 120, damping: 14 });
 
-  const rotateY = useTransform(delta, (d) => d * ANGLE_STEP);
-  const translateX = useTransform(delta, (d) => Math.sin((d * ANGLE_STEP * Math.PI) / 180) * RADIUS);
-  const translateZ = useTransform(delta, (d) => (Math.cos((d * ANGLE_STEP * Math.PI) / 180) - 1) * RADIUS);
-
-  const opacity = useTransform(delta, (d) => {
-    const a = Math.abs(d);
-    if (a >= 2.2) return 0;
-    if (a >= 1) return 0.45 * (2.2 - a);
-    return 1;
-  });
-  const scale = useTransform(delta, (d) => {
-    const a = Math.abs(d);
-    if (a <= 1) return 1 - a * 0.16;
-    return Math.max(0.66, 0.8 - (a - 1) * 0.1);
-  });
-  const zIndex = useTransform(delta, (d) => 100 - Math.round(Math.abs(d) * 10));
-  const filter = useTransform(delta, (d) => {
-    const a = Math.abs(d);
-    if (a < 0.4) return "blur(0px) saturate(1)";
-    const blur = Math.min(6, (a - 0.4) * 4);
-    const sat = Math.max(0.6, 1 - (a - 0.4) * 0.25);
-    return `blur(${blur}px) saturate(${sat})`;
-  });
-  const glowOpacity = useTransform(delta, (d) => {
-    const a = Math.abs(d);
-    return a < 0.6 ? 0.5 * (1 - a / 0.6) : 0;
-  });
+  const handleMove = (e: React.MouseEvent) => {
+    const r = cardRef.current?.getBoundingClientRect();
+    if (!r) return;
+    mx.set(((e.clientX - r.left) / r.width) * 2 - 1);
+    my.set(((e.clientY - r.top) / r.height) * 2 - 1);
+  };
+  const reset = () => {
+    mx.set(0);
+    my.set(0);
+  };
 
   return (
-    <motion.article
-      className="absolute inset-0"
-      style={{
-        rotateY,
-        x: translateX,
-        z: translateZ,
-        scale,
-        opacity,
-        zIndex,
-        filter,
-        transformStyle: "preserve-3d",
-        transformOrigin: "center center",
-        willChange: "transform, opacity, filter",
-      }}
-      aria-label={`${service.italic} ${service.sans} — ${index + 1} of ${total}`}
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMove}
+      onMouseLeave={reset}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.9, delay: index * 0.08, ease: EASE }}
+      style={{ perspective: 1200 }}
+      className="group relative"
     >
-      {/* Ambient golden glow when centered */}
-      <motion.div
+      <motion.article
+        style={{ rotateX: rX, rotateY: rY, transformStyle: "preserve-3d" }}
+        className="relative aspect-[4/5] overflow-hidden rounded-[22px] md:rounded-[28px]"
+      >
+        {/* Image */}
+        <img
+          src={pillar.img}
+          alt={pillar.title}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
+        />
+
+        {/* Green tint + gradient */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(8,20,10,0.15) 0%, rgba(8,20,10,0.35) 45%, rgba(6,14,8,0.92) 100%)",
+            mixBlendMode: "multiply",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(80,140,80,0.10) 0%, rgba(0,0,0,0) 40%)",
+          }}
+        />
+
+        {/* Cursor spotlight */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(220px 220px at var(--mx,50%) var(--my,50%), rgba(190,240,180,0.18), transparent 70%)",
+          }}
+        />
+
+        {/* Sheen sweep on hover */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -inset-y-8 -left-1/2 w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/12 to-transparent translate-x-[-200%] group-hover:translate-x-[400%] transition-transform duration-[1400ms] ease-out" />
+        </div>
+
+        {/* Top meta */}
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between px-5 md:px-6 pt-5 md:pt-6">
+          <span className="rounded-full border border-white/15 bg-white/5 backdrop-blur-md px-3 py-1 font-mono text-[10px] uppercase tracking-[0.24em] text-white/80">
+            {pillar.code}
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/50">
+            Pillar
+          </span>
+        </div>
+
+        {/* Bottom content */}
+        <div className="absolute inset-x-0 bottom-0 px-5 md:px-7 pb-6 md:pb-7">
+          <h3 className="text-white text-[clamp(1.35rem,2vw,1.75rem)] leading-[1.1] tracking-[-0.02em]">
+            {pillar.title}
+          </h3>
+          <p className="mt-3 max-w-[36ch] text-[13.5px] leading-[1.6] text-white/70">
+            {pillar.caption}
+          </p>
+        </div>
+
+        {/* Edge */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[22px] md:rounded-[28px]"
+          style={{
+            boxShadow:
+              "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 0 1px rgba(255,255,255,0.05)",
+          }}
+        />
+      </motion.article>
+
+      {/* Soft ground shadow */}
+      <div
         aria-hidden
-        className="pointer-events-none absolute -inset-8 rounded-[44px]"
+        className="pointer-events-none absolute inset-x-6 -bottom-4 h-6 rounded-full opacity-70 blur-xl"
+        style={{ background: "rgba(0,0,0,0.6)" }}
+      />
+    </motion.div>
+  );
+}
+
+/* ---------------- Numbers Panel ---------------- */
+
+function NumbersPanel() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-15%" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1.0, ease: EASE }}
+      className="relative mt-16 md:mt-24 overflow-hidden rounded-[22px] md:rounded-[32px] p-6 sm:p-8 md:p-12"
+      style={{
+        background:
+          "radial-gradient(70% 110% at 70% 50%, rgba(150,200,120,0.13) 0%, rgba(20,40,22,0.55) 45%, rgba(10,20,12,0.9) 100%)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+      }}
+    >
+      {/* Dot pattern */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.35]"
         style={{
-          opacity: glowOpacity,
+          backgroundImage:
+            "radial-gradient(circle, rgba(200,230,180,0.10) 1px, transparent 1px)",
+          backgroundSize: "18px 18px",
+          maskImage: "linear-gradient(90deg, transparent 0%, black 30%, black 100%)",
+        }}
+      />
+      {/* Soft green corona */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-20 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full"
+        style={{
           background:
-            "radial-gradient(ellipse at center, rgba(201,168,76,0.35) 0%, rgba(201,168,76,0) 65%)",
-          filter: "blur(30px)",
+            "radial-gradient(circle, rgba(190,240,150,0.22) 0%, rgba(190,240,150,0) 65%)",
+          filter: "blur(20px)",
         }}
       />
 
-      {/* Card body */}
+      <div className="relative grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] gap-10 md:gap-14 items-center">
+        {/* Left copy */}
+        <div>
+          <h3 className="text-white text-[clamp(2rem,3.6vw,3.25rem)] leading-[1.02] tracking-[-0.02em]">
+            <WordReveal delay={0} >Numbers</WordReveal>
+            <WordReveal delay={0.08}>we're</WordReveal>
+            <br className="hidden sm:block" />
+            <WordReveal delay={0.16} className="text-serif-italic text-white/85">genuinely</WordReveal>
+            <WordReveal delay={0.24}>proud of.</WordReveal>
+          </h3>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={inView ? { opacity: 0.7, y: 0 } : {}}
+            transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
+            className="mt-5 max-w-sm text-[14px] leading-[1.65] text-white/70"
+          >
+            Maximum conversion. Maximum revenue. Numbers we happen to think matter more than adjectives.
+          </motion.p>
+        </div>
+
+        {/* Right stats */}
+        <div className="flex flex-col gap-4">
+          {stats.map((s, i) => (
+            <StatBar key={s.label} stat={s} index={i} inView={inView} />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function StatBar({
+  stat,
+  index,
+  inView,
+}: {
+  stat: (typeof stats)[number];
+  index: number;
+  inView: boolean;
+}) {
+  const barRef = useRef<HTMLDivElement>(null);
+  const glowX = useMotionValue(50);
+  const glowY = useMotionValue(50);
+
+  const handleMove = (e: React.MouseEvent) => {
+    const r = barRef.current?.getBoundingClientRect();
+    if (!r) return;
+    glowX.set(((e.clientX - r.left) / r.width) * 100);
+    glowY.set(((e.clientY - r.top) / r.height) * 100);
+  };
+
+  return (
+    <motion.div
+      ref={barRef}
+      onMouseMove={handleMove}
+      initial={{ opacity: 0, x: 24 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.9, delay: 0.25 + index * 0.12, ease: EASE }}
+      className="group relative overflow-hidden rounded-2xl md:rounded-[20px] px-5 sm:px-7 py-5 sm:py-6"
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        backdropFilter: "blur(6px)",
+      }}
+    >
+      {/* Roaming glow */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(340px 140px at ${glowX.get()}% ${glowY.get()}%, rgba(180,230,140,0.18), rgba(180,230,140,0) 60%)`,
+        }}
+      />
+      {/* Static right-side glow to match reference */}
       <div
-        className="relative h-full w-full overflow-hidden rounded-[30px]"
+        aria-hidden
+        className="pointer-events-none absolute -inset-y-4 left-1/3 right-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%)",
-          backdropFilter: "blur(14px) saturate(140%)",
-          border: "1px solid rgba(255,255,255,0.55)",
-          boxShadow:
-            "0 60px 120px -40px rgba(60,45,25,0.45), 0 30px 60px -30px rgba(60,45,25,0.35), inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(60,45,25,0.05)",
+            "radial-gradient(60% 90% at 40% 50%, rgba(200,240,140,0.14) 0%, rgba(200,240,140,0) 70%)",
+          filter: "blur(6px)",
         }}
-      >
-        <img
-          src={service.img}
-          alt={`${service.italic} ${service.sans}`}
-          loading="lazy"
-          className="absolute inset-0 size-full object-cover"
-        />
-        {/* Tonal grade */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-black/5 to-black/70" />
+      />
 
-        {/* Slow reflection sheen */}
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          initial={{ x: "-120%" }}
-          animate={{ x: "120%" }}
-          transition={{ duration: 9, repeat: Infinity, ease: "linear", delay: index * 1.4 }}
-          style={{
-            background:
-              "linear-gradient(75deg, transparent 30%, rgba(255,255,255,0.18) 50%, transparent 70%)",
-          }}
-        />
-
-        {/* Top meta */}
-        <div
-          className="absolute inset-x-0 top-0 flex items-start justify-between px-6 pt-6"
-          style={sans}
-        >
-          <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-white/85 backdrop-blur-md">
-            {service.code} — {service.discipline}
+      <div className="relative grid grid-cols-[minmax(0,auto)_minmax(0,1fr)] items-center gap-4 sm:gap-6">
+        <div className="flex items-center gap-3">
+          <span className="text-white text-[clamp(1.9rem,3vw,2.75rem)] leading-none tracking-[-0.02em] font-medium">
+            {stat.value}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/60">
-            Layer
-          </span>
+          <ArrowBadge delay={0.6 + index * 0.15} inView={inView} />
         </div>
-
-        {/* Title */}
-        <div className="absolute inset-x-0 bottom-0 px-6 pb-7">
-          <h3
-            className="text-white text-[clamp(1.5rem,2.2vw,2.2rem)] leading-[1.02]"
-            style={{ ...playfair, letterSpacing: "-0.02em" }}
-          >
-            <span className="italic font-normal">{service.italic}</span>{" "}
-            <span className="font-medium">{service.sans}</span>
-          </h3>
-          <div className="mt-4 flex flex-wrap gap-1.5" style={sans}>
-            {service.tags.map((t) => (
-              <span
-                key={t}
-                className="rounded-full border border-white/20 bg-white/5 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/85 backdrop-blur-md"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Edge lighting */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[30px]"
-          style={{
-            boxShadow:
-              "inset 0 0 0 1px rgba(255,255,255,0.18), inset 0 40px 60px -40px rgba(255,255,255,0.35)",
-          }}
-        />
+        <span className="text-white/85 text-[15px] sm:text-[17px] tracking-[-0.005em]">
+          {stat.label}
+        </span>
       </div>
-    </motion.article>
+    </motion.div>
   );
 }
 
-function ActiveMeta({ activeIndex }: { activeIndex: MotionValue<number> }) {
-  const current = useTransform(activeIndex, (v) => {
-    const i = Math.round(v) % services.length;
-    return services[(i + services.length) % services.length].code;
-  });
-  const total = String(services.length).padStart(2, "0");
+function ArrowBadge({ delay, inView }: { delay: number; inView: boolean }) {
   return (
-    <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2" style={sans}>
-      <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-[#1a1a1a]/55">
-        <motion.span>{current}</motion.span>
-        <span className="h-px w-8 bg-[#1a1a1a]/25" />
-        <span>{total}</span>
-      </div>
-    </div>
-  );
-}
-
-function Particles() {
-  const dots = Array.from({ length: 18 });
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {dots.map((_, i) => {
-        const left = (i * 53) % 100;
-        const top = (i * 37) % 100;
-        const size = 1 + (i % 3);
-        const dur = 14 + (i % 7) * 2;
-        const delay = (i % 5) * 1.4;
-        return (
-          <motion.span
-            key={i}
-            className="absolute rounded-full bg-[#1a1a1a]/25"
-            style={{ left: `${left}%`, top: `${top}%`, width: size, height: size }}
-            animate={{ y: [-8, 8, -8], opacity: [0.15, 0.4, 0.15] }}
-            transition={{ duration: dur, repeat: Infinity, ease: "easeInOut", delay }}
-          />
-        );
-      })}
-    </div>
+    <motion.span
+      initial={{ scale: 0, rotate: -30, opacity: 0 }}
+      animate={inView ? { scale: 1, rotate: 0, opacity: 1 } : {}}
+      transition={{ duration: 0.6, delay, ease: EASE }}
+      className="relative -mt-4 inline-flex h-5 w-5 items-center justify-center rounded-full"
+      style={{
+        background: "linear-gradient(180deg, #B7E36A 0%, #7FB05A 100%)",
+        boxShadow:
+          "0 0 0 3px rgba(180,230,140,0.14), 0 6px 20px -4px rgba(160,220,120,0.55)",
+      }}
+    >
+      <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
+        <path
+          d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5"
+          stroke="#0a1408"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </motion.span>
   );
 }
