@@ -28,9 +28,9 @@ const pillars = [
 ];
 
 const stats = [
-  { value: "$180M+", label: "Client revenue influenced" },
-  { value: "3.4×", label: "Average conversion uplift" },
-  { value: "120+", label: "Premium sites shipped worldwide" },
+  { value: "7–14", label: "Days from kickoff to launch" },
+  { value: "100%", label: "Senior-led design & engineering" },
+  { value: "< 24h", label: "Response time, every business day" },
 ];
 
 export function Services() {
