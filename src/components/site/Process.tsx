@@ -1,4 +1,6 @@
 import { Eyebrow, Reveal } from "./primitives";
+import { BlurRise, ScaleIn } from "./ScrollFx";
+import { motion } from "framer-motion";
 
 const steps = [
   {
