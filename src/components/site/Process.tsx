@@ -1,4 +1,6 @@
 import { Eyebrow, Reveal } from "./primitives";
+import { ScaleIn } from "./ScrollFx";
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -40,20 +42,25 @@ export function Process() {
 
         <div className="relative mt-24 grid gap-px overflow-hidden rounded-2xl bg-foreground/8 md:grid-cols-4">
           {steps.map((s, i) => (
-            <Reveal key={s.n} delay={i * 0.06}>
-              <div className="group relative h-full bg-white p-8 transition-colors duration-500 hover:bg-surface">
+            <ScaleIn key={s.n} delay={i * 0.08} from={0.92}>
+              <motion.div
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="group relative h-full bg-white p-8 transition-colors duration-500 hover:bg-surface"
+              >
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-[11px] tracking-[0.22em] text-ink-muted">{s.n}</span>
                   <span className="font-mono text-[11px] tracking-[0.18em] text-brand-ink">{s.duration}</span>
                 </div>
                 <h3 className="text-display mt-10 text-3xl text-ink">{s.title}</h3>
                 <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">{s.body}</p>
-                <div className="mt-10 h-px w-8 bg-foreground/30 transition-all duration-500 group-hover:w-16 group-hover:bg-brand" />
-              </div>
-            </Reveal>
+                <div className="mt-10 h-px w-8 bg-foreground/30 transition-all duration-500 group-hover:w-24 group-hover:bg-brand" />
+              </motion.div>
+            </ScaleIn>
           ))}
         </div>
       </div>
     </section>
   );
 }
+

@@ -12,6 +12,7 @@ import { Packages } from "@/components/site/Packages";
 import { Booking } from "@/components/site/Booking";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
+import { ScrollProgress } from "@/components/site/ScrollFx";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,8 +36,10 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="relative">
+      <ScrollProgress />
       <Nav />
       <main className="relative z-10">
+
         <PortalStage />
         <Services />
         <Collage />
