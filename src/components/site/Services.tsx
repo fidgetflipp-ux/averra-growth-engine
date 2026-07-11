@@ -118,17 +118,17 @@ function Header() {
       <h2
         className="mt-6 text-ink"
         style={{
-          fontFamily: "'Playfair Display', 'Cormorant Garamond', serif",
+          fontFamily: "'Instrument Serif', 'Fraunces', ui-serif, Georgia, serif",
           fontWeight: 400,
-          fontSize: "clamp(2.25rem, 6vw, 5.25rem)",
-          lineHeight: 1.05,
-          letterSpacing: "-0.025em",
+          fontSize: "clamp(2.75rem, 7.2vw, 6.5rem)",
+          lineHeight: 0.98,
+          letterSpacing: "-0.035em",
         }}
       >
         {["Everything", "your", "company", "needs", "to"].map((w, i) => (
           <WordReveal key={i} delay={i * 0.06}>{w}</WordReveal>
         ))}
-        <WordReveal delay={0.36} className="italic text-ink-soft">
+        <WordReveal delay={0.36} className="italic text-ink-soft" style={{ letterSpacing: "-0.045em" }}>
           dominate.
         </WordReveal>
 
