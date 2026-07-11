@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Averra — Premium websites, delivered in days." },
       {
         property: "og:description",
-        content: "Choose a package, reserve a slot, and ship a premium website in 7–14 days.",
+        content: "Averra is a senior design and engineering studio. Choose a package, reserve a slot, and we ship a premium website in 7–14 days. No sales calls required.",
       },
     ],
   }),
