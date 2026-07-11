@@ -28,9 +28,9 @@ const pillars = [
 ];
 
 const stats = [
-  { value: "$180M+", label: "Client revenue influenced" },
-  { value: "3.4×", label: "Average conversion uplift" },
-  { value: "120+", label: "Premium sites shipped worldwide" },
+  { value: "7–14", label: "Days from kickoff to launch" },
+  { value: "100%", label: "Senior-led design & engineering" },
+  { value: "< 24h", label: "Response time, every business day" },
 ];
 
 export function Services() {
@@ -314,11 +314,11 @@ function NumbersPanel() {
         {/* Left copy */}
         <div>
           <h3 className="text-display text-white text-[clamp(2.1rem,3.8vw,3.5rem)]">
-            <WordReveal delay={0}>Numbers</WordReveal>
-            <WordReveal delay={0.08}>we&apos;re</WordReveal>
+            <WordReveal delay={0}>The</WordReveal>
+            <WordReveal delay={0.08}>studio</WordReveal>
             <br className="hidden sm:block" />
-            <WordReveal delay={0.16} className="text-serif-italic text-white/85">genuinely</WordReveal>
-            <WordReveal delay={0.24}>proud of.</WordReveal>
+            <WordReveal delay={0.16} className="text-serif-italic text-white/85">promise,</WordReveal>
+            <WordReveal delay={0.24}>in numbers.</WordReveal>
           </h3>
           <motion.p
             initial={{ opacity: 0, y: 8 }}
@@ -326,7 +326,7 @@ function NumbersPanel() {
             transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
             className="mt-5 max-w-sm text-[14px] leading-[1.65] text-white/72"
           >
-            Maximum conversion. Maximum revenue. Numbers we happen to think matter more than adjectives.
+            Not client-brag metrics. The commitments we run the studio on — written down, held to, and refunded if we miss.
           </motion.p>
         </div>
 
