@@ -12,6 +12,7 @@ import { Packages } from "@/components/site/Packages";
 import { Booking } from "@/components/site/Booking";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
+import { ScrollProgress } from "@/components/site/ScrollFx";
 
 export const Route = createFileRoute("/")({
   head: () => ({
