@@ -36,8 +36,10 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="relative">
+      <ScrollProgress />
       <Nav />
       <main className="relative z-10">
+
         <PortalStage />
         <Services />
         <Collage />
