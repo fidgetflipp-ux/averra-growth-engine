@@ -79,27 +79,27 @@ export function FeaturedWork() {
         }}
       />
 
-      <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 pt-32 md:pt-48 pb-32 md:pb-48">
+      <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 pt-24 md:pt-48 pb-32 md:pb-48">
         {/* ── Header row: mark ─ divider ── */}
-        <div className="flex items-center gap-6">
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-ink/70">
+        <div className="flex items-center gap-4 sm:gap-6">
+          <span className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.28em] sm:tracking-[0.32em] text-ink/70">
             ◍ &nbsp;Selected Work
           </span>
           <span className="h-px flex-1 bg-ink/25" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-ink/45">
+          <span className="hidden sm:inline whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.32em] text-ink/45">
             MMXXVI · Vol. 01
           </span>
         </div>
 
         {/* ── Editorial headline ─ full width, immersive-g scale ── */}
-        <div className="mt-40 md:mt-56 max-w-[1200px]">
+        <div className="mt-20 md:mt-56 max-w-[1200px]">
           <h2
             className="text-ink"
             style={{
               fontFamily: "'Playfair Display', 'Cormorant Garamond', serif",
               fontWeight: 400,
-              fontSize: "clamp(2.75rem, 6.4vw, 6.5rem)",
-              lineHeight: 1.02,
+              fontSize: "clamp(2rem, 6.4vw, 6.5rem)",
+              lineHeight: 1.05,
               letterSpacing: "-0.025em",
             }}
           >
@@ -120,14 +120,14 @@ export function FeaturedWork() {
         </div>
 
         {/* ── Project blocks ── */}
-        <div className="mt-40 md:mt-56 flex flex-col gap-40 md:gap-56">
+        <div className="mt-20 md:mt-56 flex flex-col gap-24 md:gap-56">
           {works.map((w, i) => (
             <ProjectBlock key={w.client} work={w} align={i % 2 === 0 ? "left" : "right"} />
           ))}
         </div>
 
         {/* ── Footer meta ── */}
-        <div className="mt-40 md:mt-56 flex items-end justify-between gap-6">
+        <div className="mt-24 md:mt-56 flex items-end justify-between gap-6">
           <div>
             <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-ink/45">
               ⟶ &nbsp;Continue
