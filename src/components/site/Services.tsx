@@ -267,7 +267,7 @@ function FeatureCard({ pillar, index }: { pillar: (typeof pillars)[number]; inde
   );
 }
 
-/* ---------------- Numbers Panel ---------------- */
+/* ---------------- Numbers Panel — editorial, immersive-g inspired ---------------- */
 
 function NumbersPanel() {
   const ref = useRef<HTMLDivElement>(null);
@@ -279,61 +279,54 @@ function NumbersPanel() {
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 1.0, ease: EASE }}
-      className="relative mt-16 md:mt-24 overflow-hidden rounded-[22px] md:rounded-[32px] p-6 sm:p-8 md:p-12"
+      className="relative mt-20 md:mt-28 overflow-hidden rounded-[22px] md:rounded-[32px]"
       style={{
         background:
-          "linear-gradient(180deg, #14140F 0%, #0E0E0B 100%)",
-        border: "1px solid rgba(255,255,255,0.06)",
-        boxShadow:
-          "0 40px 100px -40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05)",
+          "radial-gradient(120% 90% at 50% 0%, #EFEBE1 0%, #E8E3D6 55%, #DFD9C9 100%)",
+        border: "1px solid oklch(0.14 0.005 260 / 0.06)",
       }}
     >
-      {/* Sage corona — restrained */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, oklch(0.64 0.14 148 / 0.28) 0%, oklch(0.64 0.14 148 / 0) 65%)",
-          filter: "blur(20px)",
-        }}
-      />
-      {/* Dot pattern */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",
-          backgroundSize: "18px 18px",
-          maskImage: "linear-gradient(90deg, transparent 0%, black 25%, black 100%)",
-        }}
-      />
+      {/* Editorial top bar */}
+      <div className="relative flex items-center justify-between px-6 md:px-12 pt-6 md:pt-8">
+        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink/55">
+          ◍ &nbsp;In numbers
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink/40">
+          Vol. 01 / Studio Promise
+        </span>
+      </div>
 
-      <div className="relative grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] gap-10 md:gap-14 items-center">
-        {/* Left copy */}
-        <div>
-          <h3 className="text-display text-white text-[clamp(2.1rem,3.8vw,3.5rem)]">
-            <WordReveal delay={0}>The</WordReveal>
-            <WordReveal delay={0.08}>studio</WordReveal>
-            <br className="hidden sm:block" />
-            <WordReveal delay={0.16} className="text-serif-italic text-white/85">promise,</WordReveal>
-            <WordReveal delay={0.24}>in numbers.</WordReveal>
+      <div className="relative px-6 md:px-12 pt-12 md:pt-20 pb-14 md:pb-24">
+        {/* Editorial headline */}
+        <div className="max-w-4xl">
+          <h3
+            className="text-display text-ink text-[clamp(2.4rem,6vw,5rem)]"
+            style={{ letterSpacing: "-0.03em", lineHeight: 0.98 }}
+          >
+            <WordReveal delay={0}>Transcend</WordReveal>{" "}
+            <WordReveal delay={0.06}>the</WordReveal>{" "}
+            <WordReveal delay={0.12} className="text-serif-italic text-ink-soft">
+              ordinary
+            </WordReveal>
+            <br />
+            <WordReveal delay={0.2}>studio</WordReveal>{" "}
+            <WordReveal delay={0.26}>experience.</WordReveal>
           </h3>
           <motion.p
             initial={{ opacity: 0, y: 8 }}
-            animate={inView ? { opacity: 0.72, y: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
-            className="mt-5 max-w-sm text-[14px] leading-[1.65] text-white/72"
+            animate={inView ? { opacity: 0.7, y: 0 } : {}}
+            transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
+            className="mt-8 max-w-md text-[14px] leading-[1.7] text-ink-soft"
           >
-            Not client-brag metrics. The commitments we run the studio on — written down, held to, and refunded if we miss.
+            Three commitments — written down, held to, refunded if we miss. The
+            operating rhythm behind every project we ship.
           </motion.p>
         </div>
 
-        {/* Right stats */}
-        <div className="flex flex-col gap-4">
+        {/* Editorial stat rows */}
+        <div className="mt-16 md:mt-24 border-t border-ink/10">
           {stats.map((s, i) => (
-            <StatBar key={s.label} stat={s} index={i} inView={inView} />
+            <StatRow key={s.label} stat={s} index={i} inView={inView} />
           ))}
         </div>
       </div>
@@ -341,7 +334,7 @@ function NumbersPanel() {
   );
 }
 
-function StatBar({
+function StatRow({
   stat,
   index,
   inView,
@@ -350,69 +343,34 @@ function StatBar({
   index: number;
   inView: boolean;
 }) {
+  const labels = ["Cadence", "Craft", "Care"];
   return (
     <motion.div
-      initial={{ opacity: 0, x: 24 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.9, delay: 0.25 + index * 0.12, ease: EASE }}
-      className="group relative overflow-hidden rounded-2xl md:rounded-[20px] px-5 sm:px-7 py-5 sm:py-6"
-      style={{
-        background:
-          "linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%)",
-        border: "1px solid rgba(255,255,255,0.08)",
-      }}
+      className="group relative grid grid-cols-[minmax(0,auto)_minmax(0,1fr)_minmax(0,auto)] items-baseline gap-6 sm:gap-10 border-b border-ink/10 py-8 md:py-12 transition-colors hover:bg-ink/[0.02]"
     >
-      {/* Soft sage bloom on the right */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -inset-y-4 left-1/3 right-0"
-        style={{
-          background:
-            "radial-gradient(60% 90% at 55% 50%, oklch(0.64 0.14 148 / 0.22) 0%, transparent 70%)",
-          filter: "blur(6px)",
-        }}
-      />
+      <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-ink/45 self-center">
+        (0{index + 1})
+      </span>
 
-      <div className="relative grid grid-cols-[minmax(0,auto)_minmax(0,1fr)] items-center gap-4 sm:gap-6">
-        <div className="flex items-center gap-3">
-          <span
-            className="text-display text-white text-[clamp(2rem,3.2vw,2.9rem)]"
-            style={{ lineHeight: 1 }}
-          >
-            {stat.value}
-          </span>
-          <ArrowBadge delay={0.6 + index * 0.15} inView={inView} />
-        </div>
-        <span className="text-white/85 text-[15px] sm:text-[17px] tracking-[-0.005em]">
-          {stat.label}
+      <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+        <span
+          className="text-display text-ink text-[clamp(3rem,7vw,6rem)]"
+          style={{ letterSpacing: "-0.04em", lineHeight: 0.9 }}
+        >
+          {stat.value}
+        </span>
+        <span className="text-serif-italic text-ink-soft text-[clamp(1.1rem,1.6vw,1.5rem)]">
+          — {labels[index]}
         </span>
       </div>
+
+      <span className="hidden sm:block max-w-[26ch] text-right text-[13px] leading-[1.6] text-ink-soft self-center">
+        {stat.label}
+      </span>
     </motion.div>
   );
 }
 
-function ArrowBadge({ delay, inView }: { delay: number; inView: boolean }) {
-  return (
-    <motion.span
-      initial={{ scale: 0, rotate: -30, opacity: 0 }}
-      animate={inView ? { scale: 1, rotate: 0, opacity: 1 } : {}}
-      transition={{ duration: 0.6, delay, ease: EASE }}
-      className="relative -mt-4 inline-flex h-5 w-5 items-center justify-center rounded-full"
-      style={{
-        background: "oklch(0.64 0.14 148)",
-        boxShadow:
-          "0 0 0 3px oklch(0.64 0.14 148 / 0.18), 0 6px 20px -4px oklch(0.64 0.14 148 / 0.55)",
-      }}
-    >
-      <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
-        <path
-          d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5"
-          stroke="#0E1A10"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </motion.span>
-  );
-}
