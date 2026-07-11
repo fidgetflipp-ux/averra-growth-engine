@@ -115,14 +115,24 @@ function Header() {
         <span className="h-px w-8 bg-ink/20" />
       </motion.div>
 
-      <h2 className="text-display mt-6 text-ink text-[clamp(2.5rem,6vw,5.25rem)]">
+      <h2
+        className="mt-6 text-ink"
+        style={{
+          fontFamily: "'Playfair Display', 'Cormorant Garamond', serif",
+          fontWeight: 400,
+          fontSize: "clamp(2.25rem, 6vw, 5.25rem)",
+          lineHeight: 1.05,
+          letterSpacing: "-0.025em",
+        }}
+      >
         {["Everything", "your", "company", "needs", "to"].map((w, i) => (
           <WordReveal key={i} delay={i * 0.06}>{w}</WordReveal>
         ))}
-        <WordReveal delay={0.36} className="text-serif-italic text-ink-soft">
-          dominate.
+        <WordReveal delay={0.36} className="text-ink-soft" >
+          <span style={{ fontStyle: "italic" }}>dominate.</span>
         </WordReveal>
       </h2>
+
 
       <motion.p
         initial={{ opacity: 0, y: 10 }}
