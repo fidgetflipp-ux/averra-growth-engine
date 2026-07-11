@@ -447,18 +447,18 @@ export function Showcase() {
         </div>
 
         {/* Frame + contextual notifications */}
-        <div className="relative z-20 mt-4 flex w-full flex-1 items-center justify-center px-6">
-          <div className="relative mx-auto" style={{ width: "min(64vw, 1080px)", maxHeight: "62vh", perspective: 1800 }}>
+        <div className="relative z-20 mt-4 flex w-full flex-1 items-center justify-center px-4 sm:px-6">
+          <div className="relative mx-auto w-[min(92vw,1080px)] md:w-[min(64vw,1080px)]" style={{ maxHeight: "62vh", perspective: 1800 }}>
             <NotificationStack stage={stage} />
             <WorkspaceFrame progress={scrollYProgress} stage={stage} />
           </div>
         </div>
 
         {/* Stage rail */}
-        <div className="relative z-30 mb-8 mt-4 flex justify-center">
-          <div className="flex items-center gap-3 rounded-full border border-foreground/8 bg-white/85 px-3 py-1.5 shadow-card backdrop-blur">
+        <div className="relative z-30 mb-8 mt-4 flex justify-center px-4">
+          <div className="flex max-w-full items-center gap-2 sm:gap-3 overflow-x-auto rounded-full border border-foreground/8 bg-white/85 px-3 py-1.5 shadow-card backdrop-blur [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {STAGES.map((s) => (
-              <span key={s.id} className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.18em]">
+              <span key={s.id} className="flex shrink-0 items-center gap-1.5 text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.16em] sm:tracking-[0.18em]">
                 <motion.span
                   animate={{
                     backgroundColor: stage >= s.id ? "rgb(127,185,138)" : "rgba(15,15,15,0.18)",

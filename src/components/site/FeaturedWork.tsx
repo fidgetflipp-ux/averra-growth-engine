@@ -79,14 +79,14 @@ export function FeaturedWork() {
         }}
       />
 
-      <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 pt-32 md:pt-48 pb-32 md:pb-48">
+      <div className="relative mx-auto max-w-[1440px] px-6 md:px-10 pt-24 md:pt-48 pb-32 md:pb-48">
         {/* ── Header row: mark ─ divider ── */}
-        <div className="flex items-center gap-6">
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-ink/70">
+        <div className="flex items-center gap-4 sm:gap-6">
+          <span className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.28em] sm:tracking-[0.32em] text-ink/70">
             ◍ &nbsp;Selected Work
           </span>
           <span className="h-px flex-1 bg-ink/25" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.32em] text-ink/45">
+          <span className="hidden sm:inline whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.32em] text-ink/45">
             MMXXVI · Vol. 01
           </span>
         </div>
