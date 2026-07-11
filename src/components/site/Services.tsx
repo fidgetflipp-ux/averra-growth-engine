@@ -267,7 +267,7 @@ function FeatureCard({ pillar, index }: { pillar: (typeof pillars)[number]; inde
   );
 }
 
-/* ---------------- Numbers Panel — editorial plaster ---------------- */
+/* ---------------- Numbers Panel ---------------- */
 
 function NumbersPanel() {
   const ref = useRef<HTMLDivElement>(null);
@@ -276,123 +276,143 @@ function NumbersPanel() {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1.1, ease: EASE }}
-      className="relative mt-20 md:mt-32 overflow-hidden rounded-[22px] md:rounded-[32px]"
+      transition={{ duration: 1.0, ease: EASE }}
+      className="relative mt-16 md:mt-24 overflow-hidden rounded-[22px] md:rounded-[32px] p-6 sm:p-8 md:p-12"
       style={{
         background:
-          "radial-gradient(120% 90% at 50% 0%, #EDE8DC 0%, #E4DED0 60%, #DAD3C2 100%)",
-        border: "1px solid oklch(0.14 0.005 260 / 0.08)",
+          "linear-gradient(180deg, #14140F 0%, #0E0E0B 100%)",
+        border: "1px solid rgba(255,255,255,0.06)",
         boxShadow:
-          "inset 0 1px 0 rgba(255,255,255,0.55), 0 30px 80px -40px oklch(0.14 0.005 260 / 0.2)",
+          "0 40px 100px -40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05)",
       }}
     >
-      {/* Plaster grain */}
+      {/* Sage corona — restrained */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.09] mix-blend-multiply"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-          backgroundSize: "240px 240px",
-        }}
-      />
-      {/* Soft sculptural bloom, top-right */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full"
+        className="pointer-events-none absolute -right-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 65%)",
+            "radial-gradient(circle, oklch(0.64 0.14 148 / 0.28) 0%, oklch(0.64 0.14 148 / 0) 65%)",
           filter: "blur(20px)",
         }}
       />
+      {/* Dot pattern */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",
+          backgroundSize: "18px 18px",
+          maskImage: "linear-gradient(90deg, transparent 0%, black 25%, black 100%)",
+        }}
+      />
 
-      {/* Top meta row */}
-      <div className="relative flex items-center justify-between px-6 sm:px-10 md:px-14 pt-6 md:pt-8">
-        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink/55">
-          — Studio Index
-        </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink/55">
-          {new Date().getFullYear()} / Averra
-        </span>
-      </div>
+      <div className="relative grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] gap-10 md:gap-14 items-center">
+        {/* Left copy */}
+        <div>
+          <h3 className="text-display text-white text-[clamp(2.1rem,3.8vw,3.5rem)]">
+            <WordReveal delay={0}>The</WordReveal>
+            <WordReveal delay={0.08}>studio</WordReveal>
+            <br className="hidden sm:block" />
+            <WordReveal delay={0.16} className="text-serif-italic text-white/85">promise,</WordReveal>
+            <WordReveal delay={0.24}>in numbers.</WordReveal>
+          </h3>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={inView ? { opacity: 0.72, y: 0 } : {}}
+            transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
+            className="mt-5 max-w-sm text-[14px] leading-[1.65] text-white/72"
+          >
+            Not client-brag metrics. The commitments we run the studio on — written down, held to, and refunded if we miss.
+          </motion.p>
+        </div>
 
-      {/* Editorial statement */}
-      <div className="relative px-6 sm:px-10 md:px-14 pt-16 md:pt-28 pb-10 md:pb-14 max-w-4xl">
-        <motion.h3
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.0, delay: 0.2, ease: EASE }}
-          className="text-serif-italic text-ink text-[clamp(1.75rem,3.4vw,3rem)] leading-[1.1] tracking-[-0.01em]"
-        >
-          A quiet studio, measured in commitments — not client-brag metrics.
-        </motion.h3>
-      </div>
-
-      {/* Divider */}
-      <div className="relative mx-6 sm:mx-10 md:mx-14 h-px bg-ink/15" />
-
-      {/* Stats row — three columns, editorial */}
-      <div className="relative grid grid-cols-1 md:grid-cols-3">
-        {stats.map((s, i) => (
-          <StatCell key={s.label} stat={s} index={i} inView={inView} isLast={i === stats.length - 1} />
-        ))}
-      </div>
-
-      {/* Bottom meta */}
-      <div className="relative flex items-center justify-between px-6 sm:px-10 md:px-14 pb-6 md:pb-8 pt-6">
-        <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink/45">
-          Fig. 01 — Delivery Standards
-        </span>
-        <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-ink/45">
-          <span className="relative flex size-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ink/30" />
-            <span className="relative inline-flex size-1.5 rounded-full bg-ink/60" />
-          </span>
-          Currently accepting
-        </span>
+        {/* Right stats */}
+        <div className="flex flex-col gap-4">
+          {stats.map((s, i) => (
+            <StatBar key={s.label} stat={s} index={i} inView={inView} />
+          ))}
+        </div>
       </div>
     </motion.div>
   );
 }
 
-function StatCell({
+function StatBar({
   stat,
   index,
   inView,
-  isLast,
 }: {
   stat: (typeof stats)[number];
   index: number;
   inView: boolean;
-  isLast: boolean;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1.0, delay: 0.35 + index * 0.14, ease: EASE }}
-      className={`relative px-6 sm:px-10 md:px-14 py-10 md:py-16 ${
-        !isLast ? "md:border-r border-ink/10" : ""
-      } ${index !== 0 ? "border-t md:border-t-0 border-ink/10" : ""}`}
+      initial={{ opacity: 0, x: 24 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.9, delay: 0.25 + index * 0.12, ease: EASE }}
+      className="group relative overflow-hidden rounded-2xl md:rounded-[20px] px-5 sm:px-7 py-5 sm:py-6"
+      style={{
+        background:
+          "linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%)",
+        border: "1px solid rgba(255,255,255,0.08)",
+      }}
     >
-      <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-ink/50">
-        0{index + 1}
-      </span>
-      <div className="mt-6 md:mt-10 flex items-baseline gap-2">
-        <span
-          className="text-serif-italic text-ink text-[clamp(3rem,6.5vw,5.5rem)]"
-          style={{ lineHeight: 0.95, letterSpacing: "-0.02em" }}
-        >
-          {stat.value}
+      {/* Soft sage bloom on the right */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-y-4 left-1/3 right-0"
+        style={{
+          background:
+            "radial-gradient(60% 90% at 55% 50%, oklch(0.64 0.14 148 / 0.22) 0%, transparent 70%)",
+          filter: "blur(6px)",
+        }}
+      />
+
+      <div className="relative grid grid-cols-[minmax(0,auto)_minmax(0,1fr)] items-center gap-4 sm:gap-6">
+        <div className="flex items-center gap-3">
+          <span
+            className="text-display text-white text-[clamp(2rem,3.2vw,2.9rem)]"
+            style={{ lineHeight: 1 }}
+          >
+            {stat.value}
+          </span>
+          <ArrowBadge delay={0.6 + index * 0.15} inView={inView} />
+        </div>
+        <span className="text-white/85 text-[15px] sm:text-[17px] tracking-[-0.005em]">
+          {stat.label}
         </span>
       </div>
-      <p className="mt-6 max-w-[26ch] text-[13.5px] leading-[1.55] text-ink/70">
-        {stat.label}
-      </p>
     </motion.div>
   );
 }
 
+function ArrowBadge({ delay, inView }: { delay: number; inView: boolean }) {
+  return (
+    <motion.span
+      initial={{ scale: 0, rotate: -30, opacity: 0 }}
+      animate={inView ? { scale: 1, rotate: 0, opacity: 1 } : {}}
+      transition={{ duration: 0.6, delay, ease: EASE }}
+      className="relative -mt-4 inline-flex h-5 w-5 items-center justify-center rounded-full"
+      style={{
+        background: "oklch(0.64 0.14 148)",
+        boxShadow:
+          "0 0 0 3px oklch(0.64 0.14 148 / 0.18), 0 6px 20px -4px oklch(0.64 0.14 148 / 0.55)",
+      }}
+    >
+      <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
+        <path
+          d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5"
+          stroke="#0E1A10"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </motion.span>
+  );
+}
