@@ -128,7 +128,7 @@ function Header() {
         {["Everything", "your", "company", "needs", "to"].map((w, i) => (
           <WordReveal key={i} delay={i * 0.06}>{w}</WordReveal>
         ))}
-        <WordReveal delay={0.36} className="italic text-ink-soft" style={{ letterSpacing: "-0.045em" }}>
+        <WordReveal delay={0.36} className="italic text-ink-soft">
           dominate.
         </WordReveal>
 
