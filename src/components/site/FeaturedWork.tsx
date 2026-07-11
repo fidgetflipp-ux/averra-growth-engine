@@ -92,14 +92,14 @@ export function FeaturedWork() {
         </div>
 
         {/* ── Editorial headline ─ full width, immersive-g scale ── */}
-        <div className="mt-40 md:mt-56 max-w-[1200px]">
+        <div className="mt-20 md:mt-56 max-w-[1200px]">
           <h2
             className="text-ink"
             style={{
               fontFamily: "'Playfair Display', 'Cormorant Garamond', serif",
               fontWeight: 400,
-              fontSize: "clamp(2.75rem, 6.4vw, 6.5rem)",
-              lineHeight: 1.02,
+              fontSize: "clamp(2rem, 6.4vw, 6.5rem)",
+              lineHeight: 1.05,
               letterSpacing: "-0.025em",
             }}
           >
@@ -120,14 +120,14 @@ export function FeaturedWork() {
         </div>
 
         {/* ── Project blocks ── */}
-        <div className="mt-40 md:mt-56 flex flex-col gap-40 md:gap-56">
+        <div className="mt-20 md:mt-56 flex flex-col gap-24 md:gap-56">
           {works.map((w, i) => (
             <ProjectBlock key={w.client} work={w} align={i % 2 === 0 ? "left" : "right"} />
           ))}
         </div>
 
         {/* ── Footer meta ── */}
-        <div className="mt-40 md:mt-56 flex items-end justify-between gap-6">
+        <div className="mt-24 md:mt-56 flex items-end justify-between gap-6">
           <div>
             <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-ink/45">
               ⟶ &nbsp;Continue
