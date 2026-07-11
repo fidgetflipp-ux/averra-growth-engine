@@ -28,9 +28,9 @@ const pillars = [
 ];
 
 const stats = [
-  { value: "$180M+", label: "Client revenue influenced", delta: "+" },
-  { value: "3.4×", label: "Average conversion uplift", delta: "×" },
-  { value: "120+", label: "Premium sites shipped worldwide", delta: "↑" },
+  { value: "$180M+", label: "Client revenue influenced" },
+  { value: "3.4×", label: "Average conversion uplift" },
+  { value: "120+", label: "Premium sites shipped worldwide" },
 ];
 
 export function Services() {
@@ -39,40 +39,40 @@ export function Services() {
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const ambientY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const ambientY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      className="relative px-4 sm:px-6 pt-24 md:pt-32 pb-28 md:pb-40"
+      className="relative px-4 sm:px-6 pt-24 md:pt-32 pb-24 md:pb-32"
     >
-      {/* Rounded container — the whole Convertt-style capsule */}
+      {/* Warm cream capsule with a whisper of sage */}
       <div
         className="relative mx-auto max-w-[1360px] overflow-hidden rounded-[28px] md:rounded-[42px]"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 0%, rgba(28,58,32,0.75) 0%, rgba(10,20,12,0.98) 55%, #060b07 100%)",
-          border: "1px solid rgba(255,255,255,0.06)",
+            "radial-gradient(120% 90% at 50% 0%, #F4F1EA 0%, #EEEAE1 55%, #E8E3D6 100%)",
+          border: "1px solid oklch(0.14 0.005 260 / 0.08)",
           boxShadow:
-            "0 60px 160px -40px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.05)",
+            "0 40px 120px -50px oklch(0.14 0.005 260 / 0.22), inset 0 1px 0 rgba(255,255,255,0.6)",
         }}
       >
-        {/* Ambient sage glow */}
+        {/* Very subtle sage aura */}
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             y: ambientY,
             background:
-              "radial-gradient(60% 40% at 50% 10%, rgba(120,190,120,0.16) 0%, rgba(120,190,120,0) 60%), radial-gradient(50% 40% at 80% 80%, rgba(160,210,120,0.10) 0%, rgba(160,210,120,0) 65%)",
+              "radial-gradient(60% 40% at 50% 5%, oklch(0.64 0.14 148 / 0.10) 0%, transparent 65%), radial-gradient(50% 40% at 85% 88%, oklch(0.64 0.14 148 / 0.07) 0%, transparent 70%)",
           }}
         />
 
         {/* Grain */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+          className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-multiply"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
@@ -110,28 +110,26 @@ function Header() {
         transition={{ duration: 0.7, ease: EASE }}
         className="inline-flex items-center gap-3"
       >
-        <span className="h-px w-8 bg-white/25" />
-        <span className="font-mono text-[10px] uppercase tracking-[0.42em] text-white/55">
-          The Operating System
-        </span>
-        <span className="h-px w-8 bg-white/25" />
+        <span className="h-px w-8 bg-ink/20" />
+        <span className="text-eyebrow">The Operating System</span>
+        <span className="h-px w-8 bg-ink/20" />
       </motion.div>
 
-      <h2 className="mt-6 text-[clamp(2.25rem,5.6vw,4.75rem)] leading-[1.02] tracking-[-0.03em] text-white">
-        {["Everything", "Your", "Company", "Needs", "To"].map((w, i) => (
+      <h2 className="text-display mt-6 text-ink text-[clamp(2.5rem,6vw,5.25rem)]">
+        {["Everything", "your", "company", "needs", "to"].map((w, i) => (
           <WordReveal key={i} delay={i * 0.06}>{w}</WordReveal>
         ))}
-        <WordReveal delay={0.36} className="text-serif-italic text-white/85">
-          Dominate.
+        <WordReveal delay={0.36} className="text-serif-italic text-ink-soft">
+          dominate.
         </WordReveal>
       </h2>
 
       <motion.p
         initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 0.75, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-15%" }}
         transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
-        className="mx-auto mt-6 max-w-xl text-[15px] leading-[1.65] text-white/70"
+        className="mx-auto mt-6 max-w-xl text-[15px] leading-[1.65] text-ink-soft"
       >
         A senior studio disguised as a subscription. Design, engineering, and growth —
         wired into one calm delivery system.
@@ -170,8 +168,8 @@ function FeatureCard({ pillar, index }: { pillar: (typeof pillars)[number]; inde
   const cardRef = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rX = useSpring(useTransform(my, [-1, 1], [6, -6]), { stiffness: 120, damping: 14 });
-  const rY = useSpring(useTransform(mx, [-1, 1], [-6, 6]), { stiffness: 120, damping: 14 });
+  const rX = useSpring(useTransform(my, [-1, 1], [5, -5]), { stiffness: 120, damping: 14 });
+  const rY = useSpring(useTransform(mx, [-1, 1], [-5, 5]), { stiffness: 120, damping: 14 });
 
   const handleMove = (e: React.MouseEvent) => {
     const r = cardRef.current?.getBoundingClientRect();
@@ -208,30 +206,22 @@ function FeatureCard({ pillar, index }: { pillar: (typeof pillars)[number]; inde
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
         />
 
-        {/* Green tint + gradient */}
+        {/* Warm ink gradient — no green tint */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(8,20,10,0.15) 0%, rgba(8,20,10,0.35) 45%, rgba(6,14,8,0.92) 100%)",
-            mixBlendMode: "multiply",
-          }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(80,140,80,0.10) 0%, rgba(0,0,0,0) 40%)",
+              "linear-gradient(180deg, rgba(20,18,14,0.10) 0%, rgba(20,18,14,0.25) 45%, rgba(14,12,10,0.88) 100%)",
           }}
         />
 
         {/* Cursor spotlight */}
-        <motion.div
+        <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(220px 220px at var(--mx,50%) var(--my,50%), rgba(190,240,180,0.18), transparent 70%)",
+              "radial-gradient(240px 240px at 50% 30%, rgba(255,244,220,0.14), transparent 70%)",
           }}
         />
 
@@ -242,20 +232,23 @@ function FeatureCard({ pillar, index }: { pillar: (typeof pillars)[number]; inde
 
         {/* Top meta */}
         <div className="absolute inset-x-0 top-0 flex items-start justify-between px-5 md:px-6 pt-5 md:pt-6">
-          <span className="rounded-full border border-white/15 bg-white/5 backdrop-blur-md px-3 py-1 font-mono text-[10px] uppercase tracking-[0.24em] text-white/80">
+          <span className="rounded-full border border-white/15 bg-white/10 backdrop-blur-md px-3 py-1 font-mono text-[10px] uppercase tracking-[0.24em] text-white/85">
             {pillar.code}
           </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/50">
+          <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/55">
             Pillar
           </span>
         </div>
 
         {/* Bottom content */}
         <div className="absolute inset-x-0 bottom-0 px-5 md:px-7 pb-6 md:pb-7">
-          <h3 className="text-white text-[clamp(1.35rem,2vw,1.75rem)] leading-[1.1] tracking-[-0.02em]">
+          <h3
+            className="text-display text-white text-[clamp(1.5rem,2.2vw,2rem)]"
+            style={{ letterSpacing: "-0.025em", lineHeight: 1.05 }}
+          >
             {pillar.title}
           </h3>
-          <p className="mt-3 max-w-[36ch] text-[13.5px] leading-[1.6] text-white/70">
+          <p className="mt-3 max-w-[36ch] text-[13.5px] leading-[1.6] text-white/72">
             {pillar.caption}
           </p>
         </div>
@@ -266,17 +259,10 @@ function FeatureCard({ pillar, index }: { pillar: (typeof pillars)[number]; inde
           className="pointer-events-none absolute inset-0 rounded-[22px] md:rounded-[28px]"
           style={{
             boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 0 1px rgba(255,255,255,0.05)",
+              "inset 0 1px 0 rgba(255,255,255,0.10), inset 0 0 0 1px rgba(255,255,255,0.05)",
           }}
         />
       </motion.article>
-
-      {/* Soft ground shadow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-6 -bottom-4 h-6 rounded-full opacity-70 blur-xl"
-        style={{ background: "rgba(0,0,0,0.6)" }}
-      />
     </motion.div>
   );
 }
@@ -296,48 +282,49 @@ function NumbersPanel() {
       className="relative mt-16 md:mt-24 overflow-hidden rounded-[22px] md:rounded-[32px] p-6 sm:p-8 md:p-12"
       style={{
         background:
-          "radial-gradient(70% 110% at 70% 50%, rgba(150,200,120,0.13) 0%, rgba(20,40,22,0.55) 45%, rgba(10,20,12,0.9) 100%)",
-        border: "1px solid rgba(255,255,255,0.07)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+          "linear-gradient(180deg, #14140F 0%, #0E0E0B 100%)",
+        border: "1px solid rgba(255,255,255,0.06)",
+        boxShadow:
+          "0 40px 100px -40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05)",
       }}
     >
+      {/* Sage corona — restrained */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, oklch(0.64 0.14 148 / 0.28) 0%, oklch(0.64 0.14 148 / 0) 65%)",
+          filter: "blur(20px)",
+        }}
+      />
       {/* Dot pattern */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            "radial-gradient(circle, rgba(200,230,180,0.10) 1px, transparent 1px)",
+            "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",
           backgroundSize: "18px 18px",
-          maskImage: "linear-gradient(90deg, transparent 0%, black 30%, black 100%)",
-        }}
-      />
-      {/* Soft green corona */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-20 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(190,240,150,0.22) 0%, rgba(190,240,150,0) 65%)",
-          filter: "blur(20px)",
+          maskImage: "linear-gradient(90deg, transparent 0%, black 25%, black 100%)",
         }}
       />
 
       <div className="relative grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] gap-10 md:gap-14 items-center">
         {/* Left copy */}
         <div>
-          <h3 className="text-white text-[clamp(2rem,3.6vw,3.25rem)] leading-[1.02] tracking-[-0.02em]">
-            <WordReveal delay={0} >Numbers</WordReveal>
-            <WordReveal delay={0.08}>we're</WordReveal>
+          <h3 className="text-display text-white text-[clamp(2.1rem,3.8vw,3.5rem)]">
+            <WordReveal delay={0}>Numbers</WordReveal>
+            <WordReveal delay={0.08}>we&apos;re</WordReveal>
             <br className="hidden sm:block" />
             <WordReveal delay={0.16} className="text-serif-italic text-white/85">genuinely</WordReveal>
             <WordReveal delay={0.24}>proud of.</WordReveal>
           </h3>
           <motion.p
             initial={{ opacity: 0, y: 8 }}
-            animate={inView ? { opacity: 0.7, y: 0 } : {}}
+            animate={inView ? { opacity: 0.72, y: 0 } : {}}
             transition={{ duration: 0.9, delay: 0.4, ease: EASE }}
-            className="mt-5 max-w-sm text-[14px] leading-[1.65] text-white/70"
+            className="mt-5 max-w-sm text-[14px] leading-[1.65] text-white/72"
           >
             Maximum conversion. Maximum revenue. Numbers we happen to think matter more than adjectives.
           </motion.p>
@@ -363,21 +350,8 @@ function StatBar({
   index: number;
   inView: boolean;
 }) {
-  const barRef = useRef<HTMLDivElement>(null);
-  const glowX = useMotionValue(50);
-  const glowY = useMotionValue(50);
-
-  const handleMove = (e: React.MouseEvent) => {
-    const r = barRef.current?.getBoundingClientRect();
-    if (!r) return;
-    glowX.set(((e.clientX - r.left) / r.width) * 100);
-    glowY.set(((e.clientY - r.top) / r.height) * 100);
-  };
-
   return (
     <motion.div
-      ref={barRef}
-      onMouseMove={handleMove}
       initial={{ opacity: 0, x: 24 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.9, delay: 0.25 + index * 0.12, ease: EASE }}
@@ -386,31 +360,25 @@ function StatBar({
         background:
           "linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%)",
         border: "1px solid rgba(255,255,255,0.08)",
-        backdropFilter: "blur(6px)",
       }}
     >
-      {/* Roaming glow */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(340px 140px at ${glowX.get()}% ${glowY.get()}%, rgba(180,230,140,0.18), rgba(180,230,140,0) 60%)`,
-        }}
-      />
-      {/* Static right-side glow to match reference */}
+      {/* Soft sage bloom on the right */}
       <div
         aria-hidden
         className="pointer-events-none absolute -inset-y-4 left-1/3 right-0"
         style={{
           background:
-            "radial-gradient(60% 90% at 40% 50%, rgba(200,240,140,0.14) 0%, rgba(200,240,140,0) 70%)",
+            "radial-gradient(60% 90% at 55% 50%, oklch(0.64 0.14 148 / 0.22) 0%, transparent 70%)",
           filter: "blur(6px)",
         }}
       />
 
       <div className="relative grid grid-cols-[minmax(0,auto)_minmax(0,1fr)] items-center gap-4 sm:gap-6">
         <div className="flex items-center gap-3">
-          <span className="text-white text-[clamp(1.9rem,3vw,2.75rem)] leading-none tracking-[-0.02em] font-medium">
+          <span
+            className="text-display text-white text-[clamp(2rem,3.2vw,2.9rem)]"
+            style={{ lineHeight: 1 }}
+          >
             {stat.value}
           </span>
           <ArrowBadge delay={0.6 + index * 0.15} inView={inView} />
@@ -431,15 +399,15 @@ function ArrowBadge({ delay, inView }: { delay: number; inView: boolean }) {
       transition={{ duration: 0.6, delay, ease: EASE }}
       className="relative -mt-4 inline-flex h-5 w-5 items-center justify-center rounded-full"
       style={{
-        background: "linear-gradient(180deg, #B7E36A 0%, #7FB05A 100%)",
+        background: "oklch(0.64 0.14 148)",
         boxShadow:
-          "0 0 0 3px rgba(180,230,140,0.14), 0 6px 20px -4px rgba(160,220,120,0.55)",
+          "0 0 0 3px oklch(0.64 0.14 148 / 0.18), 0 6px 20px -4px oklch(0.64 0.14 148 / 0.55)",
       }}
     >
       <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
         <path
           d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5"
-          stroke="#0a1408"
+          stroke="#0E1A10"
           strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"

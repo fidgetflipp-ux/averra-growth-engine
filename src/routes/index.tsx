@@ -38,11 +38,11 @@ function Index() {
       <Nav />
       <main className="relative z-10">
         <PortalStage />
+        <Services />
         <Collage />
         <FutureState />
         <Showcase />
         <SocialProof />
-        <Services />
         <FeaturedWork />
         <Process />
         <Packages />
